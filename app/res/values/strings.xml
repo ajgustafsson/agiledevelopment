@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">groupFive</string>
     <string name="edit_activity_link">Edit</string>
-    <string name="git_activity_link">Git Status</string>
-    <string name="pivotal_activity_link">Pivotal Status</string>
+    <string name="git_activity_link">Git Example</string>
+    <string name="pivotal_activity_link">Pivotal Example</string>
+    <string name="poker_activity_link">Planning Poker</string>
+    <string name="title_activity_planning_poker">PlanningPoker</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="my_activity_text">Welcome to the homescreen</string>
+    <string name="planning_poker_text">Welcome to the planning poker game!</string>
+
 </resources>
