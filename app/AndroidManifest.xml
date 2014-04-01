@@ -24,9 +24,9 @@
             android:name="se.chalmers.agile5.PlanningPoker"
             android:label="@string/title_activity_planning_poker"
             android:parentActivityName="se.chalmers.agile5.MyActivity" 
-            android:theme="@android:style/Theme.Holo.Light"
             >
         </activity>
+        
     </application>
 
 </manifest>
