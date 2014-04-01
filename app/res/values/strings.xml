@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">groupFive</string>
+    <string name="edit_activity_link">Edit</string>
+    <string name="git_activity_link">Git Status</string>
+    <string name="pivotal_activity_link">Pivotal Status</string>
 </resources>
