@@ -5,7 +5,7 @@
           android:title="@string/edit_activity_link"
           android:showAsAction="ifRoom" />
     
-    <item android:id="@+id/_activity_link"
+    <item android:id="@+id/git_activity_link"
           android:title="@string/git_activity_link"
           android:showAsAction="never" />
     
