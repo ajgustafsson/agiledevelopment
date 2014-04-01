@@ -14,7 +14,7 @@ public class PlanningPoker extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_planning_poker);
+        setContentView(R.layout.planning_poker);
     }
     
     @Override
