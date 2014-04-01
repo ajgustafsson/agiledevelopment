@@ -10,5 +10,13 @@
         android:layout_height="wrap_content"
         android:text="Hello World, MyActivity"
         />
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="login to github.com"
+        android:id="@+id/buttonGoGitLogin"
+        android:onClick="gitLogin"/>
+
 </LinearLayout>
 
