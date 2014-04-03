@@ -2,14 +2,10 @@ package se.chalmers.agile5;
 
 import logic.RetrivePivotalStories;
 
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
-
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 public class MyActivity extends Activity {
@@ -20,7 +16,7 @@ public class MyActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        
+        /*
         TextView textview = (TextView) findViewById(R.id.textView1);
         
         try
@@ -30,8 +26,13 @@ public class MyActivity extends Activity {
        catch(Exception ex)
        {
                  textview.setText(ex.toString());
-       }
+       }*/
         
+    }
+    
+    public void getUserStories(View view){
+    	Intent intent = new Intent(this, UserStoriesActivity.class);
+    	startActivity(intent);
     }
     
 }
