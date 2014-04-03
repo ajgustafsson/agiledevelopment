@@ -1,6 +1,7 @@
 package se.chalmers.agile5;
 
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,6 +16,7 @@ import org.eclipse.egit.github.core.service.WatcherService;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class GitSelectActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
@@ -23,16 +25,25 @@ public class GitSelectActivity extends Activity {
 
         final GitHubClient client = MyActivity.gitHubClient;
 
-        final UserService userService = new UserService(client);
-        final WatcherService watchService = new WatcherService(client);
-        final RepositoryService repoService = new RepositoryService(client);
+        //TODO refactoring
 
         final ListView repoListView = (ListView) findViewById(R.id.gitRepoListView);
         try {
             //get repositories the user watches (actually starred repositories, not watched)
-            final List<Repository> repositoryList = watchService.getWatched();
+            FetchStarredReposTask fetchRepoTask = new FetchStarredReposTask();
+            fetchRepoTask.execute(client);
+            final List<Repository> repositoryList = fetchRepoTask.get();
+
             //get and add repositories owned by user
-            repositoryList.addAll(repoService.getRepositories(client.getUser()));
+            FetchOwnedReposTask fetchOwnedReposTask = new FetchOwnedReposTask();
+            fetchOwnedReposTask.execute(client);
+            repositoryList.addAll(fetchOwnedReposTask.get());
+
+            //TODO handle properly
+            if(repositoryList == null){
+                finish();
+            }
+
             final ArrayList<String> repoStrings = new ArrayList<String>();
 
             //save as strings to make it simple to show in ListView
@@ -63,8 +74,39 @@ public class GitSelectActivity extends Activity {
                 }
             });
 
-        } catch (IOException e) {
+        } catch (InterruptedException e) {
             e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public class FetchStarredReposTask extends AsyncTask<GitHubClient, Void, List<Repository>> {
+
+        @Override
+        protected List<Repository> doInBackground(GitHubClient... params) {
+            final GitHubClient client = params[0];
+            final WatcherService watchService = new WatcherService(client);
+            try {
+                return watchService.getWatched();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
+    public class FetchOwnedReposTask extends AsyncTask<GitHubClient, Void, List<Repository>> {
+        @Override
+        protected List<Repository> doInBackground(GitHubClient... params) {
+            final GitHubClient client = params[0];
+            final RepositoryService service = new RepositoryService(client);
+            try {
+                return service.getRepositories(client.getUser());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
         }
     }
 }

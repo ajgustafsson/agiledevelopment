@@ -27,7 +27,8 @@ public class BaseActivity extends Activity {
             	//do something
                 return true;
             case R.id.git_activity_link:
-                //do something
+                Intent gitIntent = new Intent(this, GitLoginActivity.class);
+                startActivity(gitIntent);
                 return true;
             case R.id.poker_activity_link:
             	Intent poker = new Intent(this, PlanningPoker.class);
