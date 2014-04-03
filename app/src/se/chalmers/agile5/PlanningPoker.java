@@ -11,5 +11,5 @@ public class PlanningPoker extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.planning_poker);
     }
-    
+ 
 }
