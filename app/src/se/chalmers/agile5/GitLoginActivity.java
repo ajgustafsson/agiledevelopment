@@ -21,8 +21,7 @@ import org.eclipse.egit.github.core.service.UserService;
 import java.io.IOException;
 
 /**
- * Activity which displays a login screen to the user, offering registration as
- * well.
+ * Activity enabling the user to login to github.com
  */
 public class GitLoginActivity extends Activity {
 
@@ -31,7 +30,7 @@ public class GitLoginActivity extends Activity {
  */
 private UserLoginTask mAuthTask = null;
 
-// Values for email and password at the time of the login attempt.
+// Values for password and password at the time of the login attempt.
 private String gitUserName;
 private String gitPassword;
 
@@ -90,7 +89,7 @@ private void setupActionBar() {
 
 /**
  * Attempts to sign in or register the account specified by the login form.
- * If there are form errors (invalid email, missing fields, etc.), the
+ * If there are form errors (missing fields, etc.), the
  * errors are presented and no actual login attempt is made.
  */
 public void attemptLogin() {
