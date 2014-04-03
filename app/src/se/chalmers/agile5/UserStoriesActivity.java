@@ -13,7 +13,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class UserStoriesActivity extends Activity{
@@ -25,15 +24,13 @@ public class UserStoriesActivity extends Activity{
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.userstories);
         
-        TextView textview = (TextView) findViewById(R.id.textView1);
-        
         userStories = new ArrayList<UserStory>();
         // Get ListView object from xml
         listView = (ListView) findViewById(R.id.list);
         
         try
         {
-        	userStories = new RetrivePivotalStories().execute().get();  
+        	userStories = new RetrivePivotalStories(getIntent().getStringExtra("Label")).execute().get();  
         	// Defined Array values to show in ListView
             List<String> titles = new ArrayList<String>();
         	for(int i=0; i<userStories.size(); i++) {
@@ -79,7 +76,7 @@ public class UserStoriesActivity extends Activity{
          }
        catch(Exception ex)
        {
-                 textview.setText(ex.toString());
+    	   ex.toString();
        }
 	}
 

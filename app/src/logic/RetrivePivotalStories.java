@@ -18,6 +18,12 @@ import android.os.AsyncTask;
 
 public class RetrivePivotalStories extends AsyncTask<String, Void, ArrayList<UserStory>>{
 	
+	private String Label;
+	
+	public RetrivePivotalStories(String label){
+		this.Label = label;
+	}
+	
 	protected void onPostExecute() {
         // TODO: check this.exception 
         // TODO: do something with the feed
@@ -26,7 +32,7 @@ public class RetrivePivotalStories extends AsyncTask<String, Void, ArrayList<Use
 	@Override
 	protected ArrayList<UserStory> doInBackground(String... params) {
 		HttpClient client = new DefaultHttpClient();
-        String url = "https://www.pivotaltracker.com/services/v5/projects/1043910/stories?date_format=millis&filter=label%3Aroadmap";
+        String url = "https://www.pivotaltracker.com/services/v5/projects/1043910/stories?date_format=millis&filter=label%3A" + Label;
         HttpGet httpget = new HttpGet(url);
         httpget.setHeader("Accept", "application/json");
         httpget.setHeader("Content-type", "application/json");
@@ -56,6 +62,14 @@ public class RetrivePivotalStories extends AsyncTask<String, Void, ArrayList<Use
 		
 		try {
 			JSONArray userStoriesInJSON = new JSONArray(setServerString);
+			if(userStoriesInJSON.length() == 0){
+				UserStory us = new UserStory();
+				us.setTitle("*Nothing found*");
+				us.setDescription("");
+				us.setID(000);
+				userStories.add(us);
+				return userStories;
+			}
 			for(int i = 0; i < userStoriesInJSON.length(); i++ ){
 				JSONObject storyInJSON = userStoriesInJSON.optJSONObject(i);
 				UserStory userStory = new UserStory();
