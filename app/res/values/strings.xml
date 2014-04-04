@@ -5,11 +5,8 @@
     <!-- Strings related to login -->
     <string name="prompt_username">Username</string>
     <string name="prompt_password">Password</string>
-
     <string name="action_login"><b>Sign in to Github</b></string>
-
     <string name="login_progress_signing_in">Signing in&#8230;</string>
-
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
@@ -25,4 +22,5 @@
     <string name="my_activity_text">Welcome to the homescreen</string>
     <string name="planning_poker_text">Welcome to the planning poker game!</string>
 
+     <string name="title_activity_user_stories">UserStories</string>
 </resources>

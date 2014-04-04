@@ -18,15 +18,24 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        
+        <activity
+            android:name="UserStoriesActivity"
+            android:label="@string/title_activity_user_stories"
+            android:parentActivityName="se.chalmers.agile5.MyActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="se.chalmers.agile5.MyActivity"/>
+        </activity>
+
         <activity
             android:name="se.chalmers.agile5.PlanningPoker"
             android:label="@string/title_activity_planning_poker"
-            android:parentActivityName="se.chalmers.agile5.MyActivity" 
+            android:parentActivityName="se.chalmers.agile5.MyActivity"
             >
         </activity>
-        
+
         <activity android:name=".GitLoginActivity"/>
         <activity android:name=".GitSelectActivity"/>
+        <activity android:name=".PivotalActivity"/>
     </application>
 </manifest>

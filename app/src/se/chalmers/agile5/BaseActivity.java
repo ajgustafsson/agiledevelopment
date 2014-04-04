@@ -24,7 +24,8 @@ public class BaseActivity extends Activity {
             	//do something
                 return true;
             case R.id.pivotal_activity_link:
-            	//do something
+            	Intent pivotalIntent = new Intent(this, PivotalActivity.class);
+                startActivity(pivotalIntent);
                 return true;
             case R.id.git_activity_link:
                 Intent gitIntent = new Intent(this, GitLoginActivity.class);
