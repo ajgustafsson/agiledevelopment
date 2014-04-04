@@ -1,4 +1,4 @@
-package se.chalmers.agile5;
+package se.chalmers.agile5.activities;
 
 
 import android.animation.Animator;
@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.UserService;
+import se.chalmers.agile5.R;
 
 import java.io.IOException;
 

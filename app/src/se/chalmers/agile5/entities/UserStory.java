@@ -1,4 +1,4 @@
-package entities;
+package se.chalmers.agile5.entities;
 
 import java.util.ArrayList;
 

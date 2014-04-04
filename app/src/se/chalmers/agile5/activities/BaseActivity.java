@@ -1,10 +1,11 @@
-package se.chalmers.agile5;
+package se.chalmers.agile5.activities;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import se.chalmers.agile5.R;
 
 public class BaseActivity extends Activity {
 

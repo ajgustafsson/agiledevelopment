@@ -1,4 +1,4 @@
-package se.chalmers.agile5;
+package se.chalmers.agile5.activities;
 
 import android.os.Bundle;
 import android.graphics.Color;
@@ -10,6 +10,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import se.chalmers.agile5.R;
 
 /**
  * 

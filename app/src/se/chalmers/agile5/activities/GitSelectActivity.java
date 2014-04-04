@@ -1,4 +1,4 @@
-package se.chalmers.agile5;
+package se.chalmers.agile5.activities;
 
 import android.app.Activity;
 import android.os.AsyncTask;
@@ -10,8 +10,8 @@ import android.widget.ListView;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.RepositoryService;
-import org.eclipse.egit.github.core.service.UserService;
 import org.eclipse.egit.github.core.service.WatcherService;
+import se.chalmers.agile5.R;
 
 import java.io.IOException;
 import java.util.ArrayList;

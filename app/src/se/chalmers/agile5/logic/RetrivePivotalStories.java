@@ -1,4 +1,4 @@
-package logic;
+package se.chalmers.agile5.logic;
 
 import java.util.ArrayList;
 
@@ -11,8 +11,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import entities.Label;
-import entities.UserStory;
+import se.chalmers.agile5.entities.Label;
+import se.chalmers.agile5.entities.UserStory;
 
 import android.os.AsyncTask;
 

@@ -1,8 +1,9 @@
-package se.chalmers.agile5;
+package se.chalmers.agile5.activities;
 
 import android.os.Bundle;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.client.GitHubClient;
+import se.chalmers.agile5.R;
 
 public class MyActivity extends BaseActivity {
     
