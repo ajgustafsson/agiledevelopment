@@ -21,21 +21,29 @@
         <activity
             android:name=".activities.UserStoriesActivity"
             android:label="@string/title_activity_user_stories"
-            android:parentActivityName="se.chalmers.agile5.MyActivity">
+            android:parentActivityName="se.chalmers.agile5.activities.PivotalActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="se.chalmers.agile5.MyActivity"/>
+                android:value="se.chalmers.agile5.activities.PivotalActivity"/>
         </activity>
 
         <activity
             android:name=".activities.PlanningPoker"
             android:label="@string/title_activity_planning_poker"
-            android:parentActivityName="se.chalmers.agile5.MyActivity"
+            android:parentActivityName="se.chalmers.agile5.activities.MyActivity"
             >
         </activity>
-
-        <activity android:name=".activities.GitLoginActivity"/>
-        <activity android:name=".activities.GitSelectActivity"/>
-        <activity android:name=".activities.PivotalActivity"/>
+        <activity 
+            android:name=".activities.GitLoginActivity"
+            android:parentActivityName="se.chalmers.agile5.activities.MyActivity"
+            />
+        <activity 
+            android:name=".activities.GitSelectActivity"
+            android:parentActivityName="se.chalmers.agile5.activities.GitLoginActivity"
+            />
+        <activity 
+            android:name=".activities.PivotalActivity"
+            android:parentActivityName="se.chalmers.agile5.activities.PivotalActivity"
+            />
     </application>
 </manifest>

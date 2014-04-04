@@ -4,7 +4,6 @@ package se.chalmers.agile5.activities;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -24,7 +23,7 @@ import java.io.IOException;
 /**
  * Activity enabling the user to login to github.com
  */
-public class GitLoginActivity extends Activity {
+public class GitLoginActivity extends BaseActivity {
 
 /**
  * Keep track of the login task to ensure we can cancel it if requested.
@@ -204,6 +203,7 @@ public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
         showProgress(false);
 
         if (success) {
+        	//TODO pass on the context of the loginActivity to use as context in the intent
             Intent gitSelectIntent = new Intent(getBaseContext(), GitSelectActivity.class);
             startActivity(gitSelectIntent);
             finish();
