@@ -36,12 +36,6 @@ public class UserStoriesActivity extends Activity{
         	for(int i=0; i<userStories.size(); i++) {
             	titles.add(userStories.get(i).getTitle());
             }
-        	
-			// Define a new Adapter
-            // First parameter - Context
-            // Second parameter - Layout for the row
-            // Third parameter - ID of the TextView to which the data is written
-            // Forth - the Array of data
     
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
               android.R.layout.simple_list_item_1, android.R.id.text1, titles);
@@ -71,8 +65,7 @@ public class UserStoriesActivity extends Activity{
                   }
     
              }); 
-        
-            
+
          }
        catch(Exception ex)
        {

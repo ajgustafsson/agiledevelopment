@@ -40,15 +40,14 @@ public class RetrivePivotalStories extends AsyncTask<String, Void, ArrayList<Use
         ArrayList<UserStory> userStories = new ArrayList<UserStory>();
         try
         {
-                      String SetServerString = "";
+        	String SetServerString = "";
             
-                    // Create Request to server and get response
-                     ResponseHandler<String> responseHandler = new BasicResponseHandler();
-                     SetServerString = client.execute(httpget, responseHandler);
+            // Create Request to server and get response
+            ResponseHandler<String> responseHandler = new BasicResponseHandler();
+            SetServerString = client.execute(httpget, responseHandler);
                      
-                     //userStories = ParseUserStories(SetServerString, userStories);
-                      // Show response on activity 
-                     return ParseUserStories(SetServerString, userStories);
+            // Show response on activity 
+            return ParseUserStories(SetServerString, userStories);
                     
          } catch(Exception ex) {
         	 UserStory uS = new UserStory();
