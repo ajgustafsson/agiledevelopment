@@ -5,7 +5,7 @@
     <!-- Strings related to login -->
     <string name="prompt_username">Username</string>
     <string name="prompt_password">Password</string>
-    <string name="action_login"><b>Sign in to Github</b></string>
+    <string name="action_login"><b>Sign in to GitHub</b></string>
     <string name="login_progress_signing_in">Signing in&#8230;</string>
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
@@ -23,4 +23,11 @@
     <string name="planning_poker_text">Welcome to the planning poker game!</string>
 
      <string name="title_activity_user_stories">UserStories</string>
+
+    <string name="dialog_already_logged_in">Already logged in to GitHub.
+                                            \nDo you want to login to another account?</string>
+    <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_login_as_other">Change account</string>
+    <string name="dialog_ok_button">Ok</string>
+    <string name="dialog_no_repos_message">Logged in!\nBut you have no own or starred repositories to select.</string>
 </resources>

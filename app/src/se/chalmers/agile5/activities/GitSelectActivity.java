@@ -1,12 +1,13 @@
 package se.chalmers.agile5.activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.RepositoryService;
@@ -38,12 +39,34 @@ public class GitSelectActivity extends BaseActivity {
             //get and add repositories owned by user
             FetchOwnedReposTask fetchOwnedReposTask = new FetchOwnedReposTask();
             fetchOwnedReposTask.execute(client);
-            repositoryList.addAll(fetchOwnedReposTask.get());
+            final List<Repository> repositoryListOwned = fetchOwnedReposTask.get();
+            if(repositoryListOwned != null && !repositoryListOwned.isEmpty()){
+                //TODO more efficient checking if repository already there? But should be not so many items...
+                for(Repository repo: repositoryListOwned){
+                    final String newRepoID = repo.generateId();
+                    boolean add = true;
+                    for(Repository oldRepo : repositoryList){
+                        if(newRepoID.equals(oldRepo.generateId())){
+                            add = false;
+                            break;
+                        }
+                    }
+                    if(add)
+                        repositoryList.add(repo);
+                }
+            }
 
-            //TODO handle properly: display PopUp or other activity, since no ListView would be empty
             if(repositoryList == null || repositoryList.isEmpty()){
                 //no repositories could be retrieved/found
-                finish();
+                final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage(R.string.dialog_no_repos_message);
+                builder.setNeutralButton(R.string.dialog_ok_button, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                });
+                builder.create().show();
             }
 
             final ArrayList<String> repoStrings = new ArrayList<String>();
@@ -99,7 +122,7 @@ public class GitSelectActivity extends BaseActivity {
             final GitHubClient client = params[0];
             final RepositoryService service = new RepositoryService(client);
             try {
-                return service.getRepositories(client.getUser());
+                return service.getRepositories(GitDataHandler.getGitUserName());
             } catch (IOException e) {
                 e.printStackTrace();
             }

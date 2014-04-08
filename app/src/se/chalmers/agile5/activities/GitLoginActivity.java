@@ -4,6 +4,10 @@ package se.chalmers.agile5.activities;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -47,6 +51,12 @@ protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.git_login_activity);
+
+        if(GitDataHandler.isUserLoggedIn()){
+            //user already logged in
+            ChangeLoginDialogFragment dialog = new ChangeLoginDialogFragment();
+            dialog.show(getFragmentManager(), "Login as other user?");
+        }
 
         // Set up the login form.
         //gitUserName = getIntent().getStringExtra(EXTRA_EMAIL);
@@ -237,4 +247,27 @@ public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
        }
     }
 }
+
+    /**
+     * Dialog asking the user if he wants to log in to another account or abort
+     */
+    public class ChangeLoginDialogFragment extends DialogFragment {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the Builder class for convenient dialog construction
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage(R.string.dialog_already_logged_in)
+                    .setPositiveButton(R.string.dialog_login_as_other, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                        }
+                    })
+                    .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            finish();
+                        }
+                    });
+            // Create the AlertDialog object and return it
+            return builder.create();
+        }
+    }
 }
