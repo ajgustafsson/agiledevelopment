@@ -28,6 +28,7 @@
         </activity>
 
         <activity
+            android:configChanges="orientation|screenSize"
             android:name=".activities.PlanningPoker"
             android:label="@string/title_activity_planning_poker"
             android:parentActivityName="se.chalmers.agile5.activities.MyActivity"
