@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import se.chalmers.agile5.R;
+import se.chalmers.agile5.activities.pivotal.PivotalProjectActivity;
 
 public class BaseActivity extends Activity {
 
@@ -25,7 +26,7 @@ public class BaseActivity extends Activity {
             	//do something
                 return true;
             case R.id.pivotal_activity_link:
-            	Intent pivotalIntent = new Intent(this, PivotalActivity.class);
+            	Intent pivotalIntent = new Intent(this, PivotalProjectActivity.class);
                 startActivity(pivotalIntent);
                 return true;
             case R.id.git_activity_link:

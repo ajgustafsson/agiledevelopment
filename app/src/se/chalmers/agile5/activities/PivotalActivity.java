@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import se.chalmers.agile5.R;
+import se.chalmers.agile5.activities.pivotal.PivotalStoryActivity;
 
 public class PivotalActivity extends Activity {
     /**
@@ -19,7 +20,7 @@ public class PivotalActivity extends Activity {
 
     public void getUserStories(View view){
         EditText labelInput = (EditText) findViewById(R.id.userStoryText);
-        Intent intent = new Intent(this, UserStoriesActivity.class);
+        Intent intent = new Intent(this, PivotalStoryActivity.class);
         intent.putExtra("Label", labelInput.getText().toString());
         startActivity(intent);
     }
