@@ -26,3 +26,5 @@ proguard/
 */.classpath
 */.project
 */project.properties
+
+AgileGroup5Test/.settings/
