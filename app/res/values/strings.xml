@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">groupFive</string>
 
     <!-- Strings related to login -->
@@ -11,7 +12,6 @@
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
     <string name="select_repo_list">Select a repository from the list</string>
-
     <string name="edit_activity_link">Edit</string>
     <string name="git_activity_link">Git Example</string>
     <string name="pivotal_activity_link">Pivotal Example</string>
@@ -21,6 +21,7 @@
     <string name="action_settings">Settings</string>
     <string name="my_activity_text">Welcome to the homescreen</string>
     <string name="planning_poker_text">Welcome to the planning poker game!</string>
+    <string name="title_activity_user_stories">UserStories</string>
+    <string name="title_activity_git_events">GitEvents</string>
 
-     <string name="title_activity_user_stories">UserStories</string>
 </resources>

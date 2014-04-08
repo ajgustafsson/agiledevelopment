@@ -22,7 +22,8 @@ public class BaseActivity extends Activity {
         // Handle presses on the action bar items
         switch (item.getItemId()) {
             case R.id.edit_activity_link:
-            	//do something
+            	Intent gitIntent2 = new Intent(this, GitEvents.class);
+            	startActivity(gitIntent2);
                 return true;
             case R.id.pivotal_activity_link:
             	Intent pivotalIntent = new Intent(this, PivotalActivity.class);
