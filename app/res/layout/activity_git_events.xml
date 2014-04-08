@@ -10,5 +10,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView" />
+    
+     <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/gitFollowListView"
+        android:layout_gravity="center_horizontal"/>
   
 </LinearLayout>

@@ -3,25 +3,81 @@ package se.chalmers.agile5.logic;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
-import org.eclipse.egit.github.core.Commit;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryBranch;
 import org.eclipse.egit.github.core.RepositoryCommit;
-import org.eclipse.egit.github.core.TypedResource;
 import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.CommitService;
 import org.eclipse.egit.github.core.service.RepositoryService;
 import org.eclipse.egit.github.core.service.WatcherService;
 
-import android.os.AsyncTask;
 import se.chalmers.agile5.entities.GitDataHandler;
-import se.chalmers.agile5.entities.UserStory;
+import android.os.AsyncTask;
 
-public class RetriveGitEvents extends AsyncTask<String, Void, ArrayList<String>> {
 
+public class RetriveGitEvents {
+
+	public ArrayList<Repository> getRepos() {
+		ArrayList<Repository> repos = new ArrayList<Repository>();
+		GitHubClient client = GitDataHandler.getGitClient();
+		
+		FetchStarredReposTask starredrepos = new FetchStarredReposTask();
+		starredrepos.execute(client);
+		try {
+			repos.addAll(starredrepos.get());
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ExecutionException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		FetchOwnedReposTask fetchOwnedReposTask = new FetchOwnedReposTask();
+        fetchOwnedReposTask.execute(client);
+        try {
+			repos.addAll(fetchOwnedReposTask.get());
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return repos;
+	}
+	
+	
+	private ArrayList<String> getCommits() {
+		FetchGitCommits fetchGitCommits = new FetchGitCommits();
+		try {
+			return fetchGitCommits.execute().get();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 
+	private ArrayList<String> repoCommitToCommit(ArrayList<RepositoryCommit> commitsIn) {
+			
+		ArrayList<String> commits = new ArrayList<String>();
+		for(RepositoryCommit commit : commitsIn) {
+			commits.add(commit.getCommit().getMessage());
+		}
+		
+		return commits;
+	}
+	
+	
+	private class FetchGitCommits extends AsyncTask<String, Void, ArrayList<String>> {
 	@Override
 	protected ArrayList<String> doInBackground(String... params) {
 		CommitService commitService = new CommitService(GitDataHandler.getGitClient());
@@ -40,17 +96,38 @@ public class RetriveGitEvents extends AsyncTask<String, Void, ArrayList<String>>
 		
 		return repoCommitToCommit(repoCommits);
 	}
-
-
-	private ArrayList<String> repoCommitToCommit(ArrayList<RepositoryCommit> commitsIn) {
-			
-		ArrayList<String> commits = new ArrayList<String>();
-		TypedResource temp = new TypedResource();
-		for(RepositoryCommit commit : commitsIn) {
-			commits.add(commit.getCommit().getMessage());
-		}
-		
-		return commits;
 	}
+
+	
+	
+	  private class FetchStarredReposTask extends AsyncTask<GitHubClient, Void, List<Repository>> {
+	        @Override
+	        protected List<Repository> doInBackground(GitHubClient... params) {
+	            final GitHubClient client = params[0];
+	            final WatcherService watchService = new WatcherService(client);
+	            try {
+	                return watchService.getWatched();
+	            } catch (IOException e) {
+	                e.printStackTrace();
+	            }
+	            return null;
+	        }
+	    }
+	  
+	  private class FetchOwnedReposTask extends AsyncTask<GitHubClient, Void, List<Repository>> {
+	        @Override
+	        protected List<Repository> doInBackground(GitHubClient... params) {
+	            final GitHubClient client = params[0];
+	            final RepositoryService service = new RepositoryService(client);
+	            try {
+	                return service.getRepositories(client.getUser());
+	            } catch (IOException e) {
+	                e.printStackTrace();
+	            }
+	            return null;
+	        }
+	    }
+	
+
 	
 }
