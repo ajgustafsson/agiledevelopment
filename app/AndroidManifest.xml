@@ -53,5 +53,9 @@
             android:name="se.chalmers.agile5.activities.pivotal.PivotalStoryActivity"
             android:parentActivityName="se.chalmers.agile.activities.pivotal.PivotalProjectActivity"
             />
+         <activity 
+            android:name=".activities.ExpandableListExample"
+            android:parentActivityName="se.chalmers.agile5.activities.MyActivity"
+            />
     </application>
 </manifest>

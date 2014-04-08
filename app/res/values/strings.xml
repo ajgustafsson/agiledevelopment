@@ -23,4 +23,6 @@
     <string name="planning_poker_text">Welcome to the planning poker game!</string>
 
      <string name="title_activity_user_stories">UserStories</string>
+     <string name="list_delete">DEL</string>
+     <string name="expandable_list_link">List example</string>
 </resources>
