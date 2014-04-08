@@ -9,7 +9,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/userStoryText"
-        android:text="User story label"/>
+        android:hint="User story label"/>
 
     <Button
         android:layout_width="wrap_content"

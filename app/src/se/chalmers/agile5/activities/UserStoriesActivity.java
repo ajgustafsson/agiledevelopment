@@ -6,6 +6,8 @@ import java.util.List;
 import se.chalmers.agile5.R;
 import se.chalmers.agile5.entities.UserStory;
 
+import se.chalmers.agile5.logic.INotificationHandler;
+import se.chalmers.agile5.logic.NotificationHandler;
 import se.chalmers.agile5.logic.RetrivePivotalStories;
 import android.app.Activity;
 import android.os.Bundle;
@@ -32,6 +34,7 @@ public class UserStoriesActivity extends Activity{
         try
         {
         	userStories = new RetrivePivotalStories(getIntent().getStringExtra("Label")).execute().get();  
+        	
         	// Defined Array values to show in ListView
             List<String> titles = new ArrayList<String>();
             for (UserStory userStory : userStories) {
@@ -69,6 +72,14 @@ public class UserStoriesActivity extends Activity{
        {
     	   ex.toString();
        }
+        
+        INotificationHandler notificationHandler = new NotificationHandler();
+        notificationHandler.DisplayNotification(this, PivotalActivity.class, 
+        		userStories.get(0).getTitle(), userStories.get(0).getDescription(),
+        		Integer.toString(userStories.size()));
+
 	}
+
+	
 
 }
