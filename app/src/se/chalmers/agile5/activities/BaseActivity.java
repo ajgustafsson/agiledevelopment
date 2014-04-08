@@ -36,6 +36,10 @@ public class BaseActivity extends Activity {
             	Intent poker = new Intent(this, PlanningPoker.class);
             	startActivity(poker);
                 return true;
+            case R.id.expandable_list_link:
+            	Intent list = new Intent(this, ExpandableListExample.class);
+            	startActivity(list);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
