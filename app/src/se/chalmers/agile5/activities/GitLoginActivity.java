@@ -17,6 +17,7 @@ import android.widget.TextView;
 import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.UserService;
 import se.chalmers.agile5.R;
+import se.chalmers.agile5.entities.GitDataHandler;
 
 import java.io.IOException;
 
@@ -191,7 +192,7 @@ public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
         //saving GitHubClient
         if(gitClient != null){
-            MyActivity.gitHubClient = gitClient;
+            GitDataHandler.setGitHubClient(gitClient);
             return true;
         }
         return false;
@@ -219,7 +220,7 @@ public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
         showProgress(false);
     }
 
-   private GitHubClient doGitLogin(String userName, String password){
+   private GitHubClient doGitLogin(final String userName,final String password){
         final GitHubClient client = new GitHubClient();
         client.setCredentials(userName, password);
 

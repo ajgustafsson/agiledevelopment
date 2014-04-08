@@ -6,11 +6,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.RepositoryService;
 import org.eclipse.egit.github.core.service.WatcherService;
 import se.chalmers.agile5.R;
+import se.chalmers.agile5.entities.GitDataHandler;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,7 +24,7 @@ public class GitSelectActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.git_select);
 
-        final GitHubClient client = MyActivity.gitHubClient;
+        final GitHubClient client = GitDataHandler.getGitClient();
 
         //TODO refactoring
 
@@ -38,8 +40,9 @@ public class GitSelectActivity extends BaseActivity {
             fetchOwnedReposTask.execute(client);
             repositoryList.addAll(fetchOwnedReposTask.get());
 
-            //TODO handle properly
-            if(repositoryList == null){
+            //TODO handle properly: display PopUp or other activity, since no ListView would be empty
+            if(repositoryList == null || repositoryList.isEmpty()){
+                //no repositories could be retrieved/found
                 finish();
             }
 
@@ -60,15 +63,11 @@ public class GitSelectActivity extends BaseActivity {
             repoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    //System.out.println("Selected: " + repositoryList.get(position).getName());
-                    Repository selectedRepo = repositoryList.get(position);
-
 //                    SharedPreferences settings = getSharedPreferences(MyActivity.GIT_PREFS, 0);
 //                    settings.edit().putString("gitRepo", selectedRepo.getGitUrl());
 
                     // set selected repo as the one currently used in the whole app
-                    MyActivity.currentRepository = selectedRepo;
-
+                    GitDataHandler.setCurrentGitRepo(repositoryList.get(position));
                     finish();
                 }
             });
@@ -80,8 +79,7 @@ public class GitSelectActivity extends BaseActivity {
         }
     }
 
-    public class FetchStarredReposTask extends AsyncTask<GitHubClient, Void, List<Repository>> {
-
+    private class FetchStarredReposTask extends AsyncTask<GitHubClient, Void, List<Repository>> {
         @Override
         protected List<Repository> doInBackground(GitHubClient... params) {
             final GitHubClient client = params[0];
@@ -95,7 +93,7 @@ public class GitSelectActivity extends BaseActivity {
         }
     }
 
-    public class FetchOwnedReposTask extends AsyncTask<GitHubClient, Void, List<Repository>> {
+    private class FetchOwnedReposTask extends AsyncTask<GitHubClient, Void, List<Repository>> {
         @Override
         protected List<Repository> doInBackground(GitHubClient... params) {
             final GitHubClient client = params[0];

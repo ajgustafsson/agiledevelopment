@@ -8,9 +8,7 @@ import se.chalmers.agile5.R;
 public class MyActivity extends BaseActivity {
     
     public static final String GIT_PREFS = "GIT_PREFS";
-    public static GitHubClient gitHubClient = null;
-    public static Repository currentRepository = null;
-    
+
     /**
      * Called when the activity is first created.
      */
