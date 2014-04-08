@@ -58,12 +58,12 @@ public class PivotalStoryActivity extends Activity{
                      int position, long id) {
                     
                    // ListView Clicked item value
-                   String  itemValue = (String) listView.getItemAtPosition(position);
-                   
+                   PivotalUserStory  selectedStory = 
+                		   (PivotalUserStory) listView.getItemAtPosition(position);
                    String desc = userStories.get(position).getDescription();
                     // Show Alert 
                     Toast.makeText(getApplicationContext(),
-                      "ListItem : " +itemValue + " Description: " + desc, Toast.LENGTH_LONG)
+                      "Title : " + selectedStory + "\n" + " Description: " + desc, Toast.LENGTH_LONG)
                       .show();
                  
                   }
