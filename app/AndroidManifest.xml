@@ -45,5 +45,10 @@
             android:name=".activities.PivotalActivity"
             android:parentActivityName="se.chalmers.agile5.activities.PivotalActivity"
             />
+        <activity 
+            android:name=".activities.GitEvents"
+            android:label="@string/title_activity_gitEvents"
+            android:parentActivityName="se.chalmers.agile5.activities.GitEvents"
+            />
     </application>
 </manifest>

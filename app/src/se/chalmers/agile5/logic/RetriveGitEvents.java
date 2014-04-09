@@ -13,7 +13,9 @@ import org.eclipse.egit.github.core.service.CommitService;
 import org.eclipse.egit.github.core.service.RepositoryService;
 import org.eclipse.egit.github.core.service.WatcherService;
 
+import se.chalmers.agile5.activities.GitLoginActivity;
 import se.chalmers.agile5.entities.GitDataHandler;
+import android.content.Intent;
 import android.os.AsyncTask;
 
 
@@ -22,6 +24,9 @@ public class RetriveGitEvents {
 	public ArrayList<Repository> getRepos() {
 		ArrayList<Repository> repos = new ArrayList<Repository>();
 		GitHubClient client = GitDataHandler.getGitClient();
+		
+		if (client == null) 
+			return null;
 		
 		FetchStarredReposTask starredrepos = new FetchStarredReposTask();
 		starredrepos.execute(client);

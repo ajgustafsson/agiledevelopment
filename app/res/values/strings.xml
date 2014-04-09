@@ -23,5 +23,10 @@
     <string name="planning_poker_text">Welcome to the planning poker game!</string>
     <string name="title_activity_user_stories">UserStories</string>
     <string name="title_activity_git_events">GitEvents</string>
+    
+    <!--  Strings related to GitEvents activity -->
+    <string name="title_activity_gitEvents">GitEvents</string>
+    <string name="login_button">Go to login!</string>
+    <string name="no_repos_found">No repos found. Make sure that you\'re logged in</string>
 
 </resources>
