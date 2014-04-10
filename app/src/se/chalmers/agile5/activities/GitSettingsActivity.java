@@ -23,21 +23,25 @@ public class GitSettingsActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        loadUserSettings();
+        loadCurrentRepo();
     }
 
     private void loadUserSettings(){
         TextView gitLoginInfoView = (TextView) findViewById(R.id.loginInfoView);
         gitLoginInfoView.setText("Logged in as "+ GitDataHandler.getCurrentGitUser().getName());
+        CheckBox saveLoginBox = (CheckBox)findViewById(R.id.saveLoginCheckBox);
+        saveLoginBox.setChecked(GitDataHandler.isSaveLoginInfoEnabled());
+        loadCurrentRepo();
+    }
+
+    private void loadCurrentRepo() {
         TextView gitRepoView = (TextView) findViewById(R.id.currentRepoViewText);
         final Repository currentGitRepo = GitDataHandler.getCurrentGitRepo();
-        if(currentGitRepo != null){
+        if (currentGitRepo != null) {
             gitRepoView.setText(currentGitRepo.getName());
         } else {
             gitRepoView.setText("<not-selected>");
         }
-        CheckBox saveLoginBox = (CheckBox)findViewById(R.id.saveLoginCheckBox);
-        saveLoginBox.setChecked(GitDataHandler.isSaveLoginInfoEnabled());
     }
 
     public void saveSettings(View view){
