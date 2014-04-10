@@ -27,4 +27,9 @@ proguard/
 */.project
 */project.properties
 
-AgileGroup5Test/.settings/
+# Intellij Files
+*.iml
+
+# Other stuff Armin
+*proguard-project.txt
+.idea/

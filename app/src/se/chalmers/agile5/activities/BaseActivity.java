@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import se.chalmers.agile5.R;
+import se.chalmers.agile5.entities.GitDataHandler;
 import se.chalmers.agile5.activities.pivotal.PivotalProjectActivity;
 
 public class BaseActivity extends Activity {
@@ -30,7 +31,12 @@ public class BaseActivity extends Activity {
                 startActivity(pivotalIntent);
                 return true;
             case R.id.git_activity_link:
-                Intent gitIntent = new Intent(this, GitLoginActivity.class);
+                final Intent gitIntent;
+                if(GitDataHandler.isUserLoggedIn()){
+                    gitIntent = new Intent(this, GitSettingsActivity.class);
+                } else {
+                    gitIntent = new Intent(this, GitLoginActivity.class);
+                }
                 startActivity(gitIntent);
                 return true;
             case R.id.poker_activity_link:

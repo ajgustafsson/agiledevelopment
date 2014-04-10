@@ -30,10 +30,12 @@
             android:name=".activities.GitLoginActivity"
             android:parentActivityName="se.chalmers.agile5.activities.MyActivity"
             android:launchMode="singleTop"
+            android:label="@string/git_authenticate_label"
             />
         <activity 
             android:name=".activities.GitSelectActivity"
             android:parentActivityName="se.chalmers.agile5.activities.GitLoginActivity"
+            android:label="@string/repo_selection_label"
             />
         <activity
             android:name="se.chalmers.agile5.activities.pivotal.PivotalProjectActivity"
@@ -43,5 +45,9 @@
             android:name="se.chalmers.agile5.activities.pivotal.PivotalStoryActivity"
             android:parentActivityName="se.chalmers.agile.activities.pivotal.PivotalProjectActivity"
             />
+        <activity
+            android:name=".activities.GitSettingsActivity"
+            android:parentActivityName="se.chalmers.agile5.activities.MyActivity"
+            android:label="@string/git_settings_label"/>
     </application>
 </manifest>
