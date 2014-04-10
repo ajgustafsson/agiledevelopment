@@ -8,6 +8,11 @@ import android.test.suitebuilder.annotation.MediumTest;
 
 public class BaseActivityTest extends ActivityUnitTestCase<BaseActivity> {
 
+	// Activity to test
+	BaseActivity baseActivity;
+	
+	
+	
 	public BaseActivityTest(){
 		super(BaseActivity.class);
 	}

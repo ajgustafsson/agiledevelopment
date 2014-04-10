@@ -32,11 +32,13 @@
             android:name=".activities.PlanningPoker"
             android:label="@string/title_activity_planning_poker"
             android:parentActivityName="se.chalmers.agile5.activities.MyActivity"
+            android:launchMode="singleTop"
             >
         </activity>
         <activity 
             android:name=".activities.GitLoginActivity"
             android:parentActivityName="se.chalmers.agile5.activities.MyActivity"
+            android:launchMode="singleTop"
             />
         <activity 
             android:name=".activities.GitSelectActivity"
@@ -45,6 +47,7 @@
         <activity 
             android:name=".activities.PivotalActivity"
             android:parentActivityName="se.chalmers.agile5.activities.PivotalActivity"
+			android:launchMode="singleTop"
             />
     </application>
 </manifest>
