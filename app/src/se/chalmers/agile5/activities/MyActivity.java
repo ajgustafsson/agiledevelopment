@@ -3,8 +3,8 @@ package se.chalmers.agile5.activities;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.client.GitHubClient;
 import se.chalmers.agile5.R;
+import se.chalmers.agile5.entities.AgileGitHubClient;
 import se.chalmers.agile5.entities.GitDataHandler;
 
 public class MyActivity extends BaseActivity {
@@ -25,54 +25,63 @@ public class MyActivity extends BaseActivity {
     protected void onStop() {
         super.onStop();
 
-        if(GitDataHandler.isUserLoggedIn()){
-            final SharedPreferences.Editor editor = getSharedPreferences(GIT_PREFS, 0).edit();
-            //save user name
-            final String userName = GitDataHandler.getGitUserName();
-            if(userName != null){
-                editor.putString("latestUserName", GitDataHandler.getGitUserName());
-            }
-            //save user token
-            final String userToken = null; //TODO fetch not hard code
-            editor.putString("latestUserToken", "56d2852a19493cea928a21323e5cdbce5274cb62");
-            //save latest repository
-            final Repository currentRepo = GitDataHandler.getCurrentGitRepo();
-            if(currentRepo != null){
-                editor.putString("latestRepositoryId", currentRepo.generateId());
-            }
-
-            // Commit the edits made to the file
-            editor.commit();
+        if(GitDataHandler.isUserLoggedIn() && GitDataHandler.isSaveLoginInfoEnabled()){
+            saveGitSettings();
+        } else {
+            clearLatestSetting();
         }
     }
 
-    public void recoverLatestGitSettings(){
-        SharedPreferences settings = getSharedPreferences(GIT_PREFS, 0);
-        String userName = settings.getString("latestUser", null);
-        System.err.println("[DBUG] latest username: "+userName);
+    private void clearLatestSetting() {
+        final SharedPreferences.Editor editor = getSharedPreferences(GIT_PREFS, 0).edit();
+        editor.remove("latestUserName");
+        editor.remove("latestRepositoryId");
+        editor.remove("latestCredentials");
+        editor.commit();
+    }
 
-        String userToken = settings.getString("latestUserToken", null);
-        if(userToken != null){
-            System.err.println("[DBUG] found token: "+userToken);
-            final GitHubClient gitHubClient = new GitHubClient();
-            gitHubClient.setOAuth2Token(userToken);
-            //TODO check token
-            GitDataHandler.setGitHubClient(gitHubClient);
-            if(!GitDataHandler.isUserLoggedIn()){
-                return;
-            }
-            System.err.println("[DBUG] user is: "+GitDataHandler.getGitUserName());
-
-            if(!GitDataHandler.isUserLoggedIn()){
-                System.err.println("[DBUG] not logged in??");
-            }
+    private void saveGitSettings(){
+        final SharedPreferences.Editor editor = getSharedPreferences(GIT_PREFS, 0).edit();
+        //save user name
+        final String userName = GitDataHandler.getGitUserName();
+        if(userName != null){
+            editor.putString("latestUserName", GitDataHandler.getGitUserName());
+        }
+        //save user credentials
+        AgileGitHubClient gitHubClient = GitDataHandler.getGitClient();
+        editor.putString("latestCredentials", gitHubClient.getCredentials());
+        //save latest repository
+        final Repository currentRepo = GitDataHandler.getCurrentGitRepo();
+        if(currentRepo != null){
+            editor.putString("latestRepositoryId", currentRepo.generateId());
         }
 
-        String repoId = settings.getString("latestRepositoryId", null);
+        // Commit the edits made to the file
+        editor.commit();
+    }
 
+    private void recoverLatestGitSettings(){
+        SharedPreferences settings = getSharedPreferences(GIT_PREFS, 0);
+
+        //retrieve latest user credentials (token or name/pw)
+        final String userCredentials = settings.getString("latestCredentials", null);
+        if(userCredentials != null){
+            final AgileGitHubClient gitHubClient = new AgileGitHubClient();
+            gitHubClient.setCredentials(userCredentials);
+            GitDataHandler.setGitHubClient(gitHubClient);
+        }
+        //System.err.println("[DBUG] user is: "+GitDataHandler.getGitUserName());
+
+        //only continue if the old credentials are valid, that is the user is now logged in
+        if(!GitDataHandler.isUserLoggedIn()){
+            GitDataHandler.setSaveLoginInfoEnabled(true);
+            return;
+        }
+
+        //retrieve the latest used repo (if any)
+        final String repoId = settings.getString("latestRepositoryId", null);
         if(repoId != null){
-            System.err.println("[DBUG] repoId: "+repoId);
-            System.err.println("[DBUG] latest Repo: "+GitDataHandler.getRepositoryById(repoId).getName());
+            //System.err.println("[DBUG] latest Repo: "+GitDataHandler.getRepositoryById(repoId).getName());
             Repository latestRepo = GitDataHandler.getRepositoryById(repoId);
             if(latestRepo != null){
                 GitDataHandler.setCurrentGitRepo(latestRepo);

@@ -86,10 +86,6 @@ public class GitSelectActivity extends BaseActivity {
             repoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                    SharedPreferences settings = getSharedPreferences(MyActivity.GIT_PREFS, 0);
-//                    settings.edit().putString("gitRepo", selectedRepo.getGitUrl());
-
-                    // set selected repo as the one currently used in the whole app
                     GitDataHandler.setCurrentGitRepo(repositoryList.get(position));
                     finish();
                 }

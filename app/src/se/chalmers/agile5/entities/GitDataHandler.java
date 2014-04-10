@@ -4,7 +4,6 @@ import android.os.AsyncTask;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryId;
 import org.eclipse.egit.github.core.User;
-import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.RepositoryService;
 import org.eclipse.egit.github.core.service.UserService;
 
@@ -27,7 +26,7 @@ public class GitDataHandler {
     /**
      * GitHub API client
      */
-    private GitHubClient gitClient;
+    private AgileGitHubClient gitClient;
 
     /**
      * The currently selected GitHub repository
@@ -39,11 +38,17 @@ public class GitDataHandler {
      */
     private User gitUser;
 
-    public static GitHubClient getGitClient() {
+    /**
+     * Determines if the login credentials of the user shall be saved to persistence
+     */
+    private boolean saveLoginInfoEnabled = true;
+
+
+    public static AgileGitHubClient getGitClient() {
         return instance.gitClient;
     }
 
-    public static void setGitHubClient(GitHubClient gitClient){
+    public static void setGitHubClient(AgileGitHubClient gitClient){
         instance.gitClient = gitClient;
         fetchGitUser();
         instance.currentGitRepo = null; // if a new client has been set, the current repo is reset to null
@@ -78,6 +83,14 @@ public class GitDataHandler {
 
     public static Repository getRepositoryById(String repoId){
         return fetchSingleRepo(repoId);
+    }
+
+    public static void setSaveLoginInfoEnabled(boolean save){
+        instance.saveLoginInfoEnabled = save;
+    }
+
+    public static boolean isSaveLoginInfoEnabled(){
+        return instance.saveLoginInfoEnabled;
     }
 
     private static void fetchGitUser(){
@@ -130,5 +143,11 @@ public class GitDataHandler {
         }
         return null;
     }
-    
+
+    public static void logout() {
+        instance.gitUser = null;
+        instance.currentGitRepo = null;
+        instance.gitClient = null;
+        instance.saveLoginInfoEnabled = true;
+    }
 }
