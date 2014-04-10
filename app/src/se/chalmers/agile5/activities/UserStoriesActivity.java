@@ -18,7 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class UserStoriesActivity extends Activity{
+public class UserStoriesActivity extends BaseActivity{
 	ListView listView;
 	ArrayList<UserStory> userStories;
 	

@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.EditText;
 import se.chalmers.agile5.R;
 
-public class PivotalActivity extends Activity {
+public class PivotalActivity extends BaseActivity {
     /**
      * Called when the activity is first created.
      */
