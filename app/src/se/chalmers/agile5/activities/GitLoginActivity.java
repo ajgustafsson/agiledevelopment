@@ -9,6 +9,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -46,24 +47,36 @@ private View mLoginFormView;
 private View mLoginStatusView;
 private TextView mLoginStatusMessageView;
 
-@Override
-protected void onCreate(Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.git_login_activity);
 
-        if(GitDataHandler.isUserLoggedIn()){
+        if (GitDataHandler.isUserLoggedIn()) {
             //user already logged in
             ChangeLoginDialogFragment dialog = new ChangeLoginDialogFragment();
             dialog.show(getFragmentManager(), "Login as other user?");
+            //TODO configure back button of phone such that it means going back (negative button)
         }
 
         // Set up the login form.
         //gitUserName = getIntent().getStringExtra(EXTRA_EMAIL);
         userNameView = (EditText) findViewById(R.id.email);
-        userNameView.setText(gitUserName);
-
         passwordView = (EditText) findViewById(R.id.password);
+
+        SharedPreferences settings = getSharedPreferences(MyActivity.GIT_PREFS, 0);
+        String userName = settings.getString("latestUserName", null);
+        if (userName != null) {
+            ((TextView)(findViewById(R.id.loginInfoView))).setText("Latest user was "+userName+ ". Please" +
+                    " type in your password or login to another account.");
+            userNameView.setText(userName);
+            passwordView.requestFocus();
+        } else {
+            ((TextView)(findViewById(R.id.loginInfoView))).setText("Please login to GitHub below.");
+            userNameView.setText(gitUserName);
+        }
+
         passwordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -80,12 +93,12 @@ protected void onCreate(Bundle savedInstanceState) {
         mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
 
         findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
-@Override
-public void onClick(View view) {
-        attemptLogin();
-        }
+            @Override
+            public void onClick(View view) {
+                attemptLogin();
+            }
         });
-        }
+    }
 
 /**
  * Set up the {@link android.app.ActionBar}, if the API is available.
@@ -267,6 +280,45 @@ public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
                         }
                     });
             // Create the AlertDialog object and return it
+            return builder.create();
+        }
+    }
+
+    public void showTokenInputDialog(View view){
+        (new OAuthTokenDialogFragment()).show(getFragmentManager(), "Input OAuth token");
+    }
+
+    public class OAuthTokenDialogFragment extends DialogFragment {
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage("Input your OAuth token for GitHub");
+            final EditText tokenInputView = new EditText(getActivity());
+            builder.setView(tokenInputView);
+
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener(){
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    final String tokenString = tokenInputView.getText().toString();
+                    //now write to preference file
+                    SharedPreferences.Editor editor = getSharedPreferences(MyActivity.GIT_PREFS, 0).edit();
+                    editor.putString("latestUserToken", tokenString);
+                    editor.commit();
+
+                    System.err.println("DBUG token input is: "+ tokenString);
+                }
+            });
+
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+
             return builder.create();
         }
     }

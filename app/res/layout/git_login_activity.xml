@@ -35,6 +35,13 @@
                       android:padding="16dp"
                       android:orientation="vertical">
 
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="91dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Medium Text"
+                android:id="@+id/loginInfoView"/>
+
             <EditText
                 android:id="@+id/email"
                 android:singleLine="true"
@@ -57,13 +64,19 @@
                 android:imeOptions="actionUnspecified" />
 
             <Button android:id="@+id/sign_in_button"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="@string/action_login"
                     android:paddingLeft="32dp"
-                    android:paddingRight="32dp"
-                    android:layout_gravity="right" />
+                    android:paddingRight="32dp"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Provide OAuth Token instead"
+                android:id="@+id/button"
+                android:onClick="showTokenInputDialog"/>
 
         </LinearLayout>
 
