@@ -15,12 +15,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.CheckBox;
 import android.widget.TextView;
  
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
- 
-    private Activity context;
+
+	private Activity context;
     private Map<String, List<String>> listCollections;
     private List<String> headers;
  
@@ -40,40 +42,45 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     }
  
     public View getChildView(final int groupPosition, final int childPosition,
-            boolean isLastChild, View convertView, ViewGroup parent) {
+    		boolean isLastChild, View convertView, ViewGroup parent) {
         final String laptop = (String) getChild(groupPosition, childPosition);
         LayoutInflater inflater = context.getLayoutInflater();
  
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.child_item, null);
         }
- 
+        
         TextView item = (TextView) convertView.findViewById(R.id.child);
- 
-        TextView delete = (TextView) convertView.findViewById(R.id.delete);
-        delete.setOnClickListener(new OnClickListener() {
+        CheckBox follow = (CheckBox) convertView.findViewById(R.id.follow);
+        follow.setOnClickListener(new OnClickListener() {
  
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setMessage("Do you want to remove?");
-                builder.setCancelable(false);
-                builder.setPositiveButton("Yes",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                List<String> child =
-                                    listCollections.get(headers.get(groupPosition));
-                                child.remove(childPosition);
-                                notifyDataSetChanged();
-                            }
-                        });
-                builder.setNegativeButton("No",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
-                AlertDialog alertDialog = builder.create();
-                alertDialog.show();
+            	CheckBox cb = (CheckBox) v;
+            	if(cb.isChecked()){
+            		//logic to follow
+            		
+            		/*//OPTIONAL
+	                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+	                builder.setMessage("Do you want to follow this story?");
+	                builder.setCancelable(false);
+	                builder.setPositiveButton("Yes",
+	                        new DialogInterface.OnClickListener() {
+	                            public void onClick(DialogInterface dialog, int id) {
+	                                //TODO: Follow story
+	                            }
+	                        });
+	                builder.setNegativeButton("No",
+	                        new DialogInterface.OnClickListener() {
+	                            public void onClick(DialogInterface dialog, int id) {
+	                                dialog.cancel();
+	                            }
+	                        });
+	                AlertDialog alertDialog = builder.create();
+	                alertDialog.show();
+	                */
+            	}else{
+            		//logic for unfollow
+            	}
             }
         });
  

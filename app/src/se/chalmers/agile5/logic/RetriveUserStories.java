@@ -26,7 +26,7 @@ public class RetriveUserStories extends RetrivePivotalData {
 	protected List<PivotalResponse> doInBackground(String... params) {
 		ArrayList<PivotalResponse> userStories = new ArrayList<PivotalResponse>();
 		List<PivotalResponse> responses = super.doInBackground(params);
-		Log.d("TAG", responses.size()+"");
+		Log.d(TAG, responses.size()+"");
 		for(PivotalResponse r : responses){
 			if(r instanceof PivotalUnformattedResponse){
 				PivotalUnformattedResponse ur = (PivotalUnformattedResponse) r;
@@ -34,10 +34,11 @@ public class RetriveUserStories extends RetrivePivotalData {
 				int id = userStory.optInt("id", 0);
 				String name = userStory.optString("name", "undefined");
 				String description = userStory.optString("description", "undefined");
-				PivotalUserStory story = new PivotalUserStory(id, name, description, null);
+				String state = userStory.optString("current_state", "undefined");
+				Log.d(TAG,state);
+				PivotalUserStory story = new PivotalUserStory(id, name, description, state, null);
 				
-				userStories.add(story);
-				
+				userStories.add(story);	
 			}
 		}
 		return userStories;
