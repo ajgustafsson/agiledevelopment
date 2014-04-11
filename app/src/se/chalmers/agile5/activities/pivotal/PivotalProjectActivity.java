@@ -8,6 +8,8 @@ import se.chalmers.agile5.R;
 import se.chalmers.agile5.activities.BaseActivity;
 import se.chalmers.agile5.entities.pivotal.PivotalProject;
 import se.chalmers.agile5.entities.pivotal.PivotalResponse;
+import se.chalmers.agile5.logic.INotificationHandler;
+import se.chalmers.agile5.logic.NotificationHandler;
 import se.chalmers.agile5.logic.RetriveProjects;
 import android.content.Intent;
 import android.os.Bundle;
@@ -39,6 +41,10 @@ public class PivotalProjectActivity extends BaseActivity {
 				PivotalProject p = (PivotalProject) r;
 				projects.add(p);
 			}
+			INotificationHandler notificationHandler = new NotificationHandler();
+			notificationHandler.DisplayNotification(this.getBaseContext(), this.getClass(),
+					"Projects from Pivotal", projects.get(0).getTitle(), 
+					Integer.toString(projects.size()));
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		} catch (ExecutionException e) {
