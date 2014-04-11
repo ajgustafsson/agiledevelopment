@@ -108,12 +108,10 @@ public class GitDataHandler {
         asyncTask.execute((Void)null);
         //TODO handle exceptions, maybe call get() in another thread?
         try {
-            asyncTask.get(2000, TimeUnit.MILLISECONDS);
+            asyncTask.get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (TimeoutException e) {
             e.printStackTrace();
         }
     }
