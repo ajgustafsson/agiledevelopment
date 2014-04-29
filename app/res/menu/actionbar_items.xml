@@ -17,4 +17,8 @@
           android:title="@string/poker_activity_link"
           android:showAsAction="never" />
 
+    <item android:id="@+id/roadmap_activity_link"
+          android:title="@string/roadmap_activity_link"
+          android:showAsAction="never" />
+
 </menu>

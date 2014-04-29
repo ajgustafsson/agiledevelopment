@@ -44,4 +44,6 @@
     <string name="remember_git_login">Remember login</string>
      <string name="list_delete">DEL</string>
      <string name="expandable_list_link">List example</string>
+    <string name="roadmap_activity_link">Roadmap</string>
+    <string name="roadmap_top_label">Roadmap</string>
 </resources>

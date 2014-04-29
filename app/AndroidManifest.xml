@@ -49,5 +49,9 @@
             android:name=".activities.GitSettingsActivity"
             android:parentActivityName="se.chalmers.agile5.activities.MyActivity"
             android:label="@string/git_settings_label"/>
+        <activity android:name=".activities.RoadMapActivity"
+                  android:parentActivityName="se.chalmers.agile5.activities.MyActivity"
+                  android:label="@string/roadmap_top_label"/>
+        <activity android:name=".activities.RoadMapDetailActivity"/>/>
     </application>
 </manifest>

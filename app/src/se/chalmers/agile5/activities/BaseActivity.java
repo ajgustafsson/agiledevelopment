@@ -43,6 +43,10 @@ public class BaseActivity extends Activity {
             	Intent poker = new Intent(this, PlanningPoker.class);
             	startActivity(poker);
                 return true;
+            case R.id.roadmap_activity_link:
+                Intent roadMap = new Intent(this, RoadMapActivity.class);
+                startActivity(roadMap);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
