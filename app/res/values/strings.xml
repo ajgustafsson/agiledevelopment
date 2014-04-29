@@ -46,4 +46,7 @@
      <string name="expandable_list_link">List example</string>
     <string name="roadmap_activity_link">Roadmap</string>
     <string name="roadmap_top_label">Roadmap</string>
+    <string name="dialog_new_custom_task">Create a new custom task</string>
+    <string name="task_title_dialog_hint">Title</string>
+    <string name="task_desc_dialog_hint">Description</string>
 </resources>

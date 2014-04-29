@@ -1,11 +1,14 @@
 package se.chalmers.agile5.activities;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.*;
 import se.chalmers.agile5.R;
 import se.chalmers.agile5.entities.RoadMapEntry;
 
@@ -18,11 +21,16 @@ public class RoadMapActivity extends BaseActivity {
 
     private ListView roadMapListView;
 
+    private ListView macroList;
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.roadmap_activity);
         roadMapListView = (ListView)findViewById(R.id.roadMapTasksListView);
-        fillLists();
+        macroList = (ListView)findViewById(R.id.roadMapMacroListView);
+        initMacroList();
+        fillTaskListWithDummies();
+        updateTaskList();
 
         roadMapListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -34,27 +42,97 @@ public class RoadMapActivity extends BaseActivity {
                 startActivity(detailIntent);
             }
         });
+
+        macroList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(position == macroList.getCount() - 1){
+                    DialogFragment dialog = new CreateCustomTaskDialogFragment();
+                    dialog.show(getFragmentManager(), "Create custom task");
+                }
+            }
+        });
     }
 
-    private void fillLists() {
-        ListView macroList = (ListView)findViewById(R.id.roadMapMacroListView);
-        String[] macroStrings = {"Class", "Algo"};
+    private void initMacroList(){
+        String[] macroStrings = {"Class", "Algo", "Custom"};
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                 this,
                 android.R.layout.simple_list_item_1,
                 macroStrings);
         macroList.setAdapter(arrayAdapter);
+    }
 
-
+    private void fillTaskListWithDummies() {
         roadMapList.add(new RoadMapEntry("Task1", "Description blablab"));
         roadMapList.add(new RoadMapEntry("Task2", "Description blaBlub"));
         roadMapList.add(new RoadMapEntry("Task3", "Description........"));
-        ArrayAdapter<RoadMapEntry> arrayAdapter2 = new ArrayAdapter<RoadMapEntry>(
+    }
+
+    private void updateTaskList(){
+        ArrayAdapter<RoadMapEntry> arrayAdapter = new ArrayAdapter<RoadMapEntry>(
                 this,
                 android.R.layout.simple_list_item_1,
                 roadMapList);
-        roadMapListView.setAdapter(arrayAdapter2);
+        roadMapListView.setAdapter(arrayAdapter);
     }
 
 
+    public class CreateCustomTaskDialogFragment extends DialogFragment {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the Builder class for convenient dialog construction
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+            LayoutInflater inflater = getActivity().getLayoutInflater();
+
+            // Inflate and set the layout for the dialog
+            // Pass null as the parent view because its going in the dialog layout
+            builder.setView(inflater.inflate(R.layout.custom_task_dialog, null));
+
+            builder.setMessage(R.string.dialog_new_custom_task)
+                    .setPositiveButton(R.string.dialog_ok_button, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+                        }
+                    })
+                    .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // User cancelled the dialog
+                        }
+                    });
+
+            // Create the AlertDialog object and return it
+            return builder.create();
+        }
+
+        @Override
+        public void onStart()
+        {
+            super.onStart();    //super.onStart() is where dialog.show() is actually called on the underlying dialog, so we have to do it after this point
+            AlertDialog d = (AlertDialog)getDialog();
+            if(d != null)
+            {
+                Button positiveButton = (Button) d.getButton(Dialog.BUTTON_POSITIVE);
+                positiveButton.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        EditText titleEditText = (EditText) getDialog().findViewById(R.id.taskTitleDialogTextView);
+                        EditText descEditText = (EditText) getDialog().findViewById(R.id.taskDescDialogTextView);
+                        String title = titleEditText.getText().toString();
+                        if (title != null && !title.isEmpty()) {
+                            String desc = descEditText.getText().toString();
+                            roadMapList.add(new RoadMapEntry(title, desc));
+                            updateTaskList();
+                            dismiss();
+                        } else {
+                            titleEditText.setError("Title is not allowed to be empty");
+                        }
+                    }
+                });
+            }
+        }
+    }
 }

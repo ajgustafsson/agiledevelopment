@@ -9,7 +9,6 @@
         android:layout_width="80dp"
         android:layout_height="fill_parent"
         android:id="@+id/roadMapMacroListView"
-        android:layout_gravity="center_vertical|top"
         android:background="@android:color/holo_purple"/>
 
     <ListView
