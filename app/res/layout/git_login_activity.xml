@@ -35,8 +35,15 @@
                       android:padding="16dp"
                       android:orientation="vertical">
 
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Sign in using username and password"
+                android:id="@+id/loginInfoView"/>
+
             <EditText
-                android:id="@+id/email"
+                android:id="@+id/gitUserName"
                 android:singleLine="true"
                 android:maxLines="1"
                 android:layout_width="match_parent"
@@ -45,7 +52,7 @@
                 android:hint="@string/prompt_username" />
 
             <EditText
-                android:id="@+id/password"
+                android:id="@+id/gitPassword"
                 android:singleLine="true"
                 android:maxLines="1"
                 android:layout_width="match_parent"
@@ -56,14 +63,38 @@
                 android:imeActionId="@+id/login"
                 android:imeOptions="actionUnspecified" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="OR"
+                android:id="@+id/loginOrTextView"
+                android:layout_gravity="center_horizontal"
+                android:singleLine="true"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Sign in using an OAuth API token"
+                android:id="@+id/loginOAuthTextView"/>
+
+            <EditText
+                android:singleLine="true"
+                android:maxLines="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/prompt_token_hint"
+                android:id="@+id/gitOAuthToken"/>
+
             <Button android:id="@+id/sign_in_button"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="@string/action_login"
                     android:paddingLeft="32dp"
-                    android:paddingRight="32dp"
-                    android:layout_gravity="right" />
+                    android:paddingRight="32dp"/>
 
         </LinearLayout>
 

@@ -4,16 +4,17 @@
     <string name="app_name">groupFive</string>
 
     <!-- Strings related to login -->
-    <string name="prompt_username">Username</string>
+    <string name="prompt_username">Username or email</string>
     <string name="prompt_password">Password</string>
-    <string name="action_login"><b>Sign in to Github</b></string>
+    <string name="action_login"><b>Sign in to GitHub</b></string>
     <string name="login_progress_signing_in">Signing in&#8230;</string>
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_incorrect_token">This OAuth token seems to be incorrect</string>
     <string name="error_field_required">This field is required</string>
     <string name="select_repo_list">Select a repository from the list</string>
     <string name="edit_activity_link">Edit</string>
-    <string name="git_activity_link">Git Example</string>
+    <string name="git_activity_link">GitHub Settings</string>
     <string name="pivotal_activity_link">Pivotal Example</string>
     <string name="poker_activity_link">Planning Poker</string>
     <string name="title_activity_planning_poker">PlanningPoker</string>
@@ -28,5 +29,25 @@
     <string name="title_activity_gitEvents">GitEvents</string>
     <string name="login_button">Go to login!</string>
     <string name="no_repos_found">No repos found. Make sure that you\'re logged in</string>
+
+    <string name="dialog_already_logged_in">Already logged in to GitHub.
+                                            \nDo you want to login to another account?</string>
+    <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_login_as_other">Change account</string>
+    <string name="dialog_ok_button">Ok</string>
+    <string name="dialog_no_repos_message">Logged in!\nBut you have no own or starred repositories to select.</string>
+    <string name="git_settings_label">GitHub settings</string>
+    <string name="curr_selected_repo_text">Currently selected repository</string>
+    <string name="save_button_text">Save</string>
+    <string name="cancel_button_text">Cancel</string>
+    <string name="prompt_token_hint">OAuth Token</string>
+    <string name="error_token_length">Token needs to be 40 signs long.</string>
+    <string name="git_authenticate_label">Authenticate with github.com</string>
+    <string name="repo_selection_label">Repository Selection</string>
+    <string name="change_repo_button">Change</string>
+    <string name="logout_button">Logout</string>
+    <string name="remember_git_login">Remember login</string>
+     <string name="list_delete">DEL</string>
+     <string name="expandable_list_link">List example</string>
 
 </resources>

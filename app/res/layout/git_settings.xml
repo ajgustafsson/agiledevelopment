@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              tools:context=".activities.GitSettingsActivity">
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/loginInfoView"
+        android:text="You are logged in as xyz123"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignBottom="@+id/logoutButton"
+        android:layout_toLeftOf="@+id/logoutButton"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/curr_selected_repo_text"
+        android:id="@+id/currentRepoView"
+        android:layout_below="@+id/saveLoginCheckBox"
+        android:layout_alignParentLeft="true"/>
+
+    <!--<Spinner-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/repoSelectionSpinner"-->
+        <!--android:spinnerMode="dropdown"-->
+        <!--android:layout_below="@+id/currentRepoView"-->
+        <!--android:layout_alignParentLeft="true"/>-->
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/cancel_button_text"
+            android:id="@+id/settingsCancelButton"
+            android:onClick="cancel"/>
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/save_button_text"
+            android:id="@+id/saveSettingsButton"
+            android:onClick="saveSettings"/>
+
+    </LinearLayout>
+
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/logout_button"
+        android:id="@+id/logoutButton"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:onClick="logoutUser"
+        android:layout_alignLeft="@+id/repoChangeButton"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/currentRepoViewText"
+        android:layout_below="@+id/currentRepoView"
+        android:layout_alignParentLeft="true"/>
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/change_repo_button"
+        android:id="@+id/repoChangeButton"
+        android:layout_below="@+id/currentRepoViewText"
+        android:layout_alignParentRight="true"
+        android:onClick="changeRepository"/>
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/remember_git_login"
+        android:id="@+id/saveLoginCheckBox"
+        android:layout_below="@+id/loginInfoView"
+        android:layout_alignParentLeft="true"
+        android:checked="true"/>
+
+</RelativeLayout>
