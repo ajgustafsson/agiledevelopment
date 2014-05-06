@@ -80,9 +80,8 @@ public class RoadMapActivity extends BaseActivity {
     }
 
     private void fillTaskListWithDummies() {
-        roadMapList.add(new RoadMapEntry("Task1", "Description blablab", null));
-        roadMapList.add(new RoadMapEntry("Task2", "Description blaBlub", null));
-        roadMapList.add(new RoadMapEntry("Task3", "Description........", null));
+        roadMapList.add(new RoadMapEntry("Some custom task", "Description blablab", EntryType.CUSTOM));
+        roadMapList.add(new RoadMapEntry("Another custom task", "Description blaBlub", EntryType.CUSTOM));
     }
 
     private void updateTaskList(){
@@ -97,6 +96,8 @@ public class RoadMapActivity extends BaseActivity {
     @SuppressLint("ValidFragment")
 	public class CreateTaskDialogFragment extends DialogFragment {
     	private EntryType macroType;
+        private String titleHint = "Title";
+
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             // Use the Builder class for convenient dialog construction
@@ -113,14 +114,18 @@ public class RoadMapActivity extends BaseActivity {
                     break;
                 case ALGORITHM:
                     builder.setMessage(R.string.implement_algorithm);
+                    titleHint = getString(R.string.macro_algo_hint);
                     break;
                 case CLASS:
+                    titleHint = getString(R.string.macro_class_hint);
                     builder.setMessage(R.string.create_a_new_class);
                     break;
                 case EXCEPTION:
+                    titleHint = getString(R.string.macro_exception_hint);
                     builder.setMessage(R.string.dialog_handle_excption_task);
                     break;
                 case FUNCTION:
+                    titleHint = getString(R.string.macro_function_hint);
                     builder.setMessage(R.string.dialog_function_task);
                     break;
                 default:
@@ -137,6 +142,7 @@ public class RoadMapActivity extends BaseActivity {
                     // User cancelled the dialog
                 }
             });
+
             // Create the AlertDialog object and return it
             return builder.create();
         }
@@ -151,6 +157,8 @@ public class RoadMapActivity extends BaseActivity {
             AlertDialog d = (AlertDialog)getDialog();
             if(d != null)
             {
+                EditText titleEditText = (EditText) getDialog().findViewById(R.id.taskTitleDialogTextView);
+                titleEditText.setHint(titleHint);
                 Button positiveButton = (Button) d.getButton(Dialog.BUTTON_POSITIVE);
                 positiveButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -158,30 +166,62 @@ public class RoadMapActivity extends BaseActivity {
                         EditText titleEditText = (EditText) getDialog().findViewById(R.id.taskTitleDialogTextView);
                         EditText descEditText = (EditText) getDialog().findViewById(R.id.taskDescDialogTextView);
                         String title = titleEditText.getText().toString();
-                        if (title != null && !title.isEmpty()) {
-                            switch (macroType) {
-                                case ALGORITHM:
+                        String desc = descEditText.getText().toString();
+                        boolean inputIsOkay = true;
+                        switch (macroType) {
+                            case CUSTOM:
+                                if (title.isEmpty()) {
+                                    inputIsOkay = false;
+                                    titleEditText.setError("Please provide some task title");
+                                }
+                                break;
+                            case ALGORITHM:
+                                if(title.isEmpty()){
+                                    title = getString(R.string.macro_algo_hint);
+                                } else {
                                     title = "Algorithm: " + title;
-                                    break;
-                                case CLASS:
+                                }
+                                if(desc.isEmpty()){
+                                    desc = "We need to implement the algorithm.";
+                                }
+                                break;
+                            case CLASS:
+                                if(title.isEmpty()){
+                                    title = getString(R.string.macro_class_hint);
+                                } else {
                                     title = "Class: " + title;
-                                    break;
-                                case EXCEPTION:
+                                }
+                                if(desc.isEmpty()){
+                                    desc = "We need to create that class.";
+                                }
+                                break;
+                            case EXCEPTION:
+                                if(title.isEmpty()){
+                                    title = getString(R.string.macro_exception_hint);
+                                } else {
                                     title = "Handle Exception: " + title;
-                                    break;
-                                case FUNCTION:
+                                }
+                                if(desc.isEmpty()){
+                                    desc = "We need to consider an exception.";
+                                }
+                                break;
+                            case FUNCTION:
+                                if(title.isEmpty()){
+                                    title = getString(R.string.macro_function_hint);
+                                } else {
                                     title = "Function: " + title;
-                                    break;
-                                default:
-                                    break;
-                            }
-
-                            String desc = descEditText.getText().toString();
+                                }
+                                if(desc.isEmpty()){
+                                    desc = "We need to work on that function/method.";
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                        if(inputIsOkay) {
                             roadMapList.add(new RoadMapEntry(title, desc, macroType));
                             updateTaskList();
                             dismiss();
-                        } else {
-                            titleEditText.setError("Title is not allowed to be empty");
                         }
                     }
                 });
