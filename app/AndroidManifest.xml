@@ -52,6 +52,6 @@
         <activity android:name=".activities.RoadMapActivity"
                   android:parentActivityName="se.chalmers.agile5.activities.MyActivity"
                   android:label="@string/roadmap_top_label"/>
-        <activity android:name=".activities.RoadMapDetailActivity"/>/>
+        <activity android:name="se.chalmers.agile5.activities.RoadMapDetailActivity"/>/>
     </application>
 </manifest>

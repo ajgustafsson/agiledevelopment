@@ -49,4 +49,6 @@
     <string name="dialog_new_custom_task">Create a new custom task</string>
     <string name="task_title_dialog_hint">Title</string>
     <string name="task_desc_dialog_hint">Description</string>
+    <string name="create_a_new_class">Create a new Class</string>
+    <string name="implement_algorithm">Implement algorithm</string>
 </resources>
