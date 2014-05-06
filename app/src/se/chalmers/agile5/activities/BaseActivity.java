@@ -20,7 +20,8 @@ public class BaseActivity extends Activity {
         @Override
         public void run() {
             
-            /* Add logic to when the notification is to be triggered
+            /* 
+             * Add logic to when the notification is to be triggered
              * and which messages to be displayed.
              */
         	notificationHandler.DisplayNotification(getApplicationContext(), 
