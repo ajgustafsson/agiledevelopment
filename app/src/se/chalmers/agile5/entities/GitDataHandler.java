@@ -1,5 +1,7 @@
 package se.chalmers.agile5.entities;
 
+import java.util.ArrayList;
+
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.client.GitHubClient;
 
@@ -24,6 +26,8 @@ public class GitDataHandler {
      */
     private Repository currentGitRepo;
 
+	private ArrayList<String> commits;
+
     public static GitHubClient getGitClient() {
         return instance.gitClient;
     }
@@ -45,6 +49,14 @@ public class GitDataHandler {
 
     public static void setCurrentGitRepo(final Repository repository){
         instance.currentGitRepo = repository;
+    }
+    
+    public static void setCommits(ArrayList<String> commits) {
+    	instance.commits = commits;
+    }
+    
+    public static ArrayList<String> getCommits() {
+    	return instance.commits;
     }
     
 }

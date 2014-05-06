@@ -15,11 +15,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class GitEvents extends BaseActivity {
 	ListView repoListView;
     TextView text;
-    Button loginButton; 
+    Button loginButton;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +40,7 @@ public class GitEvents extends BaseActivity {
 		});
         retrieveRepos();
 	}
+
 	
 	private void retrieveRepos(){
 		RetriveGitEvents git = new RetriveGitEvents();
@@ -54,11 +56,20 @@ public class GitEvents extends BaseActivity {
 			for(Repository repo : repos) {
 				reposName.add(repo.getName());
 			}
-		
+			
+			
+			ArrayList<String> commits = new ArrayList<String>();
+			commits = git.getCommits();
+			//Set commits to be able to get update about new commits.
+			GitDataHandler.setCommits(commits);
+			Toast.makeText(getApplicationContext(),git.getBranches().toString(), Toast.LENGTH_LONG).show();
+
 			repoListView.setAdapter(new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_multiple_choice, reposName));
+				android.R.layout.simple_list_item_multiple_choice, commits));
 				repoListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+				
 		}
+		
 	}
 	
 	@Override
@@ -68,5 +79,33 @@ public class GitEvents extends BaseActivity {
 		loginButton.setVisibility(View.GONE);
 		retrieveRepos();
 	}
+	
+	public void updateCommits(View view) {
+		updateCommits();
+	}
+	
+	/*
+	 * Checks if there are any new commtis in git.
+	 */
+	public void updateCommits() {
+		ArrayList<String> oldCommits = new ArrayList<String>();
+		ArrayList<String> newCommits = new ArrayList<String>();
+		ArrayList<String> diffCommits = new ArrayList<String>();
+		oldCommits = GitDataHandler.getCommits();
+		RetriveGitEvents git = new RetriveGitEvents();
+		newCommits = git.getCommits();
+		if(oldCommits.size() != newCommits.size()) {
+			for(String commit : newCommits) {
+				if(!oldCommits.contains(commit)) {
+					diffCommits.add(commit);
+				}
+			}
+			
+		}
+		GitDataHandler.setCommits(newCommits);
+		Toast.makeText(getApplicationContext(),diffCommits.toString(), Toast.LENGTH_LONG).show();
+	}
+	
+	
 	
 }

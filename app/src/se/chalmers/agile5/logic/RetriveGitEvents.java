@@ -55,8 +55,21 @@ public class RetriveGitEvents {
 		return repos;
 	}
 	
+	public ArrayList<String> getBranches() {
+		FetchGitBranches fetchGitBranches = new FetchGitBranches();
+		try {
+			return fetchGitBranches.execute().get();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
-	private ArrayList<String> getCommits() {
+	public ArrayList<String> getCommits() {
 		FetchGitCommits fetchGitCommits = new FetchGitCommits();
 		try {
 			return fetchGitCommits.execute().get();
@@ -81,6 +94,34 @@ public class RetriveGitEvents {
 		return commits;
 	}
 	
+	private ArrayList<String> repoBranchtoBranch(ArrayList<RepositoryBranch> repoBranches) {
+		ArrayList<String> branches = new ArrayList<String>();
+		for(RepositoryBranch branch : repoBranches) {
+			branches.add(branch.getName());
+		}
+		
+		return branches;
+	}
+	
+	private class FetchGitBranches extends AsyncTask<String, Void, ArrayList<String>> {
+		@Override
+		protected ArrayList<String> doInBackground(String... params) {
+			CommitService commitService = new CommitService(GitDataHandler.getGitClient());
+			RepositoryService repoService = new RepositoryService();
+			Repository repo = GitDataHandler.getCurrentGitRepo();
+			ArrayList<RepositoryBranch> branches = new ArrayList<RepositoryBranch>();
+			try {
+				branches = (ArrayList<RepositoryBranch>) repoService.getBranches(repo);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+			
+			return repoBranchtoBranch(branches);
+		}
+		} 
+	
 	
 	private class FetchGitCommits extends AsyncTask<String, Void, ArrayList<String>> {
 	@Override
@@ -96,7 +137,7 @@ public class RetriveGitEvents {
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		} 
+		}
 		
 		
 		return repoCommitToCommit(repoCommits);

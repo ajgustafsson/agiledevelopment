@@ -16,6 +16,13 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/login_button" />
+
+    <Button
+        android:id="@+id/buttonUpdate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="updateCommits"
+        android:text="Update" />
     
      <ListView
         android:id="@+id/gitFollowListView"
