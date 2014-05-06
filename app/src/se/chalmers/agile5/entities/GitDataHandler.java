@@ -3,7 +3,9 @@ package se.chalmers.agile5.entities;
 import java.util.ArrayList;
 
 import android.os.AsyncTask;
+
 import org.eclipse.egit.github.core.Repository;
+import org.eclipse.egit.github.core.RepositoryCommit;
 import org.eclipse.egit.github.core.RepositoryId;
 import org.eclipse.egit.github.core.User;
 import org.eclipse.egit.github.core.service.RepositoryService;
@@ -34,7 +36,7 @@ public class GitDataHandler {
      * The currently selected GitHub repository
      */
     private Repository currentGitRepo;
-	private ArrayList<String> commits;
+	private ArrayList<RepositoryCommit> commits;
 	
     //public static GitHubClient getGitClient() {
 
@@ -75,11 +77,11 @@ public class GitDataHandler {
         instance.currentGitRepo = repository;
     }
     
-    public static void setCommits(ArrayList<String> commits) {
+    public static void setCommits(ArrayList<RepositoryCommit> commits) {
     	instance.commits = commits;
     }
     
-    public static ArrayList<String> getCommits() {
+    public static ArrayList<RepositoryCommit> getCommits() {
     	return instance.commits;
     }
     

@@ -69,7 +69,7 @@ public class RetriveGitEvents {
 		return null;
 	}
 	
-	public ArrayList<String> getCommits() {
+	public ArrayList<RepositoryCommit> getCommits() {
 		FetchGitCommits fetchGitCommits = new FetchGitCommits();
 		try {
 			return fetchGitCommits.execute().get();
@@ -84,13 +84,15 @@ public class RetriveGitEvents {
 	}
 	
 
+	/*
+	 * Deprecated, is never used.
+	 */
 	private ArrayList<String> repoCommitToCommit(ArrayList<RepositoryCommit> commitsIn) {
 			
 		ArrayList<String> commits = new ArrayList<String>();
 		for(RepositoryCommit commit : commitsIn) {
 			commits.add(commit.getCommit().getMessage());
 		}
-		
 		return commits;
 	}
 	
@@ -123,9 +125,9 @@ public class RetriveGitEvents {
 		} 
 	
 	
-	private class FetchGitCommits extends AsyncTask<String, Void, ArrayList<String>> {
+	private class FetchGitCommits extends AsyncTask<String, Void, ArrayList<RepositoryCommit>> {
 	@Override
-	protected ArrayList<String> doInBackground(String... params) {
+	protected ArrayList<RepositoryCommit> doInBackground(String... params) {
 		CommitService commitService = new CommitService(GitDataHandler.getGitClient());
 		RepositoryService repoService = new RepositoryService();
 		Repository repo = GitDataHandler.getCurrentGitRepo();
@@ -140,7 +142,7 @@ public class RetriveGitEvents {
 		}
 		
 		
-		return repoCommitToCommit(repoCommits);
+		return repoCommits;
 	}
 	}
 
