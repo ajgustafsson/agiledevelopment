@@ -1,11 +1,13 @@
 package se.chalmers.agile5.activities;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.eclipse.egit.github.core.CommitFile;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryCommit;
 import org.eclipse.egit.github.core.client.GitHubClient;
+import org.eclipse.egit.github.core.service.CommitService;
 
 import se.chalmers.agile5.R;
 import se.chalmers.agile5.entities.GitDataHandler;
@@ -21,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class GitEvents extends BaseActivity {
+	private final String TAG = "GIT EVENTS";
 	ListView repoListView;
     TextView text;
     Button loginButton;
@@ -92,29 +95,41 @@ public class GitEvents extends BaseActivity {
 	 */
 	public void updateCommits() {
 		ArrayList<RepositoryCommit> oldCommits = new ArrayList<RepositoryCommit>();
+		ArrayList<String> oldCommitShas = new ArrayList<String>();
 		ArrayList<RepositoryCommit> newCommits = new ArrayList<RepositoryCommit>();
 		ArrayList<RepositoryCommit> diffCommits = new ArrayList<RepositoryCommit>();
 		oldCommits = GitDataHandler.getCommits();
+		for (RepositoryCommit r : oldCommits)
+			oldCommitShas.add(r.getSha());
 		RetriveGitEvents git = new RetriveGitEvents();
 		newCommits = git.getCommits();
-		if(oldCommits.size() != newCommits.size()) {
+		if(oldCommits.size() != newCommits.size() && !oldCommits.isEmpty()) {
 			for(RepositoryCommit commit : newCommits) {
-				if(!oldCommits.contains(commit)) {
+				
+				if(!oldCommitShas.contains(commit.getSha())) {
 					diffCommits.add(commit);
 				}
 			}
 			
 		}
 		GitDataHandler.setCommits(newCommits);
-		if(oldCommits.get(0).getFiles() == null) {
-			Toast.makeText(getApplicationContext(),"getFiles() == null", Toast.LENGTH_LONG).show();
+		
+		Log.i(TAG, GitDataHandler.getCommits().size() + " " + newCommits.size());
+		
+		
+		if(diffCommits != null) {
+			Log.i(TAG, "DiffCommits size: " + diffCommits.size());
+			ArrayList<RepositoryCommit> extendedDiffCommits = new ArrayList<RepositoryCommit>();
+			String filesChanged = "";
+			RepositoryCommit extendedCommit;
+			for (RepositoryCommit rc : diffCommits) {
+				extendedCommit = git.getExtendedCommit(rc.getSha());
+				extendedDiffCommits.add(extendedCommit);
+				filesChanged += extendedCommit.getFiles().get(0).getFilename() + "\n";
+			}
+			Toast.makeText(getApplicationContext(),"Files changed: \n" + filesChanged, Toast.LENGTH_LONG).show();
 
 		}
-		//Toast.makeText(getApplicationContext(),oldCommits.get(0).getFiles().get(0).getFilename(), Toast.LENGTH_LONG).show();
-		//Toast.makeText(getApplicationContext(),diffCommits.toString(), Toast.LENGTH_LONG).show();
-		
-	//Måste köra commit.getCommit().getMessage(), men då borde ju commit.getCommit().getFiles(), men 
-		//det är det inte utan, commit.getFiles()
 	}
 	
 	

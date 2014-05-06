@@ -17,6 +17,8 @@ import se.chalmers.agile5.activities.GitLoginActivity;
 import se.chalmers.agile5.entities.GitDataHandler;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.util.Log;
+import android.widget.Toast;
 
 
 public class RetriveGitEvents {
@@ -75,6 +77,19 @@ public class RetriveGitEvents {
 			return fetchGitCommits.execute().get();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public RepositoryCommit getExtendedCommit(String sha) {
+		FetchSingleGitCommit fsgc = new FetchSingleGitCommit();
+		try {
+			return fsgc.execute(sha).get();
+		} catch (InterruptedException e) {
 			e.printStackTrace();
 		} catch (ExecutionException e) {
 			// TODO Auto-generated catch block
@@ -145,6 +160,25 @@ public class RetriveGitEvents {
 		return repoCommits;
 	}
 	}
+	private class FetchSingleGitCommit extends AsyncTask<String, Void, RepositoryCommit> {
+	@Override
+	protected RepositoryCommit doInBackground(String... params) {
+		CommitService commitService = new CommitService(GitDataHandler.getGitClient());
+		Repository repo = GitDataHandler.getCurrentGitRepo();
+		RepositoryCommit rc = null;
+		Log.i("SHA CHECK", "Retrieving extended Commit for: " + params[0]);
+		try {
+			rc = commitService.getCommit(repo, params[0]);
+			
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		return rc;
+	}
+	}
+	
 
 	
 	
