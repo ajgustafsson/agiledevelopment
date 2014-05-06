@@ -25,7 +25,7 @@ public class RoadMapActivity extends BaseActivity {
 
     private ListView macroList;
 
-    private String[] macroStrings = {"Class","Function", "Algo", "Exception", "Custom"};
+    private String[] macroStrings = {"Class","Func", "Algo", "Exception", "Custom"};
     
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,10 +53,18 @@ public class RoadMapActivity extends BaseActivity {
                 if(position == macroList.getCount() - 1){
                     DialogFragment dialog = new CreateTaskDialogFragment(EntryType.CUSTOM);
                     dialog.show(getFragmentManager(), "Create custom task");
-                }else if (position == 0){
-                	EntryType type = EntryType.CLASS;
-                	DialogFragment dialog = new CreateTaskDialogFragment(type);
+                } else if (position == 0) {
+                    DialogFragment dialog = new CreateTaskDialogFragment(EntryType.CLASS);
                 	dialog.show(getFragmentManager(), "Create a class macro");
+                } else if (position == 1) {
+                    DialogFragment dialog = new CreateTaskDialogFragment(EntryType.FUNCTION);
+                    dialog.show(getFragmentManager(), "Function macro");
+                } else if (position == 2) {
+                    DialogFragment dialog = new CreateTaskDialogFragment(EntryType.ALGORITHM);
+                    dialog.show(getFragmentManager(), "Algorithm macro");
+                } else if (position == 3) {
+                    DialogFragment dialog = new CreateTaskDialogFragment(EntryType.EXCEPTION);
+                    dialog.show(getFragmentManager(), "Exception macro");
                 }
             }
         });
@@ -99,22 +107,24 @@ public class RoadMapActivity extends BaseActivity {
             // Inflate and set the layout for the dialog
             // Pass null as the parent view because its going in the dialog layout
             builder.setView(inflater.inflate(R.layout.custom_task_dialog, null));
-            switch (macroType){
-	            case CUSTOM:
-	                builder.setMessage(R.string.dialog_new_custom_task) ;
-	            	break;
-				case ALGORITHM:
-					builder.setMessage(R.string.implement_algorithm);
-					break;
-				case CLASS:
-					builder.setMessage(R.string.create_a_new_class);
-					break;
-				case EXCEPTION:
-					break;
-				case FUNCTION:
-					break;
-				default:
-					break;
+            switch (macroType) {
+                case CUSTOM:
+                    builder.setMessage(R.string.dialog_new_custom_task);
+                    break;
+                case ALGORITHM:
+                    builder.setMessage(R.string.implement_algorithm);
+                    break;
+                case CLASS:
+                    builder.setMessage(R.string.create_a_new_class);
+                    break;
+                case EXCEPTION:
+                    builder.setMessage(R.string.dialog_handle_excption_task);
+                    break;
+                case FUNCTION:
+                    builder.setMessage(R.string.dialog_function_task);
+                    break;
+                default:
+                    break;
             }
 
             builder.setPositiveButton(R.string.dialog_ok_button, new DialogInterface.OnClickListener() {
@@ -142,35 +152,30 @@ public class RoadMapActivity extends BaseActivity {
             if(d != null)
             {
                 Button positiveButton = (Button) d.getButton(Dialog.BUTTON_POSITIVE);
-                positiveButton.setOnClickListener(new View.OnClickListener()
-                {
+                positiveButton.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v)
-                    {
+                    public void onClick(View v) {
                         EditText titleEditText = (EditText) getDialog().findViewById(R.id.taskTitleDialogTextView);
                         EditText descEditText = (EditText) getDialog().findViewById(R.id.taskDescDialogTextView);
                         String title = titleEditText.getText().toString();
                         if (title != null && !title.isEmpty()) {
-                        	
-                            switch (macroType){
-            	            case CUSTOM:
-            	                
-            	            	break;
-            				case ALGORITHM:
-            					
-            					break;
-            				case CLASS:
-            					title = "Create Class: " +title;
-            					break;
-            				case EXCEPTION:
-            					break;
-            				case FUNCTION:
-            					break;
-            				default:
-            					break;
-                        }
+                            switch (macroType) {
+                                case ALGORITHM:
+                                    title = "Algorithm: " + title;
+                                    break;
+                                case CLASS:
+                                    title = "Class: " + title;
+                                    break;
+                                case EXCEPTION:
+                                    title = "Handle Exception: " + title;
+                                    break;
+                                case FUNCTION:
+                                    title = "Function: " + title;
+                                    break;
+                                default:
+                                    break;
+                            }
 
-                        	
                             String desc = descEditText.getText().toString();
                             roadMapList.add(new RoadMapEntry(title, desc, macroType));
                             updateTaskList();

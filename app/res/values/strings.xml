@@ -51,4 +51,6 @@
     <string name="task_desc_dialog_hint">Description</string>
     <string name="create_a_new_class">Create a new Class</string>
     <string name="implement_algorithm">Implement algorithm</string>
+    <string name="dialog_handle_excption_task">Handle an Exception</string>
+    <string name="dialog_function_task">Implement/change function</string>
 </resources>
