@@ -35,6 +35,10 @@ public class RoadMapEntry {
         return description;
     }
     
+    public EntryType getType(){
+    	return type;
+    }
+    
     public Timestamp getCreationDate(){
     	return creationDate;
     }
