@@ -2,17 +2,23 @@ package se.chalmers.agile5.activities;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import org.eclipse.egit.github.core.CommitFile;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryCommit;
+import org.eclipse.egit.github.core.RepositoryContents;
 import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.CommitService;
+import org.eclipse.egit.github.core.service.ContentsService;
+import org.eclipse.egit.github.core.service.RepositoryService;
 
 import se.chalmers.agile5.R;
 import se.chalmers.agile5.entities.GitDataHandler;
 import se.chalmers.agile5.logic.RetriveGitEvents;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -101,6 +107,7 @@ public class GitEvents extends BaseActivity {
 		oldCommits = GitDataHandler.getCommits();
 		for (RepositoryCommit r : oldCommits)
 			oldCommitShas.add(r.getSha());
+		
 		RetriveGitEvents git = new RetriveGitEvents();
 		newCommits = git.getCommits();
 		if(oldCommits.size() != newCommits.size() && !oldCommits.isEmpty()) {
@@ -112,7 +119,7 @@ public class GitEvents extends BaseActivity {
 			}
 			
 		}
-		GitDataHandler.setCommits(newCommits);
+		GitDataHandler.setCommits(newCommits);	
 		
 		Log.i(TAG, GitDataHandler.getCommits().size() + " " + newCommits.size());
 		
@@ -153,4 +160,6 @@ public class GitEvents extends BaseActivity {
 		}
 		return fileNames;
 	}
+	
+
 	}

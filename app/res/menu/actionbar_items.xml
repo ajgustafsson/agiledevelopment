@@ -16,5 +16,9 @@
     <item android:id="@+id/poker_activity_link"
           android:title="@string/poker_activity_link"
           android:showAsAction="never" />
+    
+    <item android:id="@+id/files_activity_link"
+          android:title="@string/files_activity_link"
+          android:showAsAction="never" />
 
 </menu>

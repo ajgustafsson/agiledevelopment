@@ -44,6 +44,9 @@ public class BaseActivity extends Activity {
             	Intent poker = new Intent(this, PlanningPoker.class);
             	startActivity(poker);
                 return true;
+            case R.id.files_activity_link:
+            	Intent fileList = new Intent(this, FilesActivity.class);
+            	startActivity(fileList);
             default:
                 return super.onOptionsItemSelected(item);
         }
