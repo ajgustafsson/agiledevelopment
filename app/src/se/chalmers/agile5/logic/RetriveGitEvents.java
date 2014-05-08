@@ -146,13 +146,13 @@ public class RetriveGitEvents {
 	@Override
 	protected ArrayList<RepositoryCommit> doInBackground(String... params) {
 		CommitService commitService = new CommitService(GitDataHandler.getGitClient());
-		RepositoryService repoService = new RepositoryService();
 		Repository repo = GitDataHandler.getCurrentGitRepo();
-		ArrayList<RepositoryBranch> branches = new ArrayList<RepositoryBranch>();
+		ArrayList<RepositoryBranch> branches = GitDataHandler.getTrackingBranches();
 		ArrayList<RepositoryCommit> repoCommits = new ArrayList<RepositoryCommit>();
 		try {
-			branches = (ArrayList<RepositoryBranch>) repoService.getBranches(repo);
-			repoCommits = (ArrayList<RepositoryCommit>) commitService.getCommits(repo, branches.get(0).getName(), null);
+			for(RepositoryBranch branch : branches) {
+			repoCommits = (ArrayList<RepositoryCommit>) commitService.getCommits(repo, branch.getName(), null);
+			}
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
