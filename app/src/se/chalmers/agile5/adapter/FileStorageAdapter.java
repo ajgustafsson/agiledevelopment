@@ -2,9 +2,11 @@ package se.chalmers.agile5.adapter;
 
 import java.util.ArrayList;
 
+import org.eclipse.egit.github.core.RepositoryBranch;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import se.chalmers.agile5.logic.RetriveGitEvents;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
@@ -17,6 +19,7 @@ public class FileStorageAdapter {
 	private final String myPrefs = "agile5Preferences";
 	private final String fileListKey = "file_list";
 	private final String fileSelectionKey = "file_selection_list";
+	private final String trackingBranchesKey = "tracking_branches";
 	private Context context;
 	
 	public FileStorageAdapter(Context context) {
@@ -79,5 +82,50 @@ public class FileStorageAdapter {
 		}
 		
 		return selection;
+	}
+	
+	public void storeTrackingBranches(ArrayList<RepositoryBranch> branches) {
+		ArrayList<String> temp = new ArrayList<String>();
+		for(RepositoryBranch branch : branches) {
+			temp.add(branch.getName());
+		}
+		Log.i(TAG, "Storing Tracking branch");
+		JSONArray jsonArray = new JSONArray(temp);
+		String jsonString = jsonArray.toString();
+		editor.putString(trackingBranchesKey, jsonString).apply();
+		Toast.makeText(context, "Branch stored", Toast.LENGTH_LONG).show();
+	}
+	
+	public ArrayList<RepositoryBranch> loadTrackingsBranches() {
+		ArrayList<String> trackingBranches = new ArrayList<String>();
+		ArrayList<RepositoryBranch> branchesOnRepo = new ArrayList<RepositoryBranch>();
+		ArrayList<RepositoryBranch> branches = new ArrayList<RepositoryBranch>();
+		RetriveGitEvents git = new RetriveGitEvents();
+		branchesOnRepo = git.getBranches();
+		String s = sharedPreferences.getString(trackingBranchesKey, "");
+		
+		JSONArray array;
+		try {
+			array = new JSONArray(s);
+			if (array != null) {
+				for (int i=0; i < array.length(); i++)
+					trackingBranches.add(array.getString(i));
+			}
+			Log.i(TAG, "Found. " + trackingBranches.get(0));
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		for(RepositoryBranch branch : branchesOnRepo) {
+			for(String branchName : trackingBranches) {
+				if(branch.getName().equals(branchName) && !branches.contains(branch)) {
+					branches.add(branch);
+				}
+			}
+			
+		}
+		
+		return branches;
 	}
 }
