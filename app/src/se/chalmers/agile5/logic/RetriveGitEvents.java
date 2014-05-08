@@ -147,6 +147,7 @@ public class RetriveGitEvents {
 	protected ArrayList<RepositoryCommit> doInBackground(String... params) {
 		CommitService commitService = new CommitService(GitDataHandler.getGitClient());
 		Repository repo = GitDataHandler.getCurrentGitRepo();
+		//Branches that the user is tracking
 		ArrayList<RepositoryBranch> branches = GitDataHandler.getTrackingBranches();
 		ArrayList<RepositoryCommit> repoCommits = new ArrayList<RepositoryCommit>();
 		try {
