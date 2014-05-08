@@ -13,12 +13,9 @@ import org.eclipse.egit.github.core.service.CommitService;
 import org.eclipse.egit.github.core.service.RepositoryService;
 import org.eclipse.egit.github.core.service.WatcherService;
 
-import se.chalmers.agile5.activities.GitLoginActivity;
 import se.chalmers.agile5.entities.GitDataHandler;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
 
 public class RetriveGitEvents {
@@ -102,14 +99,14 @@ public class RetriveGitEvents {
 	/*
 	 * Deprecated, is never used.
 	 */
-	private ArrayList<String> repoCommitToCommit(ArrayList<RepositoryCommit> commitsIn) {
-			
-		ArrayList<String> commits = new ArrayList<String>();
-		for(RepositoryCommit commit : commitsIn) {
-			commits.add(commit.getCommit().getMessage());
-		}
-		return commits;
-	}
+//	private ArrayList<String> repoCommitToCommit(ArrayList<RepositoryCommit> commitsIn) {
+//			
+//		ArrayList<String> commits = new ArrayList<String>();
+//		for(RepositoryCommit commit : commitsIn) {
+//			commits.add(commit.getCommit().getMessage());
+//		}
+//		return commits;
+//	}
 	
 	private ArrayList<String> repoBranchtoBranch(ArrayList<RepositoryBranch> repoBranches) {
 		ArrayList<String> branches = new ArrayList<String>();
@@ -123,7 +120,6 @@ public class RetriveGitEvents {
 	private class FetchGitBranches extends AsyncTask<String, Void, ArrayList<String>> {
 		@Override
 		protected ArrayList<String> doInBackground(String... params) {
-			CommitService commitService = new CommitService(GitDataHandler.getGitClient());
 			RepositoryService repoService = new RepositoryService();
 			Repository repo = GitDataHandler.getCurrentGitRepo();
 			ArrayList<RepositoryBranch> branches = new ArrayList<RepositoryBranch>();
@@ -166,7 +162,7 @@ public class RetriveGitEvents {
 		CommitService commitService = new CommitService(GitDataHandler.getGitClient());
 		Repository repo = GitDataHandler.getCurrentGitRepo();
 		RepositoryCommit rc = null;
-		Log.i("SHA CHECK", "Retrieving extended Commit for: " + params[0]);
+//		Log.i("SHA CHECK", "Retrieving extended Commit for: " + params[0]);
 		try {
 			rc = commitService.getCommit(repo, params[0]);
 			

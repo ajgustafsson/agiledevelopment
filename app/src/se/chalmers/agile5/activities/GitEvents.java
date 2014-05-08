@@ -1,24 +1,15 @@
 package se.chalmers.agile5.activities;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
 
-import org.eclipse.egit.github.core.CommitFile;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryCommit;
-import org.eclipse.egit.github.core.RepositoryContents;
-import org.eclipse.egit.github.core.client.GitHubClient;
-import org.eclipse.egit.github.core.service.CommitService;
-import org.eclipse.egit.github.core.service.ContentsService;
-import org.eclipse.egit.github.core.service.RepositoryService;
 
 import se.chalmers.agile5.R;
 import se.chalmers.agile5.entities.GitDataHandler;
+import se.chalmers.agile5.logic.NotificationHandler;
 import se.chalmers.agile5.logic.RetriveGitEvents;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -30,9 +21,12 @@ import android.widget.Toast;
 
 public class GitEvents extends BaseActivity {
 	private final String TAG = "GIT EVENTS";
-	ListView repoListView;
-    TextView text;
-    Button loginButton;
+	private ListView repoListView;
+    private TextView text;
+    private Button loginButton;
+    private NotificationHandler notify;
+    private String newCommitNames;
+    private ArrayList<RepositoryCommit> diffCommits;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +36,7 @@ public class GitEvents extends BaseActivity {
 		repoListView = (ListView) findViewById(R.id.gitFollowListView);
 		text = (TextView) findViewById(R.id.text);
 		loginButton = (Button) findViewById(R.id.goToLogin);
+		notify = new NotificationHandler();
 		
 		loginButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -103,7 +98,8 @@ public class GitEvents extends BaseActivity {
 		ArrayList<RepositoryCommit> oldCommits = new ArrayList<RepositoryCommit>();
 		ArrayList<String> oldCommitShas = new ArrayList<String>();
 		ArrayList<RepositoryCommit> newCommits = new ArrayList<RepositoryCommit>();
-		ArrayList<RepositoryCommit> diffCommits = new ArrayList<RepositoryCommit>();
+		diffCommits = new ArrayList<RepositoryCommit>();
+		newCommitNames = "";
 		oldCommits = GitDataHandler.getCommits();
 		for (RepositoryCommit r : oldCommits)
 			oldCommitShas.add(r.getSha());
@@ -124,19 +120,21 @@ public class GitEvents extends BaseActivity {
 		Log.i(TAG, GitDataHandler.getCommits().size() + " " + newCommits.size());
 		
 		
-		if(diffCommits != null) {
+		if(!diffCommits.isEmpty()) {
 			Log.i(TAG, "DiffCommits size: " + diffCommits.size());
 			ArrayList<RepositoryCommit> extendedDiffCommits = new ArrayList<RepositoryCommit>();
-			String filesChanged = "";
 			RepositoryCommit extendedCommit;
 			for (RepositoryCommit rc : diffCommits) {
 				extendedCommit = git.getExtendedCommit(rc.getSha());
 				extendedDiffCommits.add(extendedCommit);
-				filesChanged += extendedCommit.getFiles().get(0).getFilename() + "\n";
+				newCommitNames += rc.getCommit().getMessage() + "\n";
 			}
-			Toast.makeText(getApplicationContext(),"Files changed: \n" + filesChanged, Toast.LENGTH_LONG).show();
+			
+			notify.DisplayNotification(this, GitEvents.class, "New commit!", newCommitNames, "");
+			//Toast.makeText(getApplicationContext(),"Files changed: " + filesChanged, Toast.LENGTH_LONG).show();
 
-		}
+		} else
+			Toast.makeText(getApplicationContext(),"No new commits", Toast.LENGTH_LONG).show();
 	}
 	
 	
@@ -150,16 +148,16 @@ public class GitEvents extends BaseActivity {
 	}
 	
 	
-	private ArrayList<String> getFileNames (RepositoryCommit commit) {
-		
-		ArrayList<String> fileNames = new ArrayList<String>();
-		
-		for(CommitFile file : commit.getFiles()) {
-			fileNames.add(file.getFilename());
-		  
-		}
-		return fileNames;
-	}
+//	private ArrayList<String> getFileNames (RepositoryCommit commit) {
+//		
+//		ArrayList<String> fileNames = new ArrayList<String>();
+//		
+//		for(CommitFile file : commit.getFiles()) {
+//			fileNames.add(file.getFilename());
+//		  
+//		}
+//		return fileNames;
+//	}
 	
 
 	}

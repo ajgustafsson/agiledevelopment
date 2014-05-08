@@ -55,6 +55,7 @@
     <string name="title_activity_files">FilesActivity</string>
     
     <!-- Strings related to FilesActivity -->
+    <string name="title_activity_files_activity">Files</string>
     <string name="update_button">Get files from repo</string>
 
 </resources>
