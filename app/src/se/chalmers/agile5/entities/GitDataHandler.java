@@ -38,7 +38,7 @@ public class GitDataHandler {
      * The currently selected GitHub repository
      */
     private Repository currentGitRepo;
-	private ArrayList<RepositoryCommit> commits;
+	private ArrayList<RepositoryCommit> commits = new ArrayList<RepositoryCommit>();
 	
     //public static GitHubClient getGitClient() {
 

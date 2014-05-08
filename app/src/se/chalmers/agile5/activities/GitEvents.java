@@ -106,7 +106,7 @@ public class GitEvents extends BaseActivity {
 	}
 	
 	/*
-	 * Checks if there are any new commtis in git.
+	 * Checks if there are any new commits in git.
 	 */
 	public void updateCommits() {
 		ArrayList<RepositoryCommit> oldCommits = new ArrayList<RepositoryCommit>();
