@@ -19,21 +19,15 @@ import java.util.LinkedList;
 public class RoadMapActivity extends BaseActivity {
 
     static final int DETAIL_ACTIVITY_KEY = 0;
-
     static final int RESULT_DETAIL_CHANGED = 1;
 
     static final String INTENT_TITLE_RESULT = "title_intent";
-
     static final String INTENT_DESC_RESULT = "description_intent";
-
     static final String INTENT_INDEX_RESULT = "index_intent";
 
     private LinkedList<RoadMapEntry> roadMapList = new LinkedList<RoadMapEntry>();
-
     private ListView roadMapListView;
-
     private ListView macroList;
-
     private String[] macroStrings = {"Class","Func", "Algo", "Exception", "Custom"};
     
     public void onCreate(Bundle savedInstanceState) {
@@ -42,7 +36,6 @@ public class RoadMapActivity extends BaseActivity {
         roadMapListView = (ListView)findViewById(R.id.roadMapTasksListView);
         macroList = (ListView)findViewById(R.id.roadMapMacroListView);
         initMacroList();
-        fillTaskListWithDummies();
         updateTaskList();
 
         roadMapListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -118,11 +111,6 @@ public class RoadMapActivity extends BaseActivity {
                 android.R.layout.simple_list_item_1,
                 macroStrings);
         macroList.setAdapter(arrayAdapter);
-    }
-
-    private void fillTaskListWithDummies() {
-        roadMapList.add(new RoadMapEntry("Some custom task", "Description blablab", EntryType.CUSTOM));
-        roadMapList.add(new RoadMapEntry("Another custom task", "Description blaBlub", EntryType.CUSTOM));
     }
 
     private void updateTaskList(){
