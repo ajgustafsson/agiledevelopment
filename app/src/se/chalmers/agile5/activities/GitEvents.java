@@ -14,6 +14,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -54,7 +56,7 @@ public class GitEvents extends BaseActivity {
 		RetriveGitEvents git = new RetriveGitEvents();
 		ArrayList<String> reposName = new ArrayList<String>();
 		ArrayList<Repository> repos = new ArrayList<Repository>();
-		ArrayList<RepositoryBranch> branches = new ArrayList<RepositoryBranch>();
+		final ArrayList<RepositoryBranch> branches = git.getBranches();
 		ArrayList<String> branchNames = new ArrayList<String>();
 		
 		//In order to retrieve all branches, you must be connected to github and
@@ -68,7 +70,7 @@ public class GitEvents extends BaseActivity {
 				reposName.add(repo.getName());
 			}
 
-			branches = git.getBranches();
+			
 			for(RepositoryBranch branch : branches) {
 				branchNames.add(branch.getName());
 			}
@@ -76,6 +78,17 @@ public class GitEvents extends BaseActivity {
 			branchesListView.setAdapter(new ArrayAdapter<String>(this,
 				android.R.layout.simple_list_item_multiple_choice, branchNames));
 				branchesListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+				
+			
+				
+			branchesListView.setOnItemClickListener(new OnItemClickListener() {
+				@Override
+				public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+					String name = (String)parent.getItemAtPosition(position);
+					saveCheckedBranch(name, branches);
+					}
+			});	
 		}
 		
 	}
@@ -148,6 +161,33 @@ public class GitEvents extends BaseActivity {
 		return commits;
 	}
 	
+	
+	private void saveCheckedBranch(String branchName, ArrayList<RepositoryBranch> branchesInRepo) {
+		ArrayList<RepositoryBranch> following = GitDataHandler.getTrackingBranches();
+		RepositoryBranch branchToFollow = new RepositoryBranch();
+		Boolean toBeAdded = true;
+		
+		for(RepositoryBranch branch : branchesInRepo) {
+			if(branch.getName().equals(branchName)) {
+				branchToFollow = branch; 
+				break; 
+			}
+		}
+		
+		for(RepositoryBranch branch : following) {
+			if(branchToFollow.getName().equals(branch.getName())) {
+				GitDataHandler.removeTrackingBranch(branchToFollow);
+				toBeAdded = false;
+				break;
+			}
+		}
+		
+		//If the branch is not removed from the list, it has to be added.
+		if(toBeAdded) {
+			GitDataHandler.addTrackingBranch(branchToFollow);  
+		}
+		
+	}
 	
 //	private ArrayList<String> getFileNames (RepositoryCommit commit) {
 //		

@@ -3,6 +3,7 @@ package se.chalmers.agile5.entities;
 import java.util.ArrayList;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryBranch;
@@ -51,7 +52,7 @@ public class GitDataHandler {
      */
     private boolean saveLoginInfoEnabled = true;
 
-	private ArrayList<RepositoryBranch> trackingBranches;
+	private ArrayList<RepositoryBranch> trackingBranches = new ArrayList<RepositoryBranch>();
 
 
     public static AgileGitHubClient getGitClient() {
@@ -88,11 +89,19 @@ public class GitDataHandler {
     	return instance.commits;
     }
     
-    public static void setTrackingBranch(ArrayList<RepositoryBranch> branches) {
-    	instance.trackingBranches = branches;
+    public static void addTrackingBranch(RepositoryBranch branch) {
+    	ArrayList<RepositoryBranch> tracking = instance.trackingBranches;
+    	tracking.add(branch);
+    	instance.trackingBranches = tracking;
     }
     
-    public static ArrayList<RepositoryBranch> getTrackingBranch() {
+    public static void removeTrackingBranch(RepositoryBranch branch) {
+    	ArrayList<RepositoryBranch> tracking = instance.trackingBranches;
+    	tracking.remove(branch);
+    	instance.trackingBranches = tracking;
+    }
+    
+    public static ArrayList<RepositoryBranch> getTrackingBranches() {
     	return instance.trackingBranches;
     }
     
