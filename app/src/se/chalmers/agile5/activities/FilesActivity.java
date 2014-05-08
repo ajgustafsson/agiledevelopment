@@ -2,7 +2,6 @@ package se.chalmers.agile5.activities;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -11,8 +10,8 @@ import org.eclipse.egit.github.core.RepositoryContents;
 import org.eclipse.egit.github.core.service.ContentsService;
 
 import se.chalmers.agile5.R;
+import se.chalmers.agile5.adapter.FileStorageAdapter;
 import se.chalmers.agile5.entities.GitDataHandler;
-import se.chalmers.agile5.logic.NotificationHandler;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,14 +19,17 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class FilesActivity extends BaseActivity {
 	private final String TAG = "FILES ACTIVITY";
 	ListView fileListView;
     Button updateButton;
-    private ArrayList<String> fileNames;
+    Button storeButton;
+    Button loadButton;
+    private ArrayList<String> filePaths;
     private FetchRepoContents frc; 
-    NotificationHandler notify;
+    FileStorageAdapter storage;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,21 +38,38 @@ public class FilesActivity extends BaseActivity {
 
 		fileListView = (ListView) findViewById(R.id.filesListView);
 		updateButton = (Button) findViewById(R.id.buttonUpdate);
-		notify = new NotificationHandler();
+		storeButton = (Button) findViewById(R.id.buttonStore);
+		loadButton = (Button) findViewById(R.id.buttonLoad);
+		storage = new FileStorageAdapter(this);
+		filePaths = new ArrayList<String>();
 		//TODO Load up fileList
+		
 		
 		updateButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				updateList();
+				updateFiles("");
+				updateListView();
+				
 			}
 		});
+		storeButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				storeFileList();
+			}
+		}); 
 		
-		fileNames = new ArrayList<String>();
+		loadButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				loadFileList();
+			}
+		});//TODO Fix prettier clickListener.
+		
+		
 
-		fileListView.setAdapter(new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_multiple_choice, fileNames));
-				fileListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+		
 	}
 
 	
@@ -62,23 +81,20 @@ public class FilesActivity extends BaseActivity {
 		//TODO Retrieve files from storage?
 	}
 	
-	private void updateList() {
-		fileNames.clear();
-		
-		updateFiles("");
-		Collections.sort(fileNames);
-		fileListView.setAdapter(new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_multiple_choice, fileNames));
-				fileListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-
-	}
+//	private void updateList() {
+//		filePaths.clear();
+//		
+//		updateFiles("");
+//		updateListView();
+//		
+//	}
 		
 	/*
 	 * updates the list of files on the repo
 	 */
 	public void updateFiles(String path) {
 		frc = new FetchRepoContents();
-		String fileName;
+		String filePath;
 		
 		try {
 			
@@ -86,9 +102,10 @@ public class FilesActivity extends BaseActivity {
 			
 			for (RepositoryContents rc : repoContents) {
 				if (rc.getType().equals("file")) {
-					fileName = rc.getName();
-					if (fileName.endsWith("java") || fileName.endsWith("xml"))
-						fileNames.add(fileName); 
+					filePath = rc.getPath();
+					if (filePath.endsWith("java") || filePath.endsWith("xml") || filePath.endsWith("txt")) {
+						filePaths.add(filePath);
+					}
 					}
 				if (rc.getType().equals("dir"))
 					updateFiles(rc.getPath());
@@ -104,6 +121,28 @@ public class FilesActivity extends BaseActivity {
 		
 	}
 
+	private void storeFileList() {
+		if (!filePaths.isEmpty()) {
+			Log.i(TAG, "Storing files");
+			storage.storeFileList(filePaths);
+		}
+		else
+			Toast.makeText(this, "No files to store", Toast.LENGTH_LONG).show();
+	}
+	
+	private void loadFileList() {
+		filePaths = storage.retrieveFileList();
+		if (!filePaths.isEmpty())
+			updateListView();
+		else
+			Toast.makeText(this, "No files found", Toast.LENGTH_SHORT).show();
+	}
+	
+	private void updateListView() {
+		fileListView.setAdapter(new ArrayAdapter<String>(this,
+				android.R.layout.simple_list_item_multiple_choice, filePaths));
+				fileListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+	}
 		
 	private class FetchRepoContents extends AsyncTask<String, Void, List<RepositoryContents>> {
 		@Override

@@ -45,6 +45,7 @@
         <activity
             android:name="se.chalmers.agile5.activities.GitEvents"
             android:label="@string/title_activity_gitEvents"
+            android:launchMode="singleTask"
             android:parentActivityName="se.chalmers.agile5.activities.GitEvents" />
         <activity
             android:name="se.chalmers.agile5.activities.GitSettingsActivity"
@@ -53,7 +54,8 @@
         <activity
             android:name="se.chalmers.agile5.activities.FilesActivity"
             android:label="@string/title_activity_files"
-            android:parentActivityName="se.chalmers.agile5.activities.BaseActivity" >
+            android:launchMode="singleTask"
+            android:parentActivityName="se.chalmers.agile5.activities.MyActivity" > >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="se.chalmers.agile5.activities.BaseActivity" />
