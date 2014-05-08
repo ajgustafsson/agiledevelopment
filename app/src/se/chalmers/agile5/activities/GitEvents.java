@@ -3,6 +3,7 @@ package se.chalmers.agile5.activities;
 import java.util.ArrayList;
 
 import org.eclipse.egit.github.core.Repository;
+import org.eclipse.egit.github.core.RepositoryBranch;
 import org.eclipse.egit.github.core.RepositoryCommit;
 
 import se.chalmers.agile5.R;
@@ -21,7 +22,7 @@ import android.widget.Toast;
 
 public class GitEvents extends BaseActivity {
 	private final String TAG = "GIT EVENTS";
-	private ListView repoListView;
+	private ListView branchesListView;
     private TextView text;
     private Button loginButton;
     private NotificationHandler notify;
@@ -33,7 +34,7 @@ public class GitEvents extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_git_events);
 
-		repoListView = (ListView) findViewById(R.id.gitFollowListView);
+		branchesListView = (ListView) findViewById(R.id.gitFollowListView);
 		text = (TextView) findViewById(R.id.text);
 		loginButton = (Button) findViewById(R.id.goToLogin);
 		notify = new NotificationHandler();
@@ -45,36 +46,36 @@ public class GitEvents extends BaseActivity {
 				startActivity(login);
 			}
 		});
-        retrieveRepos();
+        retrieveBranches();
 	}
 
 	
-	private void retrieveRepos(){
+	private void retrieveBranches(){
 		RetriveGitEvents git = new RetriveGitEvents();
 		ArrayList<String> reposName = new ArrayList<String>();
 		ArrayList<Repository> repos = new ArrayList<Repository>();
+		ArrayList<RepositoryBranch> branches = new ArrayList<RepositoryBranch>();
+		ArrayList<String> branchNames = new ArrayList<String>();
 		
+		//In order to retrieve all branches, you must be connected to github and
+		//a repo must have been choosed
 		repos = git.getRepos();
 		if (repos == null) {
 			text.setVisibility(View.VISIBLE);
 			loginButton.setVisibility(View.VISIBLE);
 		} else {
-			
 			for(Repository repo : repos) {
 				reposName.add(repo.getName());
 			}
-			
-			
-			ArrayList<RepositoryCommit> commits = new ArrayList<RepositoryCommit>();
-			commits = git.getCommits();
-			
 
-			//Set commits to be able to get update about new commits.
-			GitDataHandler.setCommits(commits);
-
-			repoListView.setAdapter(new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_multiple_choice, repoCommitsToCommitNames(commits)));
-				repoListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+			branches = git.getBranches();
+			for(RepositoryBranch branch : branches) {
+				branchNames.add(branch.getName());
+			}
+			
+			branchesListView.setAdapter(new ArrayAdapter<String>(this,
+				android.R.layout.simple_list_item_multiple_choice, branchNames));
+				branchesListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 		}
 		
 	}
@@ -84,7 +85,7 @@ public class GitEvents extends BaseActivity {
 		super.onResume();
 		text.setVisibility(View.GONE);
 		loginButton.setVisibility(View.GONE);
-		retrieveRepos();
+		retrieveBranches();
 	}
 	
 	public void updateCommits(View view) {

@@ -54,7 +54,10 @@ public class RetriveGitEvents {
 		return repos;
 	}
 	
-	public ArrayList<String> getBranches() {
+	/*
+	 * Returns ArrayList<RepositoryBranch> of branches in current repo.
+	 */
+	public ArrayList<RepositoryBranch> getBranches() {
 		FetchGitBranches fetchGitBranches = new FetchGitBranches();
 		try {
 			return fetchGitBranches.execute().get();
@@ -108,18 +111,21 @@ public class RetriveGitEvents {
 //		return commits;
 //	}
 	
-	private ArrayList<String> repoBranchtoBranch(ArrayList<RepositoryBranch> repoBranches) {
-		ArrayList<String> branches = new ArrayList<String>();
-		for(RepositoryBranch branch : repoBranches) {
-			branches.add(branch.getName());
-		}
-		
-		return branches;
-	}
+	/*
+	 * Deprecated, is never used.
+	 */
+//	private ArrayList<String> repoBranchtoBranch(ArrayList<RepositoryBranch> repoBranches) {
+//		ArrayList<String> branches = new ArrayList<String>();
+//		for(RepositoryBranch branch : repoBranches) {
+//			branches.add(branch.getName());
+//		}
+//		
+//		return branches;
+//	}
 	
-	private class FetchGitBranches extends AsyncTask<String, Void, ArrayList<String>> {
+	private class FetchGitBranches extends AsyncTask<String, Void, ArrayList<RepositoryBranch>> {
 		@Override
-		protected ArrayList<String> doInBackground(String... params) {
+		protected ArrayList<RepositoryBranch> doInBackground(String... params) {
 			RepositoryService repoService = new RepositoryService();
 			Repository repo = GitDataHandler.getCurrentGitRepo();
 			ArrayList<RepositoryBranch> branches = new ArrayList<RepositoryBranch>();
@@ -131,7 +137,7 @@ public class RetriveGitEvents {
 			}
 			
 			
-			return repoBranchtoBranch(branches);
+			return branches;
 		}
 		} 
 	

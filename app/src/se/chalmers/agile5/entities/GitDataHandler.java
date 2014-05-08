@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.os.AsyncTask;
 
 import org.eclipse.egit.github.core.Repository;
+import org.eclipse.egit.github.core.RepositoryBranch;
 import org.eclipse.egit.github.core.RepositoryCommit;
 import org.eclipse.egit.github.core.RepositoryId;
 import org.eclipse.egit.github.core.User;
@@ -50,6 +51,8 @@ public class GitDataHandler {
      */
     private boolean saveLoginInfoEnabled = true;
 
+	private ArrayList<RepositoryBranch> trackingBranches;
+
 
     public static AgileGitHubClient getGitClient() {
 
@@ -83,6 +86,14 @@ public class GitDataHandler {
     
     public static ArrayList<RepositoryCommit> getCommits() {
     	return instance.commits;
+    }
+    
+    public static void setTrackingBranch(ArrayList<RepositoryBranch> branches) {
+    	instance.trackingBranches = branches;
+    }
+    
+    public static ArrayList<RepositoryBranch> getTrackingBranch() {
+    	return instance.trackingBranches;
     }
     
 
