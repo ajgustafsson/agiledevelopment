@@ -7,6 +7,8 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
@@ -54,10 +56,19 @@ public class RoadMapActivity extends BaseActivity {
         macroList = (ListView)findViewById(R.id.roadMapMacroListView);
         initMacroList();
 
+        roadMapListView.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
+
         roadMapListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                startTaskEditing(position);
+                final RoadMapEntry roadMapEntry = roadMapList.get(position);
+                if(roadMapEntry.isDone()){
+                    roadMapListView.setItemChecked(position, false);
+                    roadMapEntry.setDone(false);
+                } else {
+                    roadMapListView.setItemChecked(position, true);
+                    roadMapEntry.setDone(true);
+                }
             }
         });
 
@@ -132,9 +143,28 @@ public class RoadMapActivity extends BaseActivity {
     private void updateTaskList(){
         ArrayAdapter<RoadMapEntry> arrayAdapter = new ArrayAdapter<RoadMapEntry>(
                 this,
-                android.R.layout.simple_list_item_1,
-                roadMapList);
+                android.R.layout.simple_list_item_multiple_choice,
+                roadMapList
+
+        ) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+                TextView text = (TextView) view.findViewById(android.R.id.text1);
+                if (roadMapList.get(position).isDone()) {
+                    text.setPaintFlags(text.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                    text.setTextColor(Color.GREEN);
+                } else {
+                    text.setPaintFlags(text.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+                    text.setTextColor(Color.WHITE);
+                }
+                return view;
+            }
+        };
         roadMapListView.setAdapter(arrayAdapter);
+        for (int i = 0; i < roadMapListView.getCount(); i++) {
+            roadMapListView.setItemChecked(i, roadMapList.get(i).isDone());
+        }
     }
 
     @Override

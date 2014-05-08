@@ -57,8 +57,8 @@ public class RoadMapEntry implements Cloneable {
     	return creationDate;
     }
     
-    public void setDone(){
-    	done = true;
+    public void setDone(boolean value){
+    	done = value;
     }
     
     public boolean isDone(){
