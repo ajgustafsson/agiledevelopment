@@ -16,7 +16,6 @@ import se.chalmers.agile5.R;
 import se.chalmers.agile5.entities.EntryType;
 import se.chalmers.agile5.entities.RoadMapEntry;
 
-import java.net.Proxy.Type;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -24,10 +23,13 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONStringer;
-import org.json.JSONTokener;
 
-
+/**
+ *	Allows user to manage a Roadmap. This activity provide the overview 
+ *  and functionality to add and select item to view in detail-view. The
+ *  roadmap is persisted and kept as a JSON-formatted string in 
+ *  SharedPreferences 
+ */
 public class RoadMapActivity extends BaseActivity {
 	private static final String TAG = RoadMapActivity.class.getSimpleName();
 
@@ -45,13 +47,6 @@ public class RoadMapActivity extends BaseActivity {
         roadMapListView = (ListView)findViewById(R.id.roadMapTasksListView);
         macroList = (ListView)findViewById(R.id.roadMapMacroListView);
         initMacroList();
-        /*
-        try {
-			loadRoadmap();
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
 
         roadMapListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -95,7 +90,6 @@ public class RoadMapActivity extends BaseActivity {
     @Override
     public void onPause() {
     	super.onPause();
-    	Log.i(TAG, "onPause");
     	try {
 			saveRoadmap();
 		} catch (JSONException e) {
@@ -107,7 +101,6 @@ public class RoadMapActivity extends BaseActivity {
 	@Override
     public void onResume() {
     	super.onResume();
-    	Log.i(TAG, "onResume");
     	try {
 			loadRoadmap();
 		} catch (JSONException e) {
@@ -139,61 +132,62 @@ public class RoadMapActivity extends BaseActivity {
 			roadMapList = roadmap;
 		}
 	}
-	 @SuppressLint("ValidFragment")
-		public class CreateCustomTaskDialogFragment extends DialogFragment {
-	        @Override
-	        public Dialog onCreateDialog(Bundle savedInstanceState) {
-	            // Use the Builder class for convenient dialog construction
-	            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+	
+	@SuppressLint("ValidFragment")
+	public class CreateCustomTaskDialogFragment extends DialogFragment {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the Builder class for convenient dialog construction
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-	            LayoutInflater inflater = getActivity().getLayoutInflater();
+            LayoutInflater inflater = getActivity().getLayoutInflater();
 
-	            // Inflate and set the layout for the dialog
-	            // Pass null as the parent view because its going in the dialog layout
-	            builder.setView(inflater.inflate(R.layout.custom_task_dialog, null));
+            // Inflate and set the layout for the dialog
+            // Pass null as the parent view because its going in the dialog layout
+            builder.setView(inflater.inflate(R.layout.custom_task_dialog, null));
 
-	            builder.setMessage(R.string.dialog_new_custom_task)
-	                    .setPositiveButton(R.string.dialog_ok_button, new DialogInterface.OnClickListener() {
-	                        public void onClick(DialogInterface dialog, int id) {
+            builder.setMessage(R.string.dialog_new_custom_task)
+                    .setPositiveButton(R.string.dialog_ok_button, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
 
-	                        }
-	                    })
-	                    .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
-	                        public void onClick(DialogInterface dialog, int id) {
-	                            // User cancelled the dialog
-	                        }
-	                    });
+                        }
+                    })
+                    .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // User cancelled the dialog
+                        }
+                    });
 
-	            // Create the AlertDialog object and return it
-	            return builder.create();
-	        }
+            // Create the AlertDialog object and return it
+            return builder.create();
+        }
 
-	        @Override
-	        public void onStart(){
-	            super.onStart();    //super.onStart() is where dialog.show() is actually called on the underlying dialog, so we have to do it after this point
-	            AlertDialog d = (AlertDialog)getDialog();
-	            if(d != null)
-	            {
-	                Button positiveButton = (Button) d.getButton(Dialog.BUTTON_POSITIVE);
-	                positiveButton.setOnClickListener(new View.OnClickListener()
-	                {
-	                    @Override
-	                    public void onClick(View v)
-	                    {
-	                        EditText titleEditText = (EditText) getDialog().findViewById(R.id.taskTitleDialogTextView);
-	                        EditText descEditText = (EditText) getDialog().findViewById(R.id.taskDescDialogTextView);
-	                        String title = titleEditText.getText().toString();
-	                        if (title != null && !title.isEmpty()) {
-	                            String desc = descEditText.getText().toString();
-	                            roadMapList.add(new RoadMapEntry(title, desc, EntryType.CUSTOM));
-	                            updateTaskList();
-	                            dismiss();
-	                        } else {
-	                            titleEditText.setError("Title is not allowed to be empty");
-	                        }
-	                    }
-	                });
-	            }
-	        }
-	    }
+        @Override
+        public void onStart(){
+            super.onStart();    //super.onStart() is where dialog.show() is actually called on the underlying dialog, so we have to do it after this point
+            AlertDialog d = (AlertDialog)getDialog();
+            if(d != null)
+            {
+                Button positiveButton = (Button) d.getButton(Dialog.BUTTON_POSITIVE);
+                positiveButton.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        EditText titleEditText = (EditText) getDialog().findViewById(R.id.taskTitleDialogTextView);
+                        EditText descEditText = (EditText) getDialog().findViewById(R.id.taskDescDialogTextView);
+                        String title = titleEditText.getText().toString();
+                        if (title != null && !title.isEmpty()) {
+                            String desc = descEditText.getText().toString();
+                            roadMapList.add(new RoadMapEntry(title, desc, EntryType.CUSTOM));
+                            updateTaskList();
+                            dismiss();
+                        } else {
+                            titleEditText.setError("Title is not allowed to be empty");
+                        }
+                    }
+                });
+            }
+        }
+    }
 }
