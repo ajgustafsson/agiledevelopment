@@ -7,8 +7,7 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
+import android.view.*;
 import android.widget.*;
 import se.chalmers.agile5.R;
 import se.chalmers.agile5.entities.EntryType;
@@ -18,6 +17,16 @@ import java.util.LinkedList;
 
 
 public class RoadMapActivity extends BaseActivity {
+
+    static final int DETAIL_ACTIVITY_KEY = 0;
+
+    static final int RESULT_DETAIL_CHANGED = 1;
+
+    static final String INTENT_TITLE_RESULT = "title_intent";
+
+    static final String INTENT_DESC_RESULT = "description_intent";
+
+    static final String INTENT_INDEX_RESULT = "index_intent";
 
     private LinkedList<RoadMapEntry> roadMapList = new LinkedList<RoadMapEntry>();
 
@@ -39,13 +48,11 @@ public class RoadMapActivity extends BaseActivity {
         roadMapListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent detailIntent = new Intent(RoadMapActivity.this, RoadMapDetailActivity.class);
-                RoadMapEntry entryClicked = roadMapList.get(position);
-                detailIntent.putExtra("title", entryClicked.getTitle());
-                detailIntent.putExtra("description", entryClicked.getDescription());
-                startActivity(detailIntent);
+                startTaskEditing(position);
             }
         });
+
+        registerForContextMenu(roadMapListView);
 
         macroList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -68,6 +75,40 @@ public class RoadMapActivity extends BaseActivity {
                 }
             }
         });
+    }
+
+    public void startTaskEditing(int position){
+        Intent detailIntent = new Intent(RoadMapActivity.this, RoadMapDetailActivity.class);
+        RoadMapEntry entryClicked = roadMapList.get(position);
+        detailIntent.putExtra("title", entryClicked.getTitle());
+        detailIntent.putExtra("description", entryClicked.getDescription());
+        detailIntent.putExtra("index", roadMapList.indexOf(entryClicked));
+        startActivityForResult(detailIntent, DETAIL_ACTIVITY_KEY);
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        if (v.getId()==R.id.roadMapTasksListView) {
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.roadmap_task_menu, menu);
+        }
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        switch(item.getItemId()) {
+            case R.id.editTaskMenu:
+                startTaskEditing(info.position);
+                return true;
+            case R.id.deleteTaskMenu:
+                roadMapList.remove(info.position);
+                updateTaskList();
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
     }
 
     private void initMacroList(){
@@ -225,6 +266,27 @@ public class RoadMapActivity extends BaseActivity {
                         }
                     }
                 });
+            }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode) {
+            case (DETAIL_ACTIVITY_KEY) : {
+                if (resultCode == RESULT_DETAIL_CHANGED) {
+                    if(data != null){
+                        final int index = data.getIntExtra(INTENT_INDEX_RESULT, -1);
+                        if(index >= 0){
+                            RoadMapEntry entryToChange = roadMapList.get(index);
+                            entryToChange.setTitle(data.getStringExtra(INTENT_TITLE_RESULT));
+                            entryToChange.setDescription(data.getStringExtra(INTENT_DESC_RESULT));
+                            updateTaskList();
+                        }
+                    }
+                }
+                break;
             }
         }
     }

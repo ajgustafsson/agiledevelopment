@@ -57,4 +57,6 @@
     <string name="macro_class_hint">Create a class</string>
     <string name="macro_exception_hint">Handle an exception</string>
     <string name="macro_function_hint">Implement/change a function</string>
+    <string name="task_menu_edit">Edit</string>
+    <string name="task_menu_delete">Delete</string>
 </resources>

@@ -5,16 +5,51 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
-        android:id="@+id/taskTitleTextView"/>
-
-    <TextView
+    <ViewSwitcher
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/taskDescTextView"/>
+        android:id="@+id/taskTitleSwitcher">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Medium Text"
+            android:id="@+id/taskTitleTextView"
+            android:clickable="true"
+            android:onClick="changeTitle"/>
+
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/taskTitleEditText"
+            android:imeOptions="actionDone"
+            android:singleLine="true"/>
+
+    </ViewSwitcher>
+
+    <ViewSwitcher
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/taskDescriptionSwitcher">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/taskDescTextView"
+            android:clickable="true"
+            android:onClick="changeDescription"/>
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/taskDescEditText"
+            android:imeOptions="actionDone"
+            android:singleLine="true"/>
+
+    </ViewSwitcher>
+
 </LinearLayout>
