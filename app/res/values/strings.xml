@@ -48,5 +48,15 @@
     <string name="roadmap_top_label">Roadmap</string>
     <string name="dialog_new_custom_task">Create a new custom task</string>
     <string name="task_title_dialog_hint">Title</string>
-    <string name="task_desc_dialog_hint">Description</string>
+    <string name="task_desc_dialog_hint">Description (optional)</string>
+    <string name="create_a_new_class">Create a new Class</string>
+    <string name="implement_algorithm">Implement algorithm</string>
+    <string name="dialog_handle_excption_task">Handle an Exception</string>
+    <string name="dialog_function_task">Implement/change function</string>
+    <string name="macro_algo_hint">Realize algorithm</string>
+    <string name="macro_class_hint">Create a class</string>
+    <string name="macro_exception_hint">Handle an exception</string>
+    <string name="macro_function_hint">Implement/change a function</string>
+    <string name="task_menu_edit">Edit</string>
+    <string name="task_menu_delete">Delete</string>
 </resources>
