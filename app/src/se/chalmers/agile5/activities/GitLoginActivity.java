@@ -131,8 +131,8 @@ public class GitLoginActivity extends BaseActivity {
         } else {
             useToken = false;
             // Store values at the time of the login attempt.
-            gitUserName = "ajgustafsson";
-            gitPassword = "GIthub_7401";
+            gitUserName = userNameView.getText().toString();
+            gitPassword = passwordView.getText().toString();
             // Check for a valid password.
             if (TextUtils.isEmpty(gitPassword)) {
                 passwordView.setError(getString(R.string.error_field_required));
