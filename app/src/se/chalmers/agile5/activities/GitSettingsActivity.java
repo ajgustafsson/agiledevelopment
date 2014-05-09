@@ -28,7 +28,11 @@ public class GitSettingsActivity extends BaseActivity {
 
     private void loadUserSettings(){
         TextView gitLoginInfoView = (TextView) findViewById(R.id.loginInfoView);
-        gitLoginInfoView.setText("Logged in as "+ GitDataHandler.getCurrentGitUser().getName());
+        String loggedInName = GitDataHandler.getCurrentGitUser().getName();
+        if (loggedInName == null || loggedInName == ""){
+        	loggedInName = GitDataHandler.getCurrentGitUser().getLogin();
+        }
+        gitLoginInfoView.setText("Logged in as "+ loggedInName);
         CheckBox saveLoginBox = (CheckBox)findViewById(R.id.saveLoginCheckBox);
         saveLoginBox.setChecked(GitDataHandler.isSaveLoginInfoEnabled());
         loadCurrentRepo();
