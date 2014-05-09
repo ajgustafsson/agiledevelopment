@@ -58,7 +58,6 @@ public class FileStorageAdapter {
 		JSONArray jsonArray = new JSONArray(selectedFiles);
 		String jsonString = jsonArray.toString();
 		editor.putString(fileSelectionKey, jsonString).apply();
-		Toast.makeText(context, "Selection stored", Toast.LENGTH_LONG).show();
 	}
 	
 	public ArrayList<String> loadSelection() {

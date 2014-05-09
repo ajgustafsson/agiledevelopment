@@ -57,7 +57,8 @@
     <!-- Strings related to FilesActivity -->
     <string name="title_activity_files_activity">Files</string>
     <string name="update_button_text">Get files from repo</string>
-    <string name="store_button_text">Store file list</string>
-    <string name="load_button_text">Load file list</string>
+    <string name="store_button_text">Store</string>
+    <string name="load_button_text">Load</string>
+    <string name="store_selection_button_text">Store selection</string>
 
 </resources>

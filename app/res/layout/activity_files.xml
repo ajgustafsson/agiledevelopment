@@ -4,29 +4,32 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
+    
+        
+        <Button
+        	android:id="@+id/buttonUpdate"
+        	android:layout_width="fill_parent"
+        	android:layout_height="wrap_content"
+        	android:onClick="updateCommits"
+        	android:text="@string/update_button_text" />
+        
+    	<Button 
+        	android:id="@+id/buttonStore"
+        	android:layout_width="fill_parent"
+        	android:layout_height="wrap_content"
+        	android:onClick="storeFileList"
+        	android:text="@string/store_button_text" 
+        	/>
+    	
+    	<Button 
+        	android:id="@+id/buttonLoad"
+        	android:layout_width="fill_parent"
+        	android:layout_height="wrap_content"
+        	android:onClick="loadFileList"
+        	android:text="@string/load_button_text" 
+        	/>		
 
-    <Button
-        android:id="@+id/buttonUpdate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="updateCommits"
-        android:text="@string/update_button_text" />
-    
-    <Button 
-        android:id="@+id/buttonStore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="storeFileList"
-        android:text="@string/store_button_text" 
-        />
-    
-	<Button 
-        android:id="@+id/buttonLoad"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="loadFileList"
-        android:text="@string/load_button_text" 
-        />
+
     
     <ListView
         android:id="@+id/filesListView"

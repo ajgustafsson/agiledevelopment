@@ -16,10 +16,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class FilesActivity extends BaseActivity {
 	private final String TAG = "FILES ACTIVITY";
@@ -28,6 +30,7 @@ public class FilesActivity extends BaseActivity {
     Button storeButton;
     Button loadButton;
     private ArrayList<String> filePaths;
+    private ArrayList<String> selection;
     private FetchRepoContents frc; 
     FileStorageAdapter storage;
     
@@ -42,6 +45,7 @@ public class FilesActivity extends BaseActivity {
 		loadButton = (Button) findViewById(R.id.buttonLoad);
 		storage = new FileStorageAdapter(this);
 		filePaths = new ArrayList<String>();
+		selection = new ArrayList<String>();
 		//TODO Load up fileList
 		
 		
@@ -65,11 +69,16 @@ public class FilesActivity extends BaseActivity {
 			public void onClick(View v) {
 				loadFileList();
 			}
-		});//TODO Fix prettier clickListener.
-		
-		
-
-		
+		});
+		fileListView.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+				int position, long id) {
+				String file = (String)parent.getItemAtPosition(position);
+				selectFile(file);
+				}
+		});	//TODO Fix prettier clickListener.
+			
 	}
 
 	
@@ -125,6 +134,8 @@ public class FilesActivity extends BaseActivity {
 		if (!filePaths.isEmpty()) {
 			Log.i(TAG, "Storing files");
 			storage.storeFileList(filePaths);
+			storage.storeSelection(selection);
+			Toast.makeText(this, "File list stored. " + selection.size() + " files tracked", Toast.LENGTH_LONG).show();
 		}
 		else
 			Toast.makeText(this, "No files to store", Toast.LENGTH_LONG).show();
@@ -132,8 +143,11 @@ public class FilesActivity extends BaseActivity {
 	
 	private void loadFileList() {
 		filePaths = storage.retrieveFileList();
-		if (!filePaths.isEmpty())
+		selection = storage.loadSelection();
+		if (!filePaths.isEmpty()) {
 			updateListView();
+			Toast.makeText(this, selection.size() + " files selected", Toast.LENGTH_SHORT).show();
+		}
 		else
 			Toast.makeText(this, "No files found", Toast.LENGTH_SHORT).show();
 	}
@@ -142,6 +156,21 @@ public class FilesActivity extends BaseActivity {
 		fileListView.setAdapter(new ArrayAdapter<String>(this,
 				android.R.layout.simple_list_item_multiple_choice, filePaths));
 				fileListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+	}
+	
+	private void selectFile(String file) {
+		if (!selection.isEmpty())
+			for (String s : selection) {
+				if(s.equals(file)) {
+					selection.remove(s);
+					Toast.makeText(this, "File removed", Toast.LENGTH_LONG).show();
+					return;
+				}
+			}
+		selection.add(file);
+		Toast.makeText(this, "Added file: " +file, Toast.LENGTH_LONG).show();
+		
+		
 	}
 		
 	private class FetchRepoContents extends AsyncTask<String, Void, List<RepositoryContents>> {
