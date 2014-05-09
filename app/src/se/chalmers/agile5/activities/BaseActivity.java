@@ -26,7 +26,7 @@ public class BaseActivity extends Activity {
              */
         	notificationHandler.DisplayNotification(getApplicationContext(), 
         			GitSettingsActivity.class, 
-        			"New Commit", "Message", "4");
+        			"New Commit", "Message", "1337");
 
             timerHandler.postDelayed(this, 10000);
         }
@@ -39,7 +39,7 @@ public class BaseActivity extends Activity {
         
         if(GitDataHandler.getInstance().isUserLoggedIn())
         {
-        	timerHandler.postDelayed(timerRunnable, 1000);
+        	timerHandler.postDelayed(timerRunnable, 0);
         }
         else
         {
