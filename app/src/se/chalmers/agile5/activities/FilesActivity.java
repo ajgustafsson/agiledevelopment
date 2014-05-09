@@ -12,6 +12,7 @@ import org.eclipse.egit.github.core.service.ContentsService;
 import se.chalmers.agile5.R;
 import se.chalmers.agile5.adapter.FileStorageAdapter;
 import se.chalmers.agile5.entities.GitDataHandler;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -79,6 +80,7 @@ public class FilesActivity extends BaseActivity {
 				}
 		});	//TODO Fix prettier clickListener.
 		
+		checkLoggedIn();
 		
 			
 	}
@@ -197,5 +199,13 @@ public class FilesActivity extends BaseActivity {
 			return rc;
 		}
 		}
+	
+	private void checkLoggedIn() {
+		if (!GitDataHandler.isUserLoggedIn()) {
+			Intent logIn = new Intent(this, GitLoginActivity.class);
+			startActivity(logIn);
+			
+		}
+	}
 	
 	}
