@@ -63,12 +63,15 @@ public class RoadMapActivity extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 final RoadMapEntry roadMapEntry = roadMapList.get(position);
                 if(roadMapEntry.isDone()){
-                    roadMapListView.setItemChecked(position, false);
                     roadMapEntry.setDone(false);
+                    roadMapList.remove(position);
+                    roadMapList.add(0, roadMapEntry);
                 } else {
-                    roadMapListView.setItemChecked(position, true);
                     roadMapEntry.setDone(true);
+                    roadMapList.remove(position);
+                    roadMapList.add(roadMapEntry);
                 }
+                updateTaskList();
             }
         });
 
