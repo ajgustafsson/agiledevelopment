@@ -21,20 +21,20 @@
         </activity>
         <activity
             android:configChanges="orientation|screenSize"
-            android:name=".activities.PlanningPoker"
+            android:name="se.chalmers.agile5.activities.PlanningPoker"
             android:label="@string/title_activity_planning_poker"
             android:parentActivityName="se.chalmers.agile5.activities.MyActivity"
             android:launchMode="singleTask"
             >
         </activity>
         <activity 
-            android:name=".activities.GitLoginActivity"
+            android:name="se.chalmers.agile5.activities.GitLoginActivity"
             android:parentActivityName="se.chalmers.agile5.activities.MyActivity"
             android:launchMode="singleTask"
             android:label="@string/git_authenticate_label"
             />
         <activity 
-            android:name=".activities.GitSelectActivity"
+            android:name="se.chalmers.agile5.activities.GitSelectActivity"
             android:parentActivityName="se.chalmers.agile5.activities.GitLoginActivity"
             android:label="@string/repo_selection_label"
             android:launchMode="singleTask"
@@ -50,11 +50,11 @@
             android:launchMode="singleTask"
             />
         <activity
-            android:name=".activities.GitSettingsActivity"
+            android:name="se.chalmers.agile5.activities.GitSettingsActivity"
             android:parentActivityName="se.chalmers.agile5.activities.MyActivity"
             android:label="@string/git_settings_label"
             android:launchMode="singleTask"/>
-        <activity android:name=".activities.RoadMapActivity"
+        <activity android:name="se.chalmers.agile5.activities.RoadMapActivity"
                   android:parentActivityName="se.chalmers.agile5.activities.MyActivity"
                   android:label="@string/roadmap_top_label"
                   android:launchMode="singleTask"/>
