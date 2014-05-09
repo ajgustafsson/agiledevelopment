@@ -7,6 +7,7 @@ import org.eclipse.egit.github.core.RepositoryBranch;
 import org.eclipse.egit.github.core.RepositoryCommit;
 
 import se.chalmers.agile5.R;
+import se.chalmers.agile5.adapter.FileStorageAdapter;
 import se.chalmers.agile5.entities.GitDataHandler;
 import se.chalmers.agile5.logic.NotificationHandler;
 import se.chalmers.agile5.logic.RetriveGitEvents;
@@ -49,6 +50,8 @@ public class GitEvents extends BaseActivity {
 			}
 		});
         retrieveBranches();
+        FileStorageAdapter storage = new FileStorageAdapter(this);
+        Toast.makeText(this, "Branches stored" + storage.loadTrackingsBranches().toString(), Toast.LENGTH_LONG).show();
 	}
 
 	
@@ -163,6 +166,7 @@ public class GitEvents extends BaseActivity {
 	
 	
 	private void saveCheckedBranch(String branchName, ArrayList<RepositoryBranch> branchesInRepo) {
+		FileStorageAdapter fileStorageAdapter = new FileStorageAdapter(this);
 		ArrayList<RepositoryBranch> following = GitDataHandler.getTrackingBranches();
 		RepositoryBranch branchToFollow = new RepositoryBranch();
 		Boolean toBeAdded = true;
@@ -177,6 +181,7 @@ public class GitEvents extends BaseActivity {
 		for(RepositoryBranch branch : following) {
 			if(branchToFollow.getName().equals(branch.getName())) {
 				GitDataHandler.removeTrackingBranch(branchToFollow);
+				fileStorageAdapter.storeTrackingBranches(GitDataHandler.getTrackingBranches());
 				toBeAdded = false;
 				break;
 			}
@@ -184,7 +189,8 @@ public class GitEvents extends BaseActivity {
 		
 		//If the branch is not removed from the list, it has to be added.
 		if(toBeAdded) {
-			GitDataHandler.addTrackingBranch(branchToFollow);  
+			GitDataHandler.addTrackingBranch(branchToFollow);
+			fileStorageAdapter.storeTrackingBranches(GitDataHandler.getTrackingBranches());
 		}
 		
 	}
