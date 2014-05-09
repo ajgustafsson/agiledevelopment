@@ -79,8 +79,6 @@ public class FilesActivity extends BaseActivity {
 				clickFile(file);
 				}
 		});	//TODO Fix prettier clickListener.
-		
-		checkLoggedIn();
 			
 	}
 
@@ -88,6 +86,7 @@ public class FilesActivity extends BaseActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		checkLoggedIn();
 		loadFileList();
 		updateListView();
 		//TODO Retrieve files from storage?
