@@ -41,10 +41,7 @@ public class PivotalProjectActivity extends BaseActivity {
 				PivotalProject p = (PivotalProject) r;
 				projects.add(p);
 			}
-			INotificationHandler notificationHandler = new NotificationHandler();
-			notificationHandler.DisplayNotification(this.getBaseContext(), this.getClass(),
-					"Projects from Pivotal", projects.get(0).getTitle(), 
-					Integer.toString(projects.size()));
+			
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		} catch (ExecutionException e) {
