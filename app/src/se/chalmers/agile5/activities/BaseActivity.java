@@ -25,7 +25,7 @@ public class BaseActivity extends Activity {
              * and which messages to be displayed.
              */
         	notificationHandler.DisplayNotification(getApplicationContext(), 
-        			GitSettingsActivity.class, 
+        			MyActivity.class, 
         			"New Commit", "Message", "1337");
 
             timerHandler.postDelayed(this, 10000);
