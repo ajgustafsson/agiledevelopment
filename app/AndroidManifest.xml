@@ -46,6 +46,11 @@
             android:parentActivityName="se.chalmers.agile5.activities.pivotal.PivotalProjectActivity"
             />
         <activity
+            android:name="se.chalmers.agile5.activities.FilesActivity"
+            android:label="@string/title_activity_files"
+            android:launchMode="singleTask"
+            android:parentActivityName="se.chalmers.agile5.activities.MyActivity" />
+        <activity
             android:name=".activities.GitSettingsActivity"
             android:parentActivityName="se.chalmers.agile5.activities.MyActivity"
             android:label="@string/git_settings_label"/>

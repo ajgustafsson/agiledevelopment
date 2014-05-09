@@ -47,6 +47,10 @@ public class BaseActivity extends Activity {
                 Intent roadMap = new Intent(this, RoadMapActivity.class);
                 startActivity(roadMap);
                 return true;
+            case R.id.files_activity_link:
+                Intent files = new Intent(this, FilesActivity.class);
+                startActivity(files);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

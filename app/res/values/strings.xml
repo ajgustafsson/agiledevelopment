@@ -59,4 +59,12 @@
     <string name="macro_function_hint">Implement/change a function</string>
     <string name="task_menu_edit">Edit</string>
     <string name="task_menu_delete">Delete</string>
+    
+    <!-- Strings related to FileActivity -->
+    <string name="title_activity_files">Track files</string>
+    <string name="files_activity_link">Track files</string>
+    <string name="update_button_text">Update files</string>
+    <string name="store_button_text">Save</string>
+    <string name="load_button_text">Load</string>
+      
 </resources>
