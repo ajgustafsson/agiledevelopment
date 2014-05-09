@@ -81,7 +81,6 @@ public class FilesActivity extends BaseActivity {
 		});	//TODO Fix prettier clickListener.
 		
 		checkLoggedIn();
-		
 			
 	}
 
@@ -204,7 +203,7 @@ public class FilesActivity extends BaseActivity {
 		if (!GitDataHandler.isUserLoggedIn()) {
 			Intent logIn = new Intent(this, GitLoginActivity.class);
 			startActivity(logIn);
-			
+			finish();
 		}
 	}
 	
