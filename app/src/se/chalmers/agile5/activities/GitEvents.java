@@ -58,16 +58,16 @@ public class GitEvents extends BaseActivity {
 		RetriveGitEvents git = new RetriveGitEvents();
 		ArrayList<String> reposName = new ArrayList<String>();
 		ArrayList<Repository> repos = new ArrayList<Repository>();
-		final ArrayList<RepositoryBranch> branches = git.getBranches();
 		ArrayList<String> branchNames = new ArrayList<String>();
 		
 		//In order to retrieve all branches, you must be connected to github and
 		//a repo must have been choosed
-		repos = git.getRepos();
-		if (repos == null) {
+		if (!checkLoggedIn()) {
 			text.setVisibility(View.VISIBLE);
 			loginButton.setVisibility(View.VISIBLE);
 		} else {
+			final ArrayList<RepositoryBranch> branches = git.getBranches();
+			repos = git.getRepos();
 			for(Repository repo : repos) {
 				reposName.add(repo.getName());
 			}
@@ -204,6 +204,10 @@ public class GitEvents extends BaseActivity {
 //		}
 //		return fileNames;
 //	}
+	
+	private boolean checkLoggedIn() {
+		return GitDataHandler.isUserLoggedIn() && !(GitDataHandler.getCurrentGitRepo() == null);
+	}
 	
 
 	}
