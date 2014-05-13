@@ -85,6 +85,20 @@ public class RetriveGitEvents {
 		return null;
 	}
 	
+	public ArrayList<RepositoryCommit> getCommitsByBranch(String branch) {
+		FetchGitCommitsByBranch fetchGitCommits = new FetchGitCommitsByBranch();
+		try {
+			return fetchGitCommits.execute(branch).get();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	public RepositoryCommit getExtendedCommit(String sha) {
 		FetchSingleGitCommit fsgc = new FetchSingleGitCommit();
 		try {
@@ -163,6 +177,33 @@ public class RetriveGitEvents {
 		return repoCommits;
 	}
 	}
+	
+	private class FetchGitCommitsByBranch extends AsyncTask<String, Void, ArrayList<RepositoryCommit>> {
+		@Override
+		protected ArrayList<RepositoryCommit> doInBackground(String... params) {
+			CommitService commitService = new CommitService(GitDataHandler.getGitClient());
+			Repository repo = GitDataHandler.getCurrentGitRepo();
+			String branchName = params[0];
+			//Branches that the user is tracking
+			ArrayList<RepositoryBranch> branches = GitDataHandler.getTrackingBranches();
+			ArrayList<RepositoryCommit> repoCommits = new ArrayList<RepositoryCommit>();
+			try {
+				for(RepositoryBranch branch : branches) {
+					if(branch.getName().equals(branchName)) {
+						repoCommits = (ArrayList<RepositoryCommit>) commitService.getCommits(repo, branch.getName(), null);
+					}
+				}
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+			
+			return repoCommits;
+		}
+		}
+	
+	
 	private class FetchSingleGitCommit extends AsyncTask<String, Void, RepositoryCommit> {
 	@Override
 	protected RepositoryCommit doInBackground(String... params) {

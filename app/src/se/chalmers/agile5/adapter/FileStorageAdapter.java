@@ -3,6 +3,7 @@ package se.chalmers.agile5.adapter;
 import java.util.ArrayList;
 
 import org.eclipse.egit.github.core.RepositoryBranch;
+import org.eclipse.egit.github.core.RepositoryCommit;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -83,6 +84,7 @@ public class FileStorageAdapter {
 		return selection;
 	}
 	
+	//This function overwrites the list that is in shared preferences.
 	public void storeTrackingBranches(ArrayList<RepositoryBranch> branches) {
 		ArrayList<String> temp = new ArrayList<String>();
 		for(RepositoryBranch branch : branches) {
@@ -95,7 +97,59 @@ public class FileStorageAdapter {
 		Toast.makeText(context, "Branch stored", Toast.LENGTH_LONG).show();
 	}
 	
-	public ArrayList<RepositoryBranch> loadTrackingsBranches() {
+	public void storeCommitsForATrackingBranch(ArrayList<RepositoryCommit> commits, RepositoryBranch branch) {
+
+		ArrayList<String> temp = new ArrayList<String>();
+		//Save the first commit into Shared Preferences
+		int pos = commits.size();
+		temp.add(commits.get(0).getSha());
+		
+		Log.i("test", "Size of temp that we are saving in SharedPref:" + temp.size());
+		Log.i("test", "temp(0)=" + temp.get(0));
+		JSONArray jsonArray = new JSONArray(temp);
+		String jsonString = jsonArray.toString();
+		Log.i("test", "jsonArray:" + jsonArray.toString());
+		editor.putString(branch.getName(), jsonString).apply();
+	}
+	
+	/*
+	 * Returns a ArrayList<RepositoryCommit> that are stored in Shared Prefernces.
+	 */
+	public ArrayList<RepositoryCommit> getCommitsForTrackingBranch(RepositoryBranch branch) {
+		
+		ArrayList<String> commitsSha = new ArrayList<String>();
+		ArrayList<RepositoryCommit> commitsOnBranch = new ArrayList<RepositoryCommit>();
+		ArrayList<RepositoryCommit> commitsOnBranchFromSharedPref = new ArrayList<RepositoryCommit>();
+		RetriveGitEvents git = new RetriveGitEvents();
+		commitsOnBranch = git.getCommitsByBranch(branch.getName());
+		String s = sharedPreferences.getString(branch.getName(), "");
+		
+		JSONArray array;
+		try {
+			array = new JSONArray(s);
+			if (array != null) {
+				for (int i=0; i < array.length(); i++)
+					commitsSha.add(array.getString(i));
+			}
+			Log.i(TAG, "Found. " + commitsSha.get(0));
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		for(RepositoryCommit commit : commitsOnBranch) {
+			for(String commitSha : commitsSha) {
+				if(commit.getSha().equals(commitSha) && !commitsOnBranchFromSharedPref.contains(commit)) {
+					commitsOnBranchFromSharedPref.add(commit);
+				}
+			}
+			
+		}
+		return commitsOnBranchFromSharedPref;
+	}
+	
+	
+	public ArrayList<RepositoryBranch> getTrackingsBranches() {
 		ArrayList<String> trackingBranches = new ArrayList<String>();
 		ArrayList<RepositoryBranch> branchesOnRepo = new ArrayList<RepositoryBranch>();
 		ArrayList<RepositoryBranch> branches = new ArrayList<RepositoryBranch>();
@@ -104,27 +158,28 @@ public class FileStorageAdapter {
 		String s = sharedPreferences.getString(trackingBranchesKey, "");
 		
 		JSONArray array;
-		try {
-			array = new JSONArray(s);
-			if (array != null) {
-				for (int i=0; i < array.length(); i++)
-					trackingBranches.add(array.getString(i));
-			}
-			Log.i(TAG, "Found. " + trackingBranches.get(0));
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		for(RepositoryBranch branch : branchesOnRepo) {
-			for(String branchName : trackingBranches) {
-				if(branch.getName().equals(branchName) && !branches.contains(branch)) {
-					branches.add(branch);
+		Log.i("test", "I FileStorageAdapter, rad 161: S.size:" + s.length());
+		if(s.length() > 0) {
+			try {
+				array = new JSONArray(s);
+				if (array != null) {
+					for (int i=0; i < array.length(); i++)
+						trackingBranches.add(array.getString(i));
 				}
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 			
+			for(RepositoryBranch branch : branchesOnRepo) {
+				for(String branchName : trackingBranches) {
+					if(branch.getName().equals(branchName) && !branches.contains(branch)) {
+						branches.add(branch);
+					}
+				}
+				
+			}
 		}
-		
 		return branches;
 	}
 }

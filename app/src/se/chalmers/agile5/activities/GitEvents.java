@@ -50,7 +50,6 @@ public class GitEvents extends BaseActivity {
 			}
 		});
         retrieveBranches();
-        FileStorageAdapter storage = new FileStorageAdapter(this);
 	}
 
 	
@@ -67,6 +66,12 @@ public class GitEvents extends BaseActivity {
 			loginButton.setVisibility(View.VISIBLE);
 		} else {
 			final ArrayList<RepositoryBranch> branches = git.getBranches();
+			//Load stored trackingBranches into the DataHandler.
+			FileStorageAdapter fileAdapter = new FileStorageAdapter(this);
+			ArrayList<RepositoryBranch> branchesFromSharedPref = fileAdapter.getTrackingsBranches();
+			for(RepositoryBranch branch : branchesFromSharedPref) {
+				GitDataHandler.addTrackingBranch(branch);
+			}
 			repos = git.getRepos();
 			for(Repository repo : repos) {
 				reposName.add(repo.getName());
@@ -91,6 +96,15 @@ public class GitEvents extends BaseActivity {
 					saveCheckedBranch(name, branches);
 					}
 			});	
+			
+			//Checks the right branches that are already tracked
+			for(int i = 0; i < branchesListView.getCount() ; i++) {
+				for(RepositoryBranch branch : branchesFromSharedPref) {
+					if(branch.getName().equals(branchesListView.getItemAtPosition(i).toString())) {
+						branchesListView.setItemChecked(i, true);
+					}
+				}
+			}
 		}
 		
 	}
@@ -111,46 +125,64 @@ public class GitEvents extends BaseActivity {
 	 * Checks if there are any new commits in git.
 	 */
 	public void updateCommits() {
+		//Hämta oldCommits från Shared Preferences!
+		//Kör detta för varje branch som trackas.
+		FileStorageAdapter fileStorage = new FileStorageAdapter(this);
+		ArrayList<RepositoryBranch> trackedBranches = new ArrayList<RepositoryBranch>();
 		ArrayList<RepositoryCommit> oldCommits = new ArrayList<RepositoryCommit>();
 		ArrayList<String> oldCommitShas = new ArrayList<String>();
 		ArrayList<RepositoryCommit> newCommits = new ArrayList<RepositoryCommit>();
-		diffCommits = new ArrayList<RepositoryCommit>();
-		newCommitNames = "";
-		oldCommits = GitDataHandler.getCommits();
-		for (RepositoryCommit r : oldCommits)
-			oldCommitShas.add(r.getSha());
 		
-		RetriveGitEvents git = new RetriveGitEvents();
-		newCommits = git.getCommits();
-		if(oldCommits.size() != newCommits.size() && !oldCommits.isEmpty()) {
-			for(RepositoryCommit commit : newCommits) {
-				
-				if(!oldCommitShas.contains(commit.getSha())) {
+		trackedBranches = fileStorage.getTrackingsBranches();
+		
+		for(RepositoryBranch branch : trackedBranches) {
+			diffCommits = new ArrayList<RepositoryCommit>();
+			newCommitNames = "";
+			
+			
+			oldCommits = fileStorage.getCommitsForTrackingBranch(branch);
+			Log.i("test", "Size of oldCommits i GitEvents:" + oldCommits.size());
+			for (RepositoryCommit r : oldCommits) {
+				oldCommitShas.add(r.getSha());
+				Log.i("test", "We found a Sha in oldCommit: " + r.getSha());
+			}
+			//Diffcommits skall bara innehålla de commits som kommer efter den commiten som ligger i OldCommits.
+			RetriveGitEvents git = new RetriveGitEvents();
+			newCommits = git.getCommitsByBranch(branch.getName());
+			if(oldCommits.size() != newCommits.size() && !oldCommits.isEmpty()) {
+				for(RepositoryCommit commit : newCommits) {
+					if(oldCommitShas.contains(commit.getSha())) {
+						Log.i("test", "Vi har satt diff till true!");
+						break;
+					}
 					diffCommits.add(commit);
+					Log.i("test", "Vi har lagt in commiten till diffcommits!");
 				}
+				
 			}
+			fileStorage.storeCommitsForATrackingBranch(newCommits, branch);
+			Log.i(TAG, GitDataHandler.getCommits().size() + " " + newCommits.size());
 			
+			
+			if(!diffCommits.isEmpty()) {
+				Log.i("test", "DiffCommits size: " + diffCommits.size());
+				ArrayList<RepositoryCommit> extendedDiffCommits = new ArrayList<RepositoryCommit>();
+				RepositoryCommit extendedCommit;
+				for (RepositoryCommit rc : diffCommits) {
+					extendedCommit = git.getExtendedCommit(rc.getSha());
+					extendedDiffCommits.add(extendedCommit);
+					newCommitNames += rc.getCommit().getMessage() + "\n";
+				}
+				
+				
+				//fileStorage.storeCommitsForATrackingBranch(diffCommits, branch);
+				
+				notify.DisplayNotification(this, GitEvents.class, "New commit!", newCommitNames, "");
+	
+			} else {
+				Toast.makeText(getApplicationContext(),"No new commits", Toast.LENGTH_LONG).show();
+			}
 		}
-		GitDataHandler.setCommits(newCommits);	
-		
-		Log.i(TAG, GitDataHandler.getCommits().size() + " " + newCommits.size());
-		
-		
-		if(!diffCommits.isEmpty()) {
-			Log.i(TAG, "DiffCommits size: " + diffCommits.size());
-			ArrayList<RepositoryCommit> extendedDiffCommits = new ArrayList<RepositoryCommit>();
-			RepositoryCommit extendedCommit;
-			for (RepositoryCommit rc : diffCommits) {
-				extendedCommit = git.getExtendedCommit(rc.getSha());
-				extendedDiffCommits.add(extendedCommit);
-				newCommitNames += rc.getCommit().getMessage() + "\n";
-			}
-			
-			notify.DisplayNotification(this, GitEvents.class, "New commit!", newCommitNames, "");
-			//Toast.makeText(getApplicationContext(),"Files changed: " + filesChanged, Toast.LENGTH_LONG).show();
-
-		} else
-			Toast.makeText(getApplicationContext(),"No new commits", Toast.LENGTH_LONG).show();
 	}
 	
 	
@@ -178,8 +210,10 @@ public class GitEvents extends BaseActivity {
 		}
 		
 		for(RepositoryBranch branch : following) {
+			//If the branch is already in the list, it should be deleted from the list.
 			if(branchToFollow.getName().equals(branch.getName())) {
 				GitDataHandler.removeTrackingBranch(branchToFollow);
+				//Store the new List of trackingBranches in Shared Preferences.
 				fileStorageAdapter.storeTrackingBranches(GitDataHandler.getTrackingBranches());
 				toBeAdded = false;
 				break;

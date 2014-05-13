@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryBranch;
@@ -99,8 +100,13 @@ public class GitDataHandler {
     
     public static void removeTrackingBranch(RepositoryBranch branch) {
     	ArrayList<RepositoryBranch> tracking = instance.trackingBranches;
-    	tracking.remove(branch);
-    	instance.trackingBranches = tracking;
+    	ArrayList<RepositoryBranch> newTracking = new ArrayList<RepositoryBranch>();
+    	for(RepositoryBranch repBranch : tracking) {
+    		if(!repBranch.getName().equals(branch.getName())) {
+    			newTracking.add(repBranch);
+    		}
+    	}
+    	instance.trackingBranches = newTracking;
     }
     
     public static ArrayList<RepositoryBranch> getTrackingBranches() {
