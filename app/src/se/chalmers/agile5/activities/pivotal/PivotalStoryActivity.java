@@ -119,7 +119,7 @@ public class PivotalStoryActivity extends BaseActivity{
 							new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int id) {
 							checkBox.setChecked(true);
-							//TODO SAVE STUFF
+							//TODO FOLLOW
 						}
 					});
 					builder.setNegativeButton("No",
