@@ -3,13 +3,13 @@
 
     <string name="app_name">groupFive</string>
 
-    <!--  Strings related to BaseActivity -->
-    <string name="edit_activity_link">Edit</string>
+    <!-- Strings related to BaseActivity -->
+    <string name="git_events_activity_link">Track branches</string>
     <string name="git_activity_link">GitHub Settings</string>
     <string name="pivotal_activity_link">Pivotal Example</string>
     <string name="poker_activity_link">Planning Poker</string>
     <string name="files_activity_link">Files list</string>
-    
+
     <!-- Strings related to login -->
     <string name="prompt_username">Username or email</string>
     <string name="prompt_password">Password</string>
@@ -20,7 +20,6 @@
     <string name="error_incorrect_token">This OAuth token seems to be incorrect</string>
     <string name="error_field_required">This field is required</string>
     <string name="select_repo_list">Select a repository from the list</string>
-    
     <string name="title_activity_planning_poker">PlanningPoker</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -35,6 +34,7 @@
     <string name="no_repos_found">No repos found. Make sure that you\'re logged in</string>
     <string name="dialog_already_logged_in">Already logged in to GitHub.
                                             \nDo you want to login to another account?</string>
+    <string name="instructional_text">Long press a branch to show commits</string>
     <string name="dialog_cancel">Cancel</string>
     <string name="dialog_login_as_other">Change account</string>
     <string name="dialog_ok_button">Ok</string>
@@ -53,12 +53,13 @@
     <string name="list_delete">DEL</string>
     <string name="expandable_list_link">List example</string>
     <string name="title_activity_files">FilesActivity</string>
-    
+
     <!-- Strings related to FilesActivity -->
     <string name="title_activity_files_activity">Files</string>
     <string name="update_button_text">Get files from repo</string>
     <string name="store_button_text">Store</string>
     <string name="load_button_text">Load</string>
     <string name="store_selection_button_text">Store selection</string>
+    <string name="title_activity_view_branches">ViewBranchesActivity</string>
 
 </resources>

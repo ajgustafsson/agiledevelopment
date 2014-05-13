@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -27,6 +28,7 @@ public class GitEvents extends BaseActivity {
 	private final String TAG = "GIT EVENTS";
 	private ListView branchesListView;
     private TextView text;
+    private TextView instructionalText;
     private Button loginButton;
     private NotificationHandler notify;
     private String newCommitNames;
@@ -39,6 +41,7 @@ public class GitEvents extends BaseActivity {
 
 		branchesListView = (ListView) findViewById(R.id.gitFollowListView);
 		text = (TextView) findViewById(R.id.text);
+		instructionalText = (TextView) findViewById(R.id.instructionalText);
 		loginButton = (Button) findViewById(R.id.goToLogin);
 		notify = new NotificationHandler();
 		
@@ -86,7 +89,6 @@ public class GitEvents extends BaseActivity {
 				android.R.layout.simple_list_item_multiple_choice, branchNames));
 				branchesListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 				
-			
 				
 			branchesListView.setOnItemClickListener(new OnItemClickListener() {
 				@Override
@@ -95,8 +97,20 @@ public class GitEvents extends BaseActivity {
 					String name = (String)parent.getItemAtPosition(position);
 					saveCheckedBranch(name, branches);
 					}
-			});	
+			});
 			
+			branchesListView.setOnItemLongClickListener(new OnItemLongClickListener() {
+				@Override
+				public boolean onItemLongClick(AdapterView<?> parent,
+						View view, int position, long id) {
+					Intent viewCommits = new Intent(view.getContext(), ViewCommitsActivity.class);
+					viewCommits.putExtra("branch_name", branchesListView.getItemAtPosition(position).toString());
+					startActivity(viewCommits);
+					return false;
+				}
+			});
+			
+
 			//Checks the right branches that are already tracked
 			for(int i = 0; i < branchesListView.getCount() ; i++) {
 				for(RepositoryBranch branch : branchesFromSharedPref) {
@@ -105,6 +119,8 @@ public class GitEvents extends BaseActivity {
 					}
 				}
 			}
+
+			
 		}
 		
 	}

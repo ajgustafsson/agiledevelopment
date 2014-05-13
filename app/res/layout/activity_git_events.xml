@@ -11,6 +11,12 @@
         android:layout_height="wrap_content"
         android:text="@string/no_repos_found" />
     
+    <TextView
+        android:id="@+id/instructionalText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/instructional_text" />
+    
     <Button 
         android:id="@+id/goToLogin"
         android:layout_width="fill_parent"

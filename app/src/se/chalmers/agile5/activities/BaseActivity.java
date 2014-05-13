@@ -23,10 +23,6 @@ public class BaseActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle presses on the action bar items
         switch (item.getItemId()) {
-            case R.id.edit_activity_link:
-            	Intent gitIntent2 = new Intent(this, GitEvents.class);
-            	startActivity(gitIntent2);
-                return true;
             case R.id.pivotal_activity_link:
             	Intent pivotalIntent = new Intent(this, PivotalProjectActivity.class);
                 startActivity(pivotalIntent);
@@ -43,6 +39,10 @@ public class BaseActivity extends Activity {
             case R.id.poker_activity_link:
             	Intent poker = new Intent(this, PlanningPoker.class);
             	startActivity(poker);
+                return true;
+            case R.id.git_events_activity_link:
+            	Intent gitIntent2 = new Intent(this, GitEvents.class);
+            	startActivity(gitIntent2);
                 return true;
             case R.id.files_activity_link:
             	Intent fileList = new Intent(this, FilesActivity.class);
