@@ -4,7 +4,7 @@
     <string name="app_name">groupFive</string>
 
     <!--  Strings related to BaseActivity -->
-    <string name="edit_activity_link">Edit</string>
+    <string name="git_events_activity_link">Track branches</string>
     <string name="git_activity_link">GitHub Settings</string>
     <string name="pivotal_activity_link">Pivotal Example</string>
     <string name="poker_activity_link">Planning Poker</string>
