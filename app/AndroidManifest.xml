@@ -9,11 +9,13 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name" >
+        android:label="@string/app_name"
+        android:icon="@drawable/icon">
         <activity
-            android:name="se.chalmers.agile5.activities.MyActivity"
-            android:label="@string/app_name" >
+            android:name=".activities.MyActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTask">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,40 +26,57 @@
             android:name="se.chalmers.agile5.activities.PlanningPoker"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_planning_poker"
-            android:launchMode="singleTop"
-            android:parentActivityName="se.chalmers.agile5.activities.MyActivity" >
+            android:parentActivityName="se.chalmers.agile5.activities.MyActivity"
+            android:launchMode="singleTask"
+            >
         </activity>
-        <activity
+        <activity 
             android:name="se.chalmers.agile5.activities.GitLoginActivity"
+            android:parentActivityName="se.chalmers.agile5.activities.MyActivity"
+            android:launchMode="singleTask"
             android:label="@string/git_authenticate_label"
-            android:launchMode="singleTop"
-            android:parentActivityName="se.chalmers.agile5.activities.MyActivity" />
-        <activity
+            />
+        <activity 
             android:name="se.chalmers.agile5.activities.GitSelectActivity"
+            android:parentActivityName="se.chalmers.agile5.activities.GitLoginActivity"
             android:label="@string/repo_selection_label"
-            android:parentActivityName="se.chalmers.agile5.activities.GitLoginActivity" />
+            android:launchMode="singleTask"
+            />
         <activity
             android:name="se.chalmers.agile5.activities.pivotal.PivotalProjectActivity"
-            android:parentActivityName="se.chalmers.agile5.activities.MyActivity" />
+            android:parentActivityName="se.chalmers.agile5.activities.MyActivity"
+            android:launchMode="singleTask"
+            />
         <activity
             android:name="se.chalmers.agile5.activities.pivotal.PivotalStoryActivity"
-            android:parentActivityName="se.chalmers.agile5.activities.pivotal.PivotalProjectActivity" />
-        <activity
-            android:name="se.chalmers.agile5.activities.GitEvents"
-            android:label="@string/title_activity_gitEvents"
+            android:parentActivityName="se.chalmers.agile5.activities.pivotal.PivotalProjectActivity"
             android:launchMode="singleTask"
-            android:parentActivityName="se.chalmers.agile5.activities.GitEvents" />
-        <activity
-            android:name="se.chalmers.agile5.activities.GitSettingsActivity"
-            android:label="@string/git_settings_label"
-            android:parentActivityName="se.chalmers.agile5.activities.MyActivity" />
+            />
         <activity
             android:name="se.chalmers.agile5.activities.FilesActivity"
             android:label="@string/title_activity_files"
             android:launchMode="singleTask"
-            android:parentActivityName="se.chalmers.agile5.activities.MyActivity" />
- 
+            android:parentActivityName="se.chalmers.agile5.activities.MyActivity" 
+            />
         <activity
+            android:name="se.chalmers.agile5.activities.GitSettingsActivity"
+            android:parentActivityName="se.chalmers.agile5.activities.MyActivity"
+            android:label="@string/git_settings_label"
+            android:launchMode="singleTask" 
+            />
+        <activity android:name="se.chalmers.agile5.activities.RoadMapActivity"
+                  android:parentActivityName="se.chalmers.agile5.activities.MyActivity"
+                  android:label="@string/roadmap_top_label"
+                  android:launchMode="singleTask"/>
+        <activity android:name="se.chalmers.agile5.activities.RoadMapDetailActivity"
+            android:launchMode="singleTask"/>
+        
+        <activity android:name="se.chalmers.agile5.activities.GitEvents"
+            android:label="@string/title_activity_gitEvents"
+            android:launchMode="singleTask"
+            android:parentActivityName="se.chalmers.agile5.activities.MainActivity" />
+            
+         <activity
             android:name="se.chalmers.agile5.activities.ViewCommitsActivity"
             android:label="@string/title_activity_files"
             android:launchMode="singleTask"
@@ -66,15 +85,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="se.chalmers.agile5.activities.BaseActivity" />
         </activity>
-        <activity
-            android:name="se.chalmers.agile5.ViewCommitsActivity"
-            android:label="@string/title_activity_view_branches"
-            android:parentActivityName="se.chalmers.agile5.activities.BaseActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="se.chalmers.agile5.activities.BaseActivity" />
-        </activity>
-
     </application>
 
 </manifest>

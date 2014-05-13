@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">groupFive</string>
+    <string name="app_name">Rally</string>
 
     <!-- Strings related to BaseActivity -->
     <string name="git_events_activity_link">Track branches</string>
@@ -50,6 +50,7 @@
     <string name="change_repo_button">Change</string>
     <string name="logout_button">Logout</string>
     <string name="remember_git_login">Remember login</string>
+
     <string name="list_delete">DEL</string>
     <string name="expandable_list_link">List example</string>
     <string name="title_activity_files">FilesActivity</string>
@@ -61,5 +62,22 @@
     <string name="load_button_text">Load</string>
     <string name="store_selection_button_text">Store selection</string>
     <string name="title_activity_view_branches">ViewBranchesActivity</string>
+    
+    <string name="roadmap_activity_link">Roadmap</string>
+    <string name="roadmap_top_label">Roadmap</string>
+    <string name="dialog_new_custom_task">Create a new custom task</string>
+    <string name="task_title_dialog_hint">Title</string>
+    <string name="task_desc_dialog_hint">Description (optional)</string>
+    <string name="create_a_new_class">Create a new Class</string>
+    <string name="implement_algorithm">Implement algorithm</string>
+    <string name="dialog_handle_excption_task">Handle an Exception</string>
+    <string name="dialog_function_task">Implement/change function</string>
+    <string name="macro_algo_hint">Realize algorithm</string>
+    <string name="macro_class_hint">Create a class</string>
+    <string name="macro_exception_hint">Handle an exception</string>
+    <string name="macro_function_hint">Implement/change a function</string>
+    <string name="task_menu_edit">Edit</string>
+    <string name="task_menu_delete">Delete</string>
+      
 
 </resources>

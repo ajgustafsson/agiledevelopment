@@ -51,39 +51,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         }
         
         TextView item = (TextView) convertView.findViewById(R.id.child);
-        CheckBox follow = (CheckBox) convertView.findViewById(R.id.follow);
-        follow.setOnClickListener(new OnClickListener() {
- 
-            public void onClick(View v) {
-            	CheckBox cb = (CheckBox) v;
-            	if(cb.isChecked()){
-            		//logic to follow
-            		
-            		/*//OPTIONAL
-	                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-	                builder.setMessage("Do you want to follow this story?");
-	                builder.setCancelable(false);
-	                builder.setPositiveButton("Yes",
-	                        new DialogInterface.OnClickListener() {
-	                            public void onClick(DialogInterface dialog, int id) {
-	                                //TODO: Follow story
-	                            }
-	                        });
-	                builder.setNegativeButton("No",
-	                        new DialogInterface.OnClickListener() {
-	                            public void onClick(DialogInterface dialog, int id) {
-	                                dialog.cancel();
-	                            }
-	                        });
-	                AlertDialog alertDialog = builder.create();
-	                alertDialog.show();
-	                */
-            	}else{
-            		//logic for unfollow
-            	}
-            }
-        });
- 
+
         item.setText(laptop);
         return convertView;
     }
