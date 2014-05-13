@@ -55,11 +55,26 @@
             android:name="se.chalmers.agile5.activities.FilesActivity"
             android:label="@string/title_activity_files"
             android:launchMode="singleTask"
-            android:parentActivityName="se.chalmers.agile5.activities.MyActivity" > >
+            android:parentActivityName="se.chalmers.agile5.activities.MyActivity" />
+ 
+        <activity
+            android:name="se.chalmers.agile5.activities.ViewCommitsActivity"
+            android:label="@string/title_activity_files"
+            android:launchMode="singleTask"
+            android:parentActivityName="se.chalmers.agile5.activities.GitEvents" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="se.chalmers.agile5.activities.BaseActivity" />
         </activity>
+        <activity
+            android:name="se.chalmers.agile5.ViewCommitsActivity"
+            android:label="@string/title_activity_view_branches"
+            android:parentActivityName="se.chalmers.agile5.activities.BaseActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="se.chalmers.agile5.activities.BaseActivity" />
+        </activity>
+
     </application>
 
 </manifest>
