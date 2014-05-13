@@ -19,6 +19,9 @@ import se.chalmers.agile5.R;
  *
  */
 public class PlanningPoker extends BaseActivity {
+	
+	private boolean isCardSelected = false;
+	
 	public final static String TAG = PlanningPoker.class.getSimpleName();
 	public int oldOrientation = 1;
 	
@@ -30,6 +33,7 @@ public class PlanningPoker extends BaseActivity {
 	}
 	
 	public void selectCard(View v){
+		isCardSelected = true;
 		oldOrientation = getRequestedOrientation();
 		setRequestedOrientation(1);
 		final View myView = v;
@@ -66,22 +70,31 @@ public class PlanningPoker extends BaseActivity {
 		cardText.setGravity(Gravity.CENTER);
 		r.addView(cardText);
 		
-		Button back = new Button(this);
-		back.setText("Go back");
-		back.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				reloadPlanningPoker();
-			}
-		});
+//		Button back = new Button(this);
+//		back.setText("Go back");
+//		back.setOnClickListener(new OnClickListener() {
+//			
+//			@Override
+//			public void onClick(View v) {
+//				reloadPlanningPoker();
+//			}
+//		});
 		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
 				ViewGroup.LayoutParams.MATCH_PARENT, 
 				ViewGroup.LayoutParams.WRAP_CONTENT);
 		params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-		back.setLayoutParams(params);
-		r.addView(back);
+//		back.setLayoutParams(params);
+//		r.addView(back);
 		setContentView(r);
+	}
+	@Override
+	public void onBackPressed(){
+		if(isCardSelected){
+			isCardSelected = false;
+			reloadPlanningPoker();
+		}else{
+			super.onBackPressed();
+		}
 	}
 	
 	private void reloadPlanningPoker(){
