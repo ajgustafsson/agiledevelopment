@@ -2,6 +2,9 @@
 <resources>
     <string name="app_name">Rally</string>
 
+    <!-- Strings related to Roadmap -->
+    <string name="button_userstory">See current user story</string>
+    
     <!-- Strings related to login -->
     <string name="prompt_username">Username or email</string>
     <string name="prompt_password">Password</string>

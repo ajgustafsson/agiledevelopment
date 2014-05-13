@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,8 +13,10 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
+import android.view.View.OnClickListener;
 import android.widget.*;
 import se.chalmers.agile5.R;
+import se.chalmers.agile5.adapter.FileStorageAdapter;
 import se.chalmers.agile5.entities.EntryType;
 import se.chalmers.agile5.entities.RoadMapEntry;
 
@@ -36,7 +39,7 @@ public class RoadMapActivity extends BaseActivity {
 	private static final String TAG = RoadMapActivity.class.getSimpleName();
     static final int DETAIL_ACTIVITY_KEY = 0;
     static final int RESULT_DETAIL_CHANGED = 1;
-
+    private static Context thisContext;
     static final String INTENT_TITLE_RESULT = "title_intent";
     static final String INTENT_DESC_RESULT = "description_intent";
     static final String INTENT_INDEX_RESULT = "index_intent";
@@ -44,18 +47,47 @@ public class RoadMapActivity extends BaseActivity {
     private List<RoadMapEntry> roadMapList = new LinkedList<RoadMapEntry>();
     private ListView roadMapListView;
     private ListView macroList;
+    private Button userStoryButton;
     
     private SharedPreferences jsonData;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         jsonData = getSharedPreferences("jsonData", MODE_PRIVATE);
-        
+        thisContext = this;
         setContentView(R.layout.roadmap_activity);
         roadMapListView = (ListView)findViewById(R.id.roadMapTasksListView);
         macroList = (ListView)findViewById(R.id.roadMapMacroListView);
         initMacroList();
+        
+        userStoryButton = (Button)findViewById(R.id.userStoryButton);
+        userStoryButton.setOnClickListener(new OnClickListener() {
 
+			@Override
+			public void onClick(View arg0) {
+        		FileStorageAdapter getPivotalStory = new FileStorageAdapter(getApplicationContext());
+        		getPivotalStory.setFileListKey("pivotal");
+        		ArrayList<String> pivotalStory = getPivotalStory.retrieveFileList();
+        		if (pivotalStory.get(0) != null && !pivotalStory.get(0).equals("")) {
+        			String story = "Title: " + pivotalStory.get(0) + "\n\nDesc: " + pivotalStory.get(1);
+					AlertDialog.Builder builder = new AlertDialog.Builder(thisContext);
+					builder.setMessage(story)
+					       .setCancelable(false)
+					       .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					           public void onClick(DialogInterface dialog, int id) {
+					                //do things
+					           }
+					       });
+					AlertDialog alert = builder.create();
+					alert.show();
+        		} else {
+        			String noStory = "No story selected \nSelect a story from pivotal tracker";
+					Toast.makeText(getApplicationContext(), noStory, Toast.LENGTH_SHORT).show();
+        		}
+			}
+        	
+        });
+        
         roadMapListView.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
 
         roadMapListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -80,10 +112,10 @@ public class RoadMapActivity extends BaseActivity {
         macroList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(position == macroList.getCount() - 1){
+            	if(position == macroList.getCount() - 1){
                     DialogFragment dialog = new CreateTaskDialogFragment(EntryType.CUSTOM);
                     dialog.show(getFragmentManager(), "Create custom task");
-                } else if (position == 0) {
+            	} else if (position == 0) {
                     DialogFragment dialog = new CreateTaskDialogFragment(EntryType.CLASS);
                 	dialog.show(getFragmentManager(), "Create a class macro");
                 } else if (position == 1) {
