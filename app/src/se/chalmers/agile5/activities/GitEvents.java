@@ -51,7 +51,6 @@ public class GitEvents extends BaseActivity {
 		});
         retrieveBranches();
         FileStorageAdapter storage = new FileStorageAdapter(this);
-        Toast.makeText(this, "Branches stored" + storage.loadTrackingsBranches().toString(), Toast.LENGTH_LONG).show();
 	}
 
 	
