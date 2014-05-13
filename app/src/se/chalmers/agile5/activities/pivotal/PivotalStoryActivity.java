@@ -10,6 +10,7 @@ import java.util.Set;
 import se.chalmers.agile5.R;
 import se.chalmers.agile5.activities.BaseActivity;
 import se.chalmers.agile5.adapter.ExpandableListAdapter;
+import se.chalmers.agile5.adapter.FileStorageAdapter;
 import se.chalmers.agile5.entities.pivotal.PivotalResponse;
 import se.chalmers.agile5.entities.pivotal.PivotalUserStory;
 import se.chalmers.agile5.logic.RetriveUserStories;
@@ -19,10 +20,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.RelativeLayout;
@@ -73,6 +71,9 @@ public class PivotalStoryActivity extends BaseActivity{
 			ExpandableListAdapter adapter = new ExpandableListAdapter(this, pivotalStates, storyMap);
 			expListView.setAdapter(adapter);
 			
+			final FileStorageAdapter store = new FileStorageAdapter(thisContext);
+			store.setFileListKey("pivotal");
+			
 			expListView.setOnChildClickListener(new OnChildClickListener() {
 				@Override
 				public boolean onChildClick(ExpandableListView parent, View v,
@@ -81,7 +82,7 @@ public class PivotalStoryActivity extends BaseActivity{
 					TextView textView = (TextView) view.findViewById(R.id.child);
 					final CheckBox checkBox = (CheckBox) view.findViewById(R.id.follow);
 					
-					String selectedItem = (String) textView.getText();
+					final String selectedItem = (String) textView.getText();
 					//logic to follow
 					PivotalUserStory selectedStory = null;
 					for(PivotalUserStory s : userStories){
@@ -90,7 +91,7 @@ public class PivotalStoryActivity extends BaseActivity{
 							break;
 						}
 					}
-					String desc = selectedStory.getDescription();
+					final String desc = selectedStory.getDescription();
 					if (checkBox.isChecked()) {
 						AlertDialog.Builder builder = new AlertDialog.Builder(thisContext);
 						builder.setMessage("Title: " + selectedStory + "\n\nUnfollow this story?");
@@ -99,7 +100,13 @@ public class PivotalStoryActivity extends BaseActivity{
 								new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
 								checkBox.setChecked(false);
-								//TODO UNFOLLOW
+								ArrayList<String> empty = new ArrayList<String>();
+								empty.add("No story selected");
+								empty.add("Selected a story from pivotal tracker");
+								store.storeFileList(empty);
+								
+								Toast.makeText(getApplicationContext(), "Story unfollowed", Toast.LENGTH_SHORT).show();
+								
 							}
 						});
 						builder.setNegativeButton("No",
@@ -119,7 +126,15 @@ public class PivotalStoryActivity extends BaseActivity{
 							new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int id) {
 							checkBox.setChecked(true);
-							//TODO FOLLOW
+							
+							ArrayList<String> pivotalInfo = new ArrayList<String>();
+							pivotalInfo.add(selectedItem);
+							pivotalInfo.add(desc);
+							
+							store.storeFileList(pivotalInfo);
+							
+							Toast.makeText(getApplicationContext(), "Story followed", Toast.LENGTH_SHORT).show();
+							
 						}
 					});
 					builder.setNegativeButton("No",

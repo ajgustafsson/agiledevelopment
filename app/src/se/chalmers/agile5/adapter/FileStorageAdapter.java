@@ -12,7 +12,7 @@ public class FileStorageAdapter {
 	private SharedPreferences sharedPreferences;
 	private SharedPreferences.Editor editor;
 	private final String myPrefs = "agile5Preferences";
-	private final String fileListKey = "file_list";
+	private String fileListKey = "file_list";
 	private final String fileSelectionKey = "file_selection_list";
 	
 	public FileStorageAdapter(Context context) {
@@ -25,6 +25,14 @@ public class FileStorageAdapter {
 		JSONArray jsonArray = new JSONArray(fileList);
 		String jsonString = jsonArray.toString();
 		editor.putString(fileListKey, jsonString).apply();
+	}
+	
+	public void setFileListKey(String key) {
+		fileListKey = key;
+	}
+	
+	public String getFileListKey() {
+		return fileListKey;
 	}
 	
 	public ArrayList<String> retrieveFileList() {
