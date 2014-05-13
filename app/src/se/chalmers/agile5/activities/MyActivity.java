@@ -1,9 +1,16 @@
 package se.chalmers.agile5.activities;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Paint;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.ViewSwitcher;
 import org.eclipse.egit.github.core.Repository;
 import se.chalmers.agile5.R;
+import se.chalmers.agile5.activities.pivotal.PivotalProjectActivity;
 import se.chalmers.agile5.entities.AgileGitHubClient;
 import se.chalmers.agile5.entities.GitDataHandler;
 
@@ -21,6 +28,26 @@ public class MyActivity extends BaseActivity {
         setContentView(R.layout.main);
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        TextView tv = (TextView)findViewById(R.id.mainGitLoginTextView);
+        if(GitDataHandler.isUserLoggedIn()){
+            String loggedInName = GitDataHandler.getCurrentGitUser().getName();
+            if (loggedInName == null || loggedInName == ""){
+                loggedInName = GitDataHandler.getCurrentGitUser().getLogin();
+            }
+            tv.setText("You are logged in on GitHub as "+ loggedInName);
+            tv.setClickable(false);
+            tv.setPaintFlags(tv.getPaintFlags() & (~Paint.UNDERLINE_TEXT_FLAG));
+        } else {
+            tv.setText("You are not logged in on GitHub. Click here to login!");
+            tv.setPaintFlags(tv.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+            tv.setClickable(true);
+        }
+    }
+
     @Override
     protected void onStop() {
         super.onStop();
@@ -30,6 +57,44 @@ public class MyActivity extends BaseActivity {
         } else {
             clearLatestSetting();
         }
+    }
+
+    public void startPivotal(View view){
+        final Intent intent = new Intent(this, PivotalProjectActivity.class);
+        startActivity(intent);
+    }
+
+    public void startRoadMap(View view){
+        final Intent intent = new Intent(this, RoadMapActivity.class);
+        startActivity(intent);
+    }
+
+    public void startPlanningPoker(View view){
+        final Intent intent = new Intent(this, PlanningPoker.class);
+        startActivity(intent);
+    }
+
+    public void startGitSettings(View view){
+        if(GitDataHandler.isUserLoggedIn()){
+            final Intent gitIntent = new Intent(this, GitSettingsActivity.class);
+            startActivity(gitIntent);
+        } else {
+            startGitLogin(view);
+        }
+
+    }
+
+    public void startGitLogin(View view){
+        final Intent intent = new Intent(this, GitLoginActivity.class);
+        startActivity(intent);
+    }
+
+    public void startTrackFiles(View view){
+        final Intent intent = new Intent(this, FilesActivity.class);
+        startActivity(intent);
+    }
+
+    public void startAbout(View view){
     }
 
     private void clearLatestSetting() {
