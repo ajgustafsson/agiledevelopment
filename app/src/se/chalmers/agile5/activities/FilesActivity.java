@@ -22,6 +22,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class FilesActivity extends BaseActivity {
 	private final String TAG = "FILES ACTIVITY";
@@ -199,7 +200,8 @@ public class FilesActivity extends BaseActivity {
 		}
 	
 	private void checkLoggedIn() {
-		if (!GitDataHandler.isUserLoggedIn()) {
+		if (!GitDataHandler.isUserLoggedIn() || GitDataHandler.getCurrentGitRepo() == null) {
+			Toast.makeText(this, "Please make sure that you are logged in, and that you have selected a repo", Toast.LENGTH_LONG).show();
 			Intent logIn = new Intent(this, GitLoginActivity.class);
 			startActivity(logIn);
 			finish();
