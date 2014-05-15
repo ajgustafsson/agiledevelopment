@@ -46,7 +46,7 @@ public class GitEvents extends BaseActivity {
 
 		branchesListView = (ListView) findViewById(R.id.gitFollowListView);
 		text = (TextView) findViewById(R.id.text);
-		instructionalText = (TextView) findViewById(R.id.instructionalText);
+//		instructionalText = (TextView) findViewById(R.id.instructionalText);
 		loginButton = (Button) findViewById(R.id.goToLogin);
 		notify = new NotificationHandler();
 		storage = new FileStorageAdapter(this);

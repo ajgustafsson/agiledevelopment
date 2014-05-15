@@ -26,7 +26,7 @@
     <string name="my_activity_text">Welcome to the homescreen</string>
     <string name="planning_poker_text">Welcome to the planning poker game!</string>
     <string name="title_activity_user_stories">UserStories</string>
-    <string name="title_activity_git_events">GitEvents</string>
+    <string name="title_activity_git_events">Select branches to track</string>
 
     <!-- Strings related to GitEvents activity -->
     <string name="title_activity_gitEvents">GitEvents</string>
