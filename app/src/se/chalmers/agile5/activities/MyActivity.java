@@ -4,11 +4,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
+
 import org.eclipse.egit.github.core.Repository;
+
 import se.chalmers.agile5.R;
 import se.chalmers.agile5.activities.pivotal.PivotalProjectActivity;
 import se.chalmers.agile5.entities.AgileGitHubClient;
@@ -17,6 +20,7 @@ import se.chalmers.agile5.entities.GitDataHandler;
 public class MyActivity extends BaseActivity {
     
     public static final String GIT_PREFS = "GIT_PREFS";
+	private static final String TAG = MyActivity.class.getSimpleName();
 
     /**
      * Called when the activity is first created.
@@ -135,18 +139,20 @@ public class MyActivity extends BaseActivity {
             gitHubClient.setCredentials(userCredentials);
             GitDataHandler.setGitHubClient(gitHubClient);
         }
-        //System.err.println("[DBUG] user is: "+GitDataHandler.getGitUserName());
-
+        Log.d(TAG, "User is: " + GitDataHandler.getGitUserName());
+        
         //only continue if the old credentials are valid, that is the user is now logged in
         if(!GitDataHandler.isUserLoggedIn()){
             GitDataHandler.setSaveLoginInfoEnabled(true);
+            Log.e(TAG, "User not logged in to Git");
             return;
         }
 
         //retrieve the latest used repo (if any)
         final String repoId = settings.getString("latestRepositoryId", null);
         if(repoId != null){
-            //System.err.println("[DBUG] latest Repo: "+GitDataHandler.getRepositoryById(repoId).getName());
+        	Log.d(TAG, "Latest Repo: " + GitDataHandler.getRepositoryById(repoId).getName());
+            
             Repository latestRepo = GitDataHandler.getRepositoryById(repoId);
             if(latestRepo != null){
                 GitDataHandler.setCurrentGitRepo(latestRepo);
