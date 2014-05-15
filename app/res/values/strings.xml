@@ -69,5 +69,6 @@
     <string name="update_button_text">Update files</string>
     <string name="store_button_text">Save</string>
     <string name="load_button_text">Load</string>
-      
+    <string name="roadmap_details_top_label">Task Details</string>
+
 </resources>

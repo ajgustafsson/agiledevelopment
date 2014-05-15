@@ -21,6 +21,7 @@ import se.chalmers.agile5.entities.EntryType;
 import se.chalmers.agile5.entities.RoadMapEntry;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -37,8 +38,8 @@ import org.json.JSONObject;
 public class RoadMapActivity extends BaseActivity {
 	private static final String[] macroStrings = {"Class","Func", "Algo", "Exception", "Custom"};
 	private static final String TAG = RoadMapActivity.class.getSimpleName();
-    static final int DETAIL_ACTIVITY_KEY = 0;
-    static final int RESULT_DETAIL_CHANGED = 1;
+    static final int DETAIL_ACTIVITY_KEY = 41;
+    static final int RESULT_DETAIL_CHANGED = 42;
     private static Context thisContext;
     static final String INTENT_TITLE_RESULT = "title_intent";
     static final String INTENT_DESC_RESULT = "description_intent";
@@ -373,7 +374,21 @@ public class RoadMapActivity extends BaseActivity {
                                 break;
                         }
                         if(inputIsOkay) {
-                            roadMapList.add(new RoadMapEntry(title, desc, macroType));
+                            Iterator<RoadMapEntry> iterator = roadMapList.iterator();
+                            int i = 0;
+                            boolean insertedInMiddle = false;
+                            while (iterator.hasNext()) {
+                                final RoadMapEntry entry = iterator.next();
+                                if (entry.isDone()) {
+                                    insertedInMiddle = true;
+                                    roadMapList.add(i, new RoadMapEntry(title, desc, macroType));
+                                    break;
+                                }
+                                i++;
+                            }
+                            if (!insertedInMiddle) {
+                                roadMapList.add(new RoadMapEntry(title, desc, macroType));
+                            }
                             updateTaskList();
                             dismiss();
                         }
