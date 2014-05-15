@@ -101,8 +101,8 @@ public class PivotalStoryActivity extends BaseActivity{
 							public void onClick(DialogInterface dialog, int id) {
 								checkBox.setChecked(false);
 								ArrayList<String> empty = new ArrayList<String>();
-								empty.add("No story selected");
-								empty.add("Selected a story from pivotal tracker");
+								empty.add("");
+								empty.add("");
 								store.storeFileList(empty);
 								
 								Toast.makeText(getApplicationContext(), "Story unfollowed", Toast.LENGTH_SHORT).show();

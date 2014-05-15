@@ -5,11 +5,115 @@
               android:layout_height="fill_parent"
     >
 
+
+    <Space
+        android:layout_width="20px"
+        android:layout_height="20px"
+        android:layout_marginBottom="10dp"/>
+
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/my_activity_text"
+        android:layout_marginBottom="@dimen/activity_horizontal_margin"
         />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/mainGitLoginTextView"
+        android:layout_gravity="center"
+        android:onClick="startGitLogin"/>
+
+    <GridLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="1"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="@dimen/activity_vertical_margin"
+        android:layout_marginRight="@dimen/activity_vertical_margin"
+        android:layout_gravity="center_vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:drawableTop="@android:drawable/ic_menu_mapmode"
+                android:layout_weight="1"
+                android:text="@string/roadmap_main_menu"
+                android:id="@+id/home_roadmap_button"
+                android:gravity="bottom|center"
+                android:onClick="startRoadMap"/>
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:drawableTop="@android:drawable/ic_menu_week"
+                android:layout_weight="1"
+                android:text="@string/planning_poker_main_menu"
+                android:id="@+id/home_planning_button"
+                android:gravity="bottom|center"
+                android:onClick="startPlanningPoker"/>
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:drawableTop="@drawable/pivotal_icon"
+                android:layout_weight="1"
+                android:layout_gravity="start"
+                android:text="@string/pivotal_main_menu"
+                android:id="@+id/home_pivotal_button"
+                android:gravity="bottom|center"
+                android:onClick="startPivotal"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:drawableTop="@drawable/github_icon"
+                android:layout_weight="1"
+                android:text="@string/git_settings_main_menu"
+                android:id="@+id/home_git_button"
+                android:gravity="bottom|center"
+                android:onClick="startGitSettings"/>
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:drawableTop="@android:drawable/ic_menu_sort_by_size"
+                android:layout_weight="1"
+                android:text="@string/track_files_main_menu"
+                android:id="@+id/home_track_button"
+                android:gravity="bottom|center"
+                android:onClick="startTrackFiles"/>
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:drawableTop="@android:drawable/ic_menu_help"
+                android:layout_weight="1"
+                android:layout_gravity="start"
+                android:text="About"
+                android:id="@+id/home_about_button"
+                android:gravity="bottom|center"
+                android:onClick="startAbout"/>
+        </LinearLayout>
+
+    </GridLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:id="@+id/imageView"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:src="@drawable/icon_large"/>
+
 
 </LinearLayout>
 

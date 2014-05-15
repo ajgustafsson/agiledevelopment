@@ -69,7 +69,8 @@
                   android:label="@string/roadmap_top_label"
                   android:launchMode="singleTask"/>
         <activity android:name="se.chalmers.agile5.activities.RoadMapDetailActivity"
-            android:launchMode="singleTask"/>
+            	android:parentActivityName="se.chalmers.agile5.activities.RoadMapActivity"
+            	android:label="@string/roadmap_details_top_label"/>
         
         <activity android:name="se.chalmers.agile5.activities.GitEvents"
             android:label="@string/title_activity_gitEvents"
@@ -85,6 +86,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="se.chalmers.agile5.activities.BaseActivity" />
         </activity>
+
     </application>
 
 </manifest>
