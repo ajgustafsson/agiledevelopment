@@ -48,6 +48,10 @@ public class FileStorageAdapter {
 
 	}
 	
+	/**
+	 * Get stored list of files on repo
+	 * @return 
+	 */
 	public ArrayList<String> retrieveFileList() {
 		ArrayList<String> fileList = new ArrayList<String>();
 		String s = sharedPreferences.getString(fileListKey, "");

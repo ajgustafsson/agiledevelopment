@@ -8,8 +8,10 @@ import java.util.concurrent.ExecutionException;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryBranch;
 import org.eclipse.egit.github.core.RepositoryCommit;
+import org.eclipse.egit.github.core.RepositoryContents;
 import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.CommitService;
+import org.eclipse.egit.github.core.service.ContentsService;
 import org.eclipse.egit.github.core.service.RepositoryService;
 import org.eclipse.egit.github.core.service.WatcherService;
 
@@ -83,6 +85,22 @@ public class RetriveGitEvents {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public List<RepositoryContents> getContents(String path) {
+		FetchRepoContents frc = new FetchRepoContents();
+
+		try {
+			return frc.execute(path).get();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+		
 	}
 	
 	public ArrayList<RepositoryCommit> getCommitsByBranch(String branch) {
@@ -254,6 +272,32 @@ public class RetriveGitEvents {
 	            return null;
 	        }
 	    }
+	  
+		
+		/**
+		 * Recursively fetches all contents in a repo.
+		 * 
+		 */
+		private class FetchRepoContents extends AsyncTask<String, Void, List<RepositoryContents>> {
+			@Override
+			protected List<RepositoryContents> doInBackground(String... params) {
+				ContentsService contentsService = new ContentsService(GitDataHandler.getGitClient());
+				Repository repo = GitDataHandler.getCurrentGitRepo();
+				List<RepositoryContents> rc = null;
+				String path = null;
+				if(params.length > 0)
+					path = params[0];
+				try {
+					rc = contentsService.getContents(repo, path);
+					
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				return rc;
+			}
+			}
 	
 
 	

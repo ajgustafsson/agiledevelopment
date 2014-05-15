@@ -33,6 +33,10 @@ public class GitEvents extends BaseActivity {
     private NotificationHandler notify;
     private String newCommitNames;
     private ArrayList<RepositoryCommit> diffCommits;
+    private ArrayList<String> changedFiles;
+    private ArrayList<String> trackedFiles;
+    private FileStorageAdapter storage;
+    RetriveGitEvents git;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +48,9 @@ public class GitEvents extends BaseActivity {
 		instructionalText = (TextView) findViewById(R.id.instructionalText);
 		loginButton = (Button) findViewById(R.id.goToLogin);
 		notify = new NotificationHandler();
-		
+		storage = new FileStorageAdapter(this);
+		git = new RetriveGitEvents();
+			
 		loginButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -57,7 +63,6 @@ public class GitEvents extends BaseActivity {
 
 	
 	private void retrieveBranches(){
-		RetriveGitEvents git = new RetriveGitEvents();
 		ArrayList<String> reposName = new ArrayList<String>();
 		ArrayList<Repository> repos = new ArrayList<Repository>();
 		ArrayList<String> branchNames = new ArrayList<String>();
@@ -149,6 +154,8 @@ public class GitEvents extends BaseActivity {
 		ArrayList<String> oldCommitShas = new ArrayList<String>();
 		ArrayList<RepositoryCommit> newCommits = new ArrayList<RepositoryCommit>();
 		
+		
+		
 		trackedBranches = fileStorage.getTrackingsBranches();
 		
 		for(RepositoryBranch branch : trackedBranches) {
@@ -181,6 +188,10 @@ public class GitEvents extends BaseActivity {
 			
 			
 			if(!diffCommits.isEmpty()) {
+				changedFiles = new ArrayList<String>();
+				trackedFiles = storage.loadSelection();
+					
+				
 				Log.i("test", "DiffCommits size: " + diffCommits.size());
 				ArrayList<RepositoryCommit> extendedDiffCommits = new ArrayList<RepositoryCommit>();
 				RepositoryCommit extendedCommit;

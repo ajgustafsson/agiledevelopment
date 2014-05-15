@@ -1,19 +1,16 @@
 package se.chalmers.agile5.activities;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryContents;
-import org.eclipse.egit.github.core.service.ContentsService;
 
 import se.chalmers.agile5.R;
 import se.chalmers.agile5.adapter.FileStorageAdapter;
 import se.chalmers.agile5.entities.GitDataHandler;
+import se.chalmers.agile5.logic.RetriveGitEvents;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -32,7 +29,7 @@ public class FilesActivity extends BaseActivity {
     Button loadButton;
     private ArrayList<String> filePaths;
     private ArrayList<String> selection;
-    private FetchRepoContents frc; 
+    private RetriveGitEvents gitRetriever;
     FileStorageAdapter storage;
     
 	@Override
@@ -47,6 +44,7 @@ public class FilesActivity extends BaseActivity {
 		storage = new FileStorageAdapter(this);
 		filePaths = new ArrayList<String>();
 		selection = new ArrayList<String>();
+		gitRetriever = new RetriveGitEvents();
 		
 		
 		updateButton.setOnClickListener(new View.OnClickListener() {
@@ -97,31 +95,24 @@ public class FilesActivity extends BaseActivity {
 	 * updates the list of files on the repo
 	 */
 	public void updateFiles(String path) {
-		frc = new FetchRepoContents();
 		String filePath;
 		
-		try {
-			
-			List<RepositoryContents> repoContents = frc.execute(path).get();
-			
-			for (RepositoryContents rc : repoContents) {
-				if (rc.getType().equals("file")) {
-					filePath = rc.getPath();
-					if (filePath.endsWith("java") || filePath.endsWith("xml") || filePath.endsWith("txt")) {
-						filePaths.add(filePath);
-					}
-				}
-				if (rc.getType().equals("dir"))
-					updateFiles(rc.getPath());
-			}
-			
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		List<RepositoryContents> repoContents = gitRetriever.getContents(path);
+		if (repoContents == null) {
+			Log.i(TAG, "repoContents empty");
+			return;
 		}
+			
+		for (RepositoryContents rc : repoContents) {
+			if (rc.getType().equals("file")) {
+				filePath = rc.getPath();
+				if (filePath.endsWith("java") || filePath.endsWith("xml") || filePath.endsWith("txt")) {
+					filePaths.add(filePath);
+				}
+			}
+			if (rc.getType().equals("dir"))
+				updateFiles(rc.getPath());
+			}
 		
 	}
 
@@ -177,27 +168,7 @@ public class FilesActivity extends BaseActivity {
 		
 		
 	}
-		
-	private class FetchRepoContents extends AsyncTask<String, Void, List<RepositoryContents>> {
-		@Override
-		protected List<RepositoryContents> doInBackground(String... params) {
-			ContentsService contentsService = new ContentsService(GitDataHandler.getGitClient());
-			Repository repo = GitDataHandler.getCurrentGitRepo();
-			List<RepositoryContents> rc = null;
-			String path = null;
-			if(params.length > 0)
-				path = params[0];
-			try {
-				rc = contentsService.getContents(repo, path);
-				
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			
-			return rc;
-		}
-		}
+	
 	
 	private void checkLoggedIn() {
 		if (!GitDataHandler.isUserLoggedIn() || GitDataHandler.getCurrentGitRepo() == null) {
