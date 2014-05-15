@@ -201,13 +201,16 @@ public class GitEvents extends BaseActivity {
 						changedFiles.add(commitFile.getFilename());
 					}
 				}
-				
+				Boolean trackedFileModified = false;
 				for (String changedFileName : changedFiles) {
 					if (trackedFiles.contains(changedFileName)) {
 						Log.i(TAG, "Tracked file changed: " + changedFileName);
 						notify.DisplayNotification(this, GitEvents.class, "Tracked file modified!", changedFileName, "");
+						trackedFileModified = true;
 						}
 				}
+				if (!trackedFileModified)
+					notify.DisplayNotification(this, GitEvents.class, "New commit on " + branch.getName(), "No tracked files modified", "");
 				
 				//fileStorage.storeCommitsForATrackingBranch(diffCommits, branch);
 				

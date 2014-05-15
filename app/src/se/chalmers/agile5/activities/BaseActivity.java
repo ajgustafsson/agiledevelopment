@@ -24,9 +24,9 @@ public class BaseActivity extends Activity {
              * Add logic to when the notification is to be triggered
              * and which messages to be displayed.
              */
-        	notificationHandler.DisplayNotification(getApplicationContext(), 
-        			MyActivity.class, 
-        			"New Commit", "Message", "1337");
+//        	notificationHandler.DisplayNotification(getApplicationContext(), 
+//        			MyActivity.class, 
+//        			"New Commit", "Message", "1337");
 
             timerHandler.postDelayed(this, 10000);
         }
