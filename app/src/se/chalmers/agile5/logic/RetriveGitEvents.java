@@ -246,7 +246,8 @@ public class RetriveGitEvents {
 	            final GitHubClient client = params[0];
 	            final RepositoryService service = new RepositoryService(client);
 	            try {
-	                return service.getRepositories(client.getUser());
+	            	String user = GitDataHandler.getCurrentGitUser().getLogin();
+	                return service.getRepositories(user);
 	            } catch (IOException e) {
 	                e.printStackTrace();
 	            }
