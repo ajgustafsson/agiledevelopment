@@ -2,6 +2,7 @@ package se.chalmers.agile5.activities;
 
 import java.util.ArrayList;
 
+import org.eclipse.egit.github.core.CommitFile;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryBranch;
 import org.eclipse.egit.github.core.RepositoryCommit;
@@ -152,10 +153,7 @@ public class GitEvents extends BaseActivity {
 		ArrayList<RepositoryBranch> trackedBranches = new ArrayList<RepositoryBranch>();
 		ArrayList<RepositoryCommit> oldCommits = new ArrayList<RepositoryCommit>();
 		ArrayList<String> oldCommitShas = new ArrayList<String>();
-		ArrayList<RepositoryCommit> newCommits = new ArrayList<RepositoryCommit>();
-		
-		
-		
+		ArrayList<RepositoryCommit> newCommits = new ArrayList<RepositoryCommit>();		
 		trackedBranches = fileStorage.getTrackingsBranches();
 		
 		for(RepositoryBranch branch : trackedBranches) {
@@ -186,12 +184,11 @@ public class GitEvents extends BaseActivity {
 			fileStorage.storeCommitsForATrackingBranch(newCommits, branch);
 			Log.i(TAG, GitDataHandler.getCommits().size() + " " + newCommits.size());
 			
-			
+			//If there are new commits
 			if(!diffCommits.isEmpty()) {
 				changedFiles = new ArrayList<String>();
 				trackedFiles = storage.loadSelection();
 					
-				
 				Log.i("test", "DiffCommits size: " + diffCommits.size());
 				ArrayList<RepositoryCommit> extendedDiffCommits = new ArrayList<RepositoryCommit>();
 				RepositoryCommit extendedCommit;
@@ -199,12 +196,22 @@ public class GitEvents extends BaseActivity {
 					extendedCommit = git.getExtendedCommit(rc.getSha());
 					extendedDiffCommits.add(extendedCommit);
 					newCommitNames += rc.getCommit().getMessage() + "\n";
+					
+					for (CommitFile commitFile : extendedCommit.getFiles()) {
+						changedFiles.add(commitFile.getFilename());
+					}
 				}
 				
+				for (String changedFileName : changedFiles) {
+					if (trackedFiles.contains(changedFileName)) {
+						Log.i(TAG, "Tracked file changed: " + changedFileName);
+						notify.DisplayNotification(this, GitEvents.class, "Tracked file modified!", changedFileName, "");
+						}
+				}
 				
 				//fileStorage.storeCommitsForATrackingBranch(diffCommits, branch);
 				
-				notify.DisplayNotification(this, GitEvents.class, "New commit!", newCommitNames, "");
+				
 	
 			} else {
 				Toast.makeText(getApplicationContext(),"No new commits", Toast.LENGTH_LONG).show();
